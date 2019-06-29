@@ -16,7 +16,6 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.Toast;
 import com.example.gurumenaviapp.data.LocationData;
-import com.example.gurumenaviapp.data.request.GuruNaviUrl;
 import com.example.gurumenaviapp.data.request.Request;
 import com.example.gurumenaviapp.data.ShowedInformation;
 import com.example.gurumenaviapp.gps.LocationListener;
