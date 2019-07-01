@@ -107,12 +107,12 @@
             <TextView
                     android:text="@string/access"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:id="@+id/a" android:layout_weight="1"
+                    android:layout_height="wrap_content" android:id="@+id/accessTagTextView" android:layout_weight="1"
             />
             <TextView
-                    android:text="TextView"
-                    android:layout_height="match_parent" android:id="@+id/textView4" android:layout_weight="1"
-                    android:layout_width="match_parent"/>
+                    android:text="@string/access"
+                    android:layout_height="match_parent" android:id="@+id/accessTextView" android:layout_weight="1"
+                    android:layout_width="match_parent" android:textAlignment="center"/>
         </LinearLayout>
     </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>

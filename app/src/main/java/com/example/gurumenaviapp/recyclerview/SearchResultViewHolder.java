@@ -10,6 +10,7 @@ public class SearchResultViewHolder extends RecyclerView.ViewHolder {
     public TextView name;
     public TextView tel;
     public TextView address;
+    public TextView access;
 
     public ImageView imageView;
 
@@ -19,6 +20,7 @@ public class SearchResultViewHolder extends RecyclerView.ViewHolder {
         name = view.findViewById(R.id.RestNameTextView);
         tel = view.findViewById(R.id.telTextView);
         address = view.findViewById(R.id.addressTextView);
+        access = view.findViewById(R.id.accessTextView);
 
         imageView = view.findViewById(R.id.imageView);
     }

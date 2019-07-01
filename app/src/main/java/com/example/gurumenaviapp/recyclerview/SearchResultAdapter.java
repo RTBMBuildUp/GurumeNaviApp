@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.example.gurumenaviapp.R;
 import com.example.gurumenaviapp.data.ShowedInformation;
+import com.example.gurumenaviapp.gson.data.Access;
 
 import java.util.List;
 
@@ -36,12 +37,27 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultViewHo
         final String notFound = resources.getString(R.string.notFound);
 
         final ShowedInformation result = showedInformationList.get(position);
+        final Access access = result.getAccess();
 
-        searchResultViewHolder.name.setText(getOrElse(result.getName(), notFound));
-        searchResultViewHolder.address.setText(getOrElse(result.getAddress(), notFound));
-        searchResultViewHolder.tel.setText(getOrElse(result.getTel(), notFound));
+        searchResultViewHolder.name.setText(
+                getOrElse(result.getName(), notFound)
+        );
 
-        searchResultViewHolder.imageView.setImageBitmap(result.getImage());
+        searchResultViewHolder.address.setText(
+                getOrElse(result.getAddress(), notFound)
+        );
+
+        searchResultViewHolder.tel.setText(
+                getOrElse(result.getTel(), notFound)
+        );
+
+        searchResultViewHolder.access.setText(
+                getOrElse(access.getLine() + access.getStation() + access.getWalk() + "分", notFound)
+        );
+
+        searchResultViewHolder.imageView.setImageBitmap(
+                result.getImage()
+        );
     }
 
     @Override
