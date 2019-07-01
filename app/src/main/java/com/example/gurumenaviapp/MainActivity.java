@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity implements GuruNaviContract.
     private RecyclerView recyclerView;
 
     private SearchResultAdapter adapter;
-    List<ShowedInformation> itemList = new ArrayList<>();
+    private List<ShowedInformation> itemList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
