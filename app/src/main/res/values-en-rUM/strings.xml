@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">GuruNaviApp</string>
+    <string name="search">Search</string>
+    <string name="address">JapaneseAddress</string>
+    <string name="tel">Phone Number</string>
+    <string name="restName">RestaurantName</string>
+    <string name="notFound">NotFound</string>
+    <string name="access">Access</string>
+</resources>
