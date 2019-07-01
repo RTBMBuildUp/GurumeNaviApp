@@ -11,10 +11,18 @@ public interface GuruNaviContract {
         Activity getViewActivity();
 
         void addRecyclerViewItem(ShowedInformation item);
+
+        void removeRecyclerViewItem(int position);
+
+        void cleanRecyclerViewItem();
     }
 
     interface Presenter extends BasePresenter {
         void setItem(List<ShowedInformation> itemList, ShowedInformation item);
+
+        void removeItem(List<ShowedInformation> itemList, int position);
+
+        void cleanItem(List<ShowedInformation> itemList);
 
         void checkPermission();
 
@@ -29,6 +37,5 @@ public interface GuruNaviContract {
         void onProviderEnabled(StringBuilder stringBuilder, String provider);
 
         void onProviderDisabled(StringBuilder stringBuilder, String provider);
-
     }
 }

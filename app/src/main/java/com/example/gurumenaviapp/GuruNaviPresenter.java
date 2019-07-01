@@ -16,8 +16,8 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.Toast;
 import com.example.gurumenaviapp.data.LocationData;
-import com.example.gurumenaviapp.data.request.Request;
 import com.example.gurumenaviapp.data.ShowedInformation;
+import com.example.gurumenaviapp.data.request.Request;
 import com.example.gurumenaviapp.gps.LocationListener;
 import com.example.gurumenaviapp.gson.data.GuruNavi;
 import com.example.gurumenaviapp.gson.data.Rest;
@@ -29,7 +29,10 @@ import com.google.gson.internal.bind.TypeAdapters;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 
 import static com.example.gurumenaviapp.data.request.Requests.*;
 
@@ -51,15 +54,6 @@ public class GuruNaviPresenter implements GuruNaviContract.Presenter {
 
     @Override
     public void searchNearRestaurant(String token) {
-//        final String url = host + question +
-//                (requestKeyId + token) + and +
-//                (requestLongitude + locationData.getLongitude()) + and +
-//                (requestLatitude + locationData.getLatitude()) + and +
-//                (requestLatitude + "34.816809") + and +
-//                (requestLongitude + "135.647811") + and +
-//                (requestRange + "5") + and +
-//                (requestHitPerPage + "8");
-
         if (locationData != null) {
 
             HashSet<Request> requestSet = new HashSet<>(Arrays.asList(
@@ -68,19 +62,11 @@ public class GuruNaviPresenter implements GuruNaviContract.Presenter {
                     new Request(longitude, locationData.getLongitude())
             ));
 
-            //cur longi 135.7078629
-            //          135.701702
-            //            0.0061609
-            //cur latit 34.8248844
-            //          34.825688
-            //                1964
+            System.out.println(createGuruNaviUrl(token, requestSet).toString());
 
-            System.out.println(buildGuruNaviUrl(token, requestSet).toString());
-
-            new DownloadJsonTask().execute(buildGuruNaviUrl(token, requestSet).toString());
+            new DownloadJsonTask().execute(createGuruNaviUrl(token, requestSet).toString());
         } else {
-            System.out.println("location is null");
-            Toast toast = Toast.makeText(context, "cant get current location...", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(context, "現在地を取得できません。", Toast.LENGTH_SHORT);
             toast.show();
         }
     }
@@ -102,6 +88,7 @@ public class GuruNaviPresenter implements GuruNaviContract.Presenter {
         @Override
         protected void onPostExecute(List<ShowedInformation> results) {
             if (results != null) {
+                view.cleanRecyclerViewItem();
                 for (ShowedInformation result : results) view.addRecyclerViewItem(result);
             } else {
                 view.addRecyclerViewItem(new ShowedInformation());
@@ -149,14 +136,33 @@ public class GuruNaviPresenter implements GuruNaviContract.Presenter {
 
     @Override
     public void setItem(List<ShowedInformation> itemList, ShowedInformation item) {
-        if (itemList != null) {
-            int index = itemList.indexOf(item);
-            if (-1 == index) {
-                itemList.add(0, item);
-            } else {
-                throw new IndexOutOfBoundsException("index is out of bounds");
+        try {
+            if (itemList != null) {
+                int index = itemList.indexOf(item);
+                if (-1 == index) {
+                    itemList.add(0, item);
+                }
             }
+        } catch (IndexOutOfBoundsException e) {
+            Log.d("error", "setItem: " + e);
         }
+    }
+
+    @Override
+    public void removeItem(List<ShowedInformation> itemList, int position) {
+        try {
+            if (itemList != null) {
+                itemList.remove(position);
+            }
+        } catch (IndexOutOfBoundsException e) {
+            Log.d("error", "removeItem: " + e);
+        }
+    }
+
+    @Override
+    public void cleanItem(List<ShowedInformation> itemList) {
+        while (itemList != null && itemList.size() != 0)
+            view.removeRecyclerViewItem(0);
     }
 
     @Override
@@ -236,7 +242,7 @@ public class GuruNaviPresenter implements GuruNaviContract.Presenter {
         System.out.println("altitude: " + locationData.getLatitude());
     }
 
-    private URL buildGuruNaviUrl(String token, HashSet<Request> requestSet) {
+    private URL createGuruNaviUrl(String token, HashSet<Request> requestSet) {
         GuruNaviUrl guruNaviUrl = new GuruNaviUrl(token);
 
         for (Request request : requestSet) {

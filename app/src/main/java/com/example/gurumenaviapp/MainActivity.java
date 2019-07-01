@@ -71,13 +71,18 @@ public class MainActivity extends AppCompatActivity implements GuruNaviContract.
 
     @Override
     public void addRecyclerViewItem(ShowedInformation item) {
-        try {
-            presenter.setItem(itemList, item);
-        } catch (IndexOutOfBoundsException e) {
-            e.printStackTrace();
-            return;
-        }
+        presenter.setItem(itemList, item);
         adapter.notifyItemInserted(0);
+    }
+
+    @Override
+    public void removeRecyclerViewItem(int position) {
+        presenter.removeItem(itemList, position);
+        adapter.notifyItemRemoved(position);
+    }
+
+    public void cleanRecyclerViewItem() {
+        presenter.cleanItem(itemList);
     }
 
     private void findViews() {
