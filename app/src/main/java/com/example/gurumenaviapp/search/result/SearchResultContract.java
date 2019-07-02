@@ -2,7 +2,7 @@ package com.example.gurumenaviapp.search.result;
 
 import com.example.gurumenaviapp.BasePresenter;
 import com.example.gurumenaviapp.BaseView;
-import com.example.gurumenaviapp.data.ShowedInformation;
+import com.example.gurumenaviapp.search.result.data.ShowedInformation;
 import com.example.gurumenaviapp.data.request.Request;
 
 import java.util.List;

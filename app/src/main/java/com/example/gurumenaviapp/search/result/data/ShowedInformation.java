@@ -1,4 +1,4 @@
-package com.example.gurumenaviapp.data;
+package com.example.gurumenaviapp.search.result.data;
 
 import android.graphics.Bitmap;
 import com.example.gurumenaviapp.gson.data.Access;

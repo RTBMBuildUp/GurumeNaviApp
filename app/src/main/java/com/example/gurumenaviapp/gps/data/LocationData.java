@@ -1,4 +1,4 @@
-package com.example.gurumenaviapp.data;
+package com.example.gurumenaviapp.gps.data;
 
 public class LocationData {
     private double latitude;

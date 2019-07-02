@@ -4,10 +4,8 @@ import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
-import com.example.gurumenaviapp.GuruNaviUrl;
-import com.example.gurumenaviapp.data.LocationData;
-import com.example.gurumenaviapp.data.ShowedInformation;
+import com.example.gurumenaviapp.data.GuruNaviUrl;
+import com.example.gurumenaviapp.search.result.data.ShowedInformation;
 import com.example.gurumenaviapp.data.request.Request;
 import com.example.gurumenaviapp.gson.data.GuruNavi;
 import com.example.gurumenaviapp.gson.data.Rest;
@@ -20,11 +18,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-
-import static com.example.gurumenaviapp.data.request.Requests.*;
 
 public class SearchResultPresenter implements SearchResultContract.Presenter {
     private SearchResultContract.View view;

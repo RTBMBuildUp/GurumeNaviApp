@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.example.gurumenaviapp.R;
-import com.example.gurumenaviapp.data.ShowedInformation;
+import com.example.gurumenaviapp.search.result.data.ShowedInformation;
 import com.example.gurumenaviapp.gson.data.Access;
 
 import java.util.List;

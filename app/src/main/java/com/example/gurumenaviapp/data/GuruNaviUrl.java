@@ -1,4 +1,4 @@
-package com.example.gurumenaviapp;
+package com.example.gurumenaviapp.data;
 
 import android.text.TextUtils;
 import com.example.gurumenaviapp.data.request.Request;
