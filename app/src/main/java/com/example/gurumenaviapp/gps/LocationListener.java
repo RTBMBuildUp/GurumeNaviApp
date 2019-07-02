@@ -2,14 +2,14 @@ package com.example.gurumenaviapp.gps;
 
 import android.location.Location;
 import android.os.Bundle;
-import com.example.gurumenaviapp.GuruNaviContract;
+import com.example.gurumenaviapp.search.screen.SearchScreenContract;
 
 public class LocationListener implements android.location.LocationListener {
-    private GuruNaviContract.Presenter presenter;
+    private SearchScreenContract.Presenter presenter;
 
     private StringBuilder stringBuilder;
 
-    public LocationListener(GuruNaviContract.Presenter presenter) {
+    public LocationListener(SearchScreenContract.Presenter presenter) {
         this.presenter = presenter;
         this.stringBuilder = new StringBuilder();
     }

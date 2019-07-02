@@ -26,7 +26,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultViewHo
     public SearchResultViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         view = LayoutInflater
                 .from(viewGroup.getContext())
-                .inflate(R.layout.search_result, viewGroup, false);
+                .inflate(R.layout.recyclerview_search_result, viewGroup, false);
 
         return new SearchResultViewHolder(view);
     }
