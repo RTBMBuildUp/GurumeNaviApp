@@ -24,10 +24,8 @@ public class SearchScreenActivity extends AppCompatActivity implements SearchScr
 
         // Android 6, API 23以上でパーミッシンの確認
         if (Build.VERSION.SDK_INT >= 23) {
-            System.out.println("check");
             presenter.checkPermission();
         } else {
-            System.out.println("else");
             presenter.activateGps();
         }
 

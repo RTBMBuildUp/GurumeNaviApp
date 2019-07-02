@@ -32,6 +32,8 @@ public class SearchResultActivity extends AppCompatActivity implements SearchRes
         setContentView(R.layout.search_result);
         findViews();
 
+        System.out.println("stat");
+
         requestList = initialRequestList();
 
         presenter = new SearchResultPresenter(this, this);

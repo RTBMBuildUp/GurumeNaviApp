@@ -12,15 +12,17 @@ import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.widget.Toast;
 import com.example.gurumenaviapp.data.GuruNaviUrl;
-import com.example.gurumenaviapp.gps.data.LocationData;
 import com.example.gurumenaviapp.data.request.Request;
 import com.example.gurumenaviapp.gps.LocationListener;
+import com.example.gurumenaviapp.gps.data.LocationData;
 import com.example.gurumenaviapp.search.result.SearchResultActivity;
+import com.example.gurumenaviapp.util.Toaster;
 
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static com.example.gurumenaviapp.data.request.Requests.*;
 
@@ -70,9 +72,9 @@ public class SearchScreenPresenter implements SearchScreenContract.Presenter {
             for (Request request : requestList) {
                 searchResult.putExtra(request.getName(), request.getContent());
             }
-        }
 
-        view.getViewActivity().startActivity(searchResult);
+            view.getViewActivity().startActivity(searchResult);
+        }
     }
 
     @Override
@@ -83,8 +85,7 @@ public class SearchScreenPresenter implements SearchScreenContract.Presenter {
         this.updateLocation(latitude, longitude);
         System.out.println("change the location");
 
-        Toast toast = Toast.makeText(context, "現在地が更新されました。", Toast.LENGTH_SHORT);
-        toast.show();
+        Toaster.toast(context, "現在地が更新されました。");
     }
 
     @Override
@@ -152,8 +153,7 @@ public class SearchScreenPresenter implements SearchScreenContract.Presenter {
 
             return requestList;
         } else {
-            Toast toast = Toast.makeText(context, "現在地を取得できません。", Toast.LENGTH_SHORT);
-            toast.show();
+            Toaster.toast(context, "現在地を取得できません。");
 
             return null;
         }
@@ -184,10 +184,7 @@ public class SearchScreenPresenter implements SearchScreenContract.Presenter {
         } catch (Exception e) {
             e.printStackTrace();
 
-            Toast toast = Toast.makeText(context,
-                    "例外が発生、位置情報のPermissionを許可していますか？",
-                    Toast.LENGTH_SHORT);
-            toast.show();
+            Toaster.toast(context, "例外: 位置情報の権限を与えていますか？");
         }
     }
 
@@ -206,9 +203,8 @@ public class SearchScreenPresenter implements SearchScreenContract.Presenter {
                     REQUEST_PERMISSION);
 
         } else {
-            Toast toast = Toast.makeText(context,
-                    "許可されないとアプリが実行できません", Toast.LENGTH_SHORT);
-            toast.show();
+            Toaster.toast(context,
+                    "許可されないとアプリが実行できません");
 
             ActivityCompat.requestPermissions(activity,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION,},
