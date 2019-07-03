@@ -62,4 +62,8 @@ public class Access {
         this.note = note;
     }
 
+    public String showUserAround() {
+        return this.getLine() + this.getStation() + this.getWalk() + "分";
+    }
+
 }

@@ -19,8 +19,7 @@ public class Request {
         return this.content;
     }
 
-    @Override
-    public String toString() {
+    public String toStringForUrl() {
         return this.requests + Equal.toString() + this.content;
     }
 }
