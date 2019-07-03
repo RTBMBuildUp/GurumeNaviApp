@@ -1,62 +1,55 @@
-package com.example.gurumenaviapp.search.result;
+package com.example.gurumenaviapp.search.candidate;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import com.example.gurumenaviapp.R;
-import com.example.gurumenaviapp.search.result.data.ShowedInformation;
 import com.example.gurumenaviapp.data.request.Request;
 import com.example.gurumenaviapp.data.request.Requests;
-import com.example.gurumenaviapp.recyclerview.SearchResultAdapter;
+import com.example.gurumenaviapp.search.candidate.data.RestaurantThumbnail;
+import com.example.gurumenaviapp.search.candidate.recyclerview.RestaurantListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.gurumenaviapp.data.request.Requests.keyid;
 
-public class SearchResultActivity extends AppCompatActivity implements SearchResultContract.View {
-    private SearchResultContract.Presenter presenter;
+public class RestaurantListActivity extends AppCompatActivity implements RestaurantListContract.View {
+    private RestaurantListContract.Presenter presenter;
 
     private RecyclerView recyclerView;
-    private SearchResultAdapter adapter;
-    private List<ShowedInformation> itemList = new ArrayList<>();
+    private RestaurantListAdapter adapter;
+    private List<RestaurantThumbnail> itemList = new ArrayList<>();
 
     private List<Request> requestList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.search_result);
+        setContentView(R.layout.restaurant_list);
         findViews();
-
-        System.out.println("stat");
 
         requestList = initialRequestList();
 
-        presenter = new SearchResultPresenter(this, this);
-        adapter = new SearchResultAdapter(itemList);
+        prepareRecyclerView();
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(adapter);
+        presenter = new RestaurantListPresenter(this, this);
 
         String token = getIntent().getStringExtra(keyid.toString());
-
-        presenter.searchWithRequest(token, requestList);
+        presenter.searchWithRequest(requestList);
     }
 
     @Override
-    public void setPresenter(SearchResultContract.Presenter presenter) {
+    public void setPresenter(RestaurantListContract.Presenter presenter) {
         this.presenter = presenter;
     }
 
     @Override
-    public void addRecyclerViewItem(ShowedInformation item) {
+    public void addRecyclerViewItem(RestaurantThumbnail item) {
         presenter.setItem(itemList, item);
         adapter.notifyItemInserted(0);
     }
@@ -76,7 +69,6 @@ public class SearchResultActivity extends AppCompatActivity implements SearchRes
         List<Request> initialList = new ArrayList<>();
 
         final Intent intent = getIntent();
-
         for (Requests request : Requests.values()) {
             final String value = intent.getStringExtra(request.toString());
 
@@ -88,7 +80,20 @@ public class SearchResultActivity extends AppCompatActivity implements SearchRes
         return initialList;
     }
 
+    private void prepareRecyclerView() {
+        adapter = new RestaurantListAdapter(itemList);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(adapter);
+        RecyclerView.ItemDecoration itemDecoration =
+                new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        recyclerView.addItemDecoration(itemDecoration);
+    }
+
     private void findViews() {
-        this.recyclerView = findViewById(R.id.search_result_recyclerview);
+        this.recyclerView = findViewById(R.id.restaurant_list_recyclerview);
     }
 }
