@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                              xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools"
                                              android:layout_width="match_parent"
                                              android:layout_height="match_parent" android:orientation="vertical"
-                                             android:id="@+id/constraintLayout3">
+>
     <android.support.constraint.ConstraintLayout
             android:layout_width="411dp"
             android:layout_height="275dp" android:layout_weight="1"
@@ -12,9 +13,9 @@
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent">
 
         <TextView
-                android:text="@string/restName"
+                android:text="@string/rest_name"
                 android:layout_width="0dp"
-                android:layout_height="38dp" android:id="@+id/RestNameTextView" android:layout_weight="1"
+                android:layout_height="38dp" android:id="@+id/restaurant_detail_name" android:layout_weight="1"
                 android:textSize="18sp" android:textStyle="italic" android:textAlignment="center"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
@@ -22,12 +23,12 @@
                 android:layout_marginEnd="8dp"/>
         <ImageView
                 android:layout_width="321dp"
-                android:layout_height="223dp" app:srcCompat="?attr/actionBarDivider" android:id="@+id/imageView"
+                android:layout_height="223dp" app:srcCompat="?attr/actionBarDivider" android:id="@+id/restaurant_item_image"
                 android:layout_weight="1"
                 android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/RestNameTextView"
-                app:layout_constraintEnd_toEndOf="@+id/RestNameTextView" android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/RestNameTextView"/>
+                app:layout_constraintStart_toStartOf="@+id/restaurant_detail_name"
+                app:layout_constraintEnd_toEndOf="@+id/restaurant_detail_name" android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/restaurant_detail_name"/>
     </android.support.constraint.ConstraintLayout>
     <android.support.constraint.ConstraintLayout
             android:layout_width="0dp"
@@ -45,9 +46,9 @@
                 app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
-                android:id="@+id/linearLayout5">
+                android:id="@+id/linearLayout5" android:layout_marginStart="8dp" android:layout_marginEnd="8dp">
             <TextView
-                    android:layout_height="wrap_content" android:id="@+id/telTagTextView"
+                    android:layout_height="wrap_content" android:id="@+id/restaurant_detail_telephone_tag"
                     app:layout_constraintTop_toTopOf="parent"
                     android:layout_width="wrap_content"
                     android:text="@string/tel"
@@ -58,13 +59,15 @@
                     app:layout_constraintVertical_bias="0.0"/>
             <TextView
                     android:text="@string/tel"
-                    android:layout_height="match_parent" android:id="@+id/telTextView" android:layout_weight="1"
+                    android:layout_height="match_parent" android:id="@+id/restaurant_detail_telphone"
+                    android:layout_weight="1"
                     android:textSize="12sp" android:textAlignment="center"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_width="0dp"
-                    app:layout_constraintStart_toEndOf="@+id/telTagTextView"
+                    app:layout_constraintStart_toEndOf="@+id/restaurant_detail_open_time_tag"
                     app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="8dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/telTagTextView" android:layout_margin="0dp"/>
+                    app:layout_constraintBottom_toBottomOf="@+id/restaurant_detail_open_time_tag"
+                    android:layout_margin="0dp"/>
         </LinearLayout>
         <LinearLayout
                 android:orientation="horizontal"
@@ -73,26 +76,31 @@
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
                 app:layout_constraintStart_toStartOf="@+id/linearLayout5"
                 app:layout_constraintEnd_toEndOf="@+id/linearLayout5"
-                android:layout_marginTop="8dp" android:id="@+id/linearLayout">
+                android:layout_marginTop="8dp" android:id="@+id/linearLayout" android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp">
             <TextView
                     android:text="@string/address"
-                    android:id="@+id/addressTagTextView"
+                    android:id="@+id/restaurant_detail_address_tag"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:layout_width="wrap_content"
                     app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
-                    app:layout_constraintEnd_toEndOf="@+id/telTagTextView" android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toEndOf="@+id/restaurant_detail_open_time_tag"
+                    android:layout_marginEnd="8dp"
                     android:layout_margin="0dp"/>
             <TextView
                     android:text="@string/address"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent" android:id="@+id/addressTextView" android:layout_weight="1"
+                    android:layout_height="match_parent" android:id="@+id/restaurant_detail_address"
+                    android:layout_weight="1"
                     android:textSize="12sp" android:textAlignment="center"
                     app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginEnd="8dp" app:layout_constraintStart_toEndOf="@+id/addressTagTextView"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintStart_toEndOf="@+id/restaurant_detail_address_tag"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/telTextView"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintTop_toBottomOf="@+id/restaurant_detail_open_time"
                     android:layout_margin="0dp"/>
         </LinearLayout>
         <LinearLayout
@@ -100,18 +108,50 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-                app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintVertical_bias="0.0"
                 app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="8dp">
+                android:layout_marginTop="8dp" android:id="@+id/linearLayout2" android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp">
             <TextView
                     android:text="@string/access"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:id="@+id/accessTagTextView" android:layout_weight="1"
+                    android:layout_height="wrap_content" android:id="@+id/restaurant_detail_access_tag"
+                    android:layout_weight="1"
             />
             <TextView
                     android:text="@string/access"
-                    android:layout_height="match_parent" android:id="@+id/accessTextView" android:layout_weight="1"
+                    android:layout_height="match_parent" android:id="@+id/restaurant_detail_access"
+                    android:layout_weight="1"
                     android:layout_width="match_parent" android:textAlignment="center"/>
+        </LinearLayout>
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout2" app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="8dp">
+            <TextView
+                    android:layout_height="wrap_content" android:id="@+id/restaurant_detail_open_time_tag"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_width="wrap_content"
+                    android:text="@string/open_time"
+                    app:layout_constraintVertical_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginTop="0dp" android:layout_marginStart="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="0dp"
+                    app:layout_constraintVertical_bias="0.0"/>
+            <TextView
+                    android:text="@string/open_time"
+                    android:layout_height="wrap_content" android:id="@+id/restaurant_detail_open_time"
+                    android:layout_weight="1"
+                    android:textSize="12sp" android:textAlignment="center"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_width="0dp"
+                    app:layout_constraintStart_toEndOf="@+id/restaurant_detail_open_time_tag"
+                    app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/restaurant_detail_open_time_tag"
+                    android:layout_margin="0dp"/>
         </LinearLayout>
     </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>
