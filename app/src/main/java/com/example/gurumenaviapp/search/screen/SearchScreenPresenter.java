@@ -12,19 +12,19 @@ import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import com.example.gurumenaviapp.data.GuruNaviUrl;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import com.example.gurumenaviapp.R;
 import com.example.gurumenaviapp.data.request.Request;
 import com.example.gurumenaviapp.gps.LocationListener;
 import com.example.gurumenaviapp.gps.data.LocationData;
-import com.example.gurumenaviapp.search.result.SearchResultActivity;
+import com.example.gurumenaviapp.search.candidate.RestaurantListActivity;
 import com.example.gurumenaviapp.util.Toaster;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static com.example.gurumenaviapp.data.request.Requests.*;
+import static com.example.gurumenaviapp.util.GurumeNaviUtil.createUrlForGurumeNavi;
 
 public class SearchScreenPresenter implements SearchScreenContract.Presenter {
     private final int REQUEST_PERMISSION = 1000;
@@ -35,9 +35,15 @@ public class SearchScreenPresenter implements SearchScreenContract.Presenter {
     private Context context;
     private SearchScreenContract.View view;
 
+    private Map<Integer, Integer> idRangeMap;
+    private List<RadioButton> radioButtonList;
+
     SearchScreenPresenter(Context context, SearchScreenContract.View view) {
         this.context = context;
         this.view = view;
+
+        idRangeMap = initialIdRangeMap();
+        radioButtonList = initialRadioButtonList();
     }
 
     @Override
@@ -64,16 +70,16 @@ public class SearchScreenPresenter implements SearchScreenContract.Presenter {
     }
 
     @Override
-    public void searchRestaurant(String token) {
-        List<Request> requestList = generateRequests(token);
+    public void searchRestaurant() {
+        List<Request> requestList = generateRequests();
 
-        Intent searchResult = new Intent(context, SearchResultActivity.class);
+        Intent restaurantCandidate = new Intent(context, RestaurantListActivity.class);
         if (requestList != null) {
             for (Request request : requestList) {
-                searchResult.putExtra(request.getName(), request.getContent());
+                restaurantCandidate.putExtra(request.getName(), request.getContent());
             }
 
-            view.getViewActivity().startActivity(searchResult);
+            view.getViewActivity().startActivity(restaurantCandidate);
         }
     }
 
@@ -118,6 +124,11 @@ public class SearchScreenPresenter implements SearchScreenContract.Presenter {
         System.out.println(stringBuilder);
     }
 
+    @Override
+    public void OnCheckedChange(RadioGroup group, int checkedId) {
+
+    }
+
     private void updateLocation(double latitude, double longitude) {
         if (locationData == null) {
             locationData = new LocationData(latitude, longitude);
@@ -130,26 +141,17 @@ public class SearchScreenPresenter implements SearchScreenContract.Presenter {
         System.out.println("longitude: " + locationData.getLongitude());
     }
 
-    private URL createGuruNaviUrl(String token, List<Request> requestList) {
-        GuruNaviUrl guruNaviUrl = new GuruNaviUrl(token);
-
-        for (Request request : requestList) {
-            guruNaviUrl.addRequest(request);
-        }
-
-        return guruNaviUrl.buildUrl();
-    }
-
-    private List<Request> generateRequests(String token) {
+    private List<Request> generateRequests() {
         if (locationData != null) {
 
             List<Request> requestList = new ArrayList<>(Arrays.asList(
-                    new Request(keyid, token),
                     new Request(latitude, locationData.getLatitude()),
-                    new Request(longitude, locationData.getLongitude())
+                    new Request(longitude, locationData.getLongitude()),
+                    new Request(range, loadRange()),
+                    new Request(hit_per_page, 30)
             ));
 
-            System.out.println(createGuruNaviUrl(token, requestList).toString());
+            System.out.println(createUrlForGurumeNavi(requestList).toString());
 
             return requestList;
         } else {
@@ -157,6 +159,14 @@ public class SearchScreenPresenter implements SearchScreenContract.Presenter {
 
             return null;
         }
+    }
+
+    private Integer loadRange() {
+        for (RadioButton radioButton : radioButtonList) {
+            if (radioButton.isChecked()) return idRangeMap.get(radioButton.getId());
+        }
+
+        return idRangeMap.get(R.id.search_screen_range_radio_button_2);
     }
 
     private void checkState(LocationManager manager, android.location.LocationListener listener) {
@@ -210,5 +220,24 @@ public class SearchScreenPresenter implements SearchScreenContract.Presenter {
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION,},
                     REQUEST_PERMISSION);
         }
+    }
+
+    private Map<Integer, Integer> initialIdRangeMap() {
+        return new HashMap<Integer, Integer>() {{
+            put(R.id.search_screen_range_radio_button_1, 1);
+            put(R.id.search_screen_range_radio_button_2, 2);
+            put(R.id.search_screen_range_radio_button_3, 3);
+            put(R.id.search_screen_range_radio_button_4, 4);
+            put(R.id.search_screen_range_radio_button_5, 5);
+        }};
+    }
+
+    private List<RadioButton> initialRadioButtonList() {
+        List<RadioButton> radioButtonList = new ArrayList<>();
+        for (Map.Entry<Integer, Integer> entry : idRangeMap.entrySet()) {
+            radioButtonList.add((RadioButton) view.getViewActivity().findViewById(entry.getKey()));
+        }
+
+        return radioButtonList;
     }
 }
