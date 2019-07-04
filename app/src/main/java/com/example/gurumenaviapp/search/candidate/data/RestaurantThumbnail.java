@@ -26,7 +26,7 @@ public class RestaurantThumbnail {
         try {
             this.image = BitmapFactory.decodeStream(new URL(restaurant.getImageUrl().getShopImage()).openStream());
         } catch (IOException e) {
-            System.out.println(e);
+            this.image = null;
         }
 
         this.restaurantId = restaurant.getId();

@@ -30,6 +30,7 @@ public class RestaurantDetail {
         try {
             this.image = BitmapFactory.decodeStream(new URL(restaurant.getImageUrl().getShopImage()).openStream());
         } catch (IOException e) {
+            this.image = null;
             System.out.println(e);
         }
     }
