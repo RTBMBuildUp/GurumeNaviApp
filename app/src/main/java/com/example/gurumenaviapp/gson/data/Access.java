@@ -63,7 +63,8 @@ public class Access {
     }
 
     public String showUserAround() {
-        return this.getLine() + this.getStation() + this.getWalk() + "分";
+        String accessString = this.getLine() + this.getStation() + this.getWalk();
+        return accessString.equals("") ? "" : accessString + "分";
     }
 
 }

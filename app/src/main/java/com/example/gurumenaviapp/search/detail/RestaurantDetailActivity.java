@@ -1,6 +1,8 @@
 package com.example.gurumenaviapp.search.detail;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -46,6 +48,7 @@ public class RestaurantDetailActivity extends AppCompatActivity implements Resta
     @Override
     public void setDetail(RestaurantDetail detail) {
         final String notFound = getResources().getString(R.string.not_found);
+        final Bitmap notFoundImage = BitmapFactory.decodeResource(getResources(), R.drawable.default_not_found);
 
         this.name.setText(Optional.of(detail.getName()).getOrElse(notFound));
         this.tel.setText(Optional.of(detail.getTel()).getOrElse(notFound));
@@ -53,7 +56,7 @@ public class RestaurantDetailActivity extends AppCompatActivity implements Resta
         this.access.setText(Optional.of(detail.getAccess().showUserAround()).getOrElse(notFound));
         this.openTime.setText(Optional.of(detail.getOpenTime()).getOrElse(notFound));
 
-        this.imageView.setImageBitmap(detail.getImage());
+        this.imageView.setImageBitmap(Optional.of(detail.getImage()).getOrElse(notFoundImage));
     }
 
     private void findViews() {

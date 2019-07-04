@@ -81,6 +81,7 @@ public class SearchScreenPresenter implements SearchScreenContract.Presenter {
 
             view.getViewActivity().startActivity(restaurantCandidate);
         }
+
     }
 
     @Override
@@ -148,7 +149,7 @@ public class SearchScreenPresenter implements SearchScreenContract.Presenter {
                     new Request(latitude, locationData.getLatitude()),
                     new Request(longitude, locationData.getLongitude()),
                     new Request(range, loadRange()),
-                    new Request(hit_per_page, 30)
+                    new Request(hit_per_page, 15)
             ));
 
             System.out.println(createUrlForGurumeNavi(requestList).toString());

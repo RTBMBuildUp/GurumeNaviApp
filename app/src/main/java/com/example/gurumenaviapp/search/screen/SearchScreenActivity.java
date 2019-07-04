@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import com.example.gurumenaviapp.R;
 
@@ -27,7 +26,6 @@ public class SearchScreenActivity extends AppCompatActivity implements SearchScr
 
         presenter = new SearchScreenPresenter(this, this);
 
-        // Android 6, API 23以上でパーミッシンの確認
         if (Build.VERSION.SDK_INT >= 23) {
             presenter.checkPermission();
         } else {

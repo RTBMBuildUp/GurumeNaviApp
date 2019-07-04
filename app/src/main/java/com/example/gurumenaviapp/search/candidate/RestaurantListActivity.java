@@ -2,6 +2,7 @@ package com.example.gurumenaviapp.search.candidate;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -91,6 +92,14 @@ public class RestaurantListActivity extends AppCompatActivity implements Restaur
         RecyclerView.ItemDecoration itemDecoration =
                 new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(itemDecoration);
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                presenter.onScrolled(recyclerView, requestList, itemList.size());
+            }
+        });
     }
 
     private void findViews() {

@@ -1,7 +1,11 @@
 
 package com.example.gurumenaviapp.gson.data;
 
+import android.content.ContentResolver;
+import android.content.res.Resources;
+import android.net.Uri;
 import android.support.annotation.Nullable;
+import com.example.gurumenaviapp.R;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -65,7 +69,7 @@ public class ImageUrl {
             try {
                 new URL(shopImage2);
             } catch (MalformedURLException error) {
-                return "https://rr.img.naver.jp/mig?src=http%3A%2F%2Fblog-imgs-21.fc2.com%2Fq%2Fr%2Fe%2Fqreia%2F3d38c4a1.jpg&twidth=1200&theight=1200&qlt=80&res_format=jpg&op=r";
+                return null;
             }
 
             return shopImage2;
