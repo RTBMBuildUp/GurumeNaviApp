@@ -3,6 +3,8 @@ package com.example.gurumenaviapp.search.candidate.recyclerview;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -57,9 +59,12 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantViewHo
     public void onBindViewHolder(@NonNull RestaurantViewHolder restaurantViewHolder, int position) {
         final Resources resources = view.getResources();
         final String notFound = resources.getString(R.string.not_found);
+        final Bitmap notFountImage = BitmapFactory.decodeResource(
+                view.getResources(), R.drawable.default_not_found
+        );
 
         final RestaurantThumbnail result = restaurantThumbnailList.get(position);
-        final Access access = result.getAccess();
+        final Access access = Optional.of(result.getAccess()).getOrElse(new Access());
 
         restaurantViewHolder.name.setText(
                 Optional.of(result.getName()).getOrElse(notFound)
@@ -70,7 +75,7 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantViewHo
         );
 
         restaurantViewHolder.imageView.setImageBitmap(
-                result.getImage()
+                Optional.of(result.getImage()).getOrElse(notFountImage)
         );
     }
 
