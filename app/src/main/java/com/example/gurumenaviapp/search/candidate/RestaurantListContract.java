@@ -3,7 +3,7 @@ package com.example.gurumenaviapp.search.candidate;
 import android.support.v7.widget.RecyclerView;
 import com.example.gurumenaviapp.BasePresenter;
 import com.example.gurumenaviapp.BaseView;
-import com.example.gurumenaviapp.data.request.Request;
+import com.example.gurumenaviapp.data.request.RequestMap;
 import com.example.gurumenaviapp.search.candidate.data.RestaurantThumbnail;
 
 import java.util.List;
@@ -24,8 +24,8 @@ public interface RestaurantListContract {
 
         void cleanItem(List<RestaurantThumbnail> itemList);
 
-        void searchWithRequest(List<Request> requestList);
+        void search(RequestMap requestMap);
 
-        void onScrolled(RecyclerView recyclerView, List<Request> requestList, int itemCount);
+        void onScrolled(RecyclerView recyclerView, RequestMap requestMap, int itemCount);
     }
 }

@@ -5,8 +5,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import com.example.gurumenaviapp.data.request.Request;
-import com.example.gurumenaviapp.data.request.Requests;
+import com.example.gurumenaviapp.data.request.RequestIds;
+import com.example.gurumenaviapp.data.request.RequestMap;
 import com.example.gurumenaviapp.gson.data.GurumeNavi;
 import com.example.gurumenaviapp.gson.data.Rest;
 import com.example.gurumenaviapp.search.candidate.data.RestaurantThumbnail;
@@ -15,9 +15,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
-import static com.example.gurumenaviapp.data.request.Requests.hit_per_page;
-import static com.example.gurumenaviapp.data.request.Requests.offset_page;
+import static com.example.gurumenaviapp.data.request.Request.makeRequest;
+import static com.example.gurumenaviapp.data.request.RequestIds.hit_per_page;
+import static com.example.gurumenaviapp.data.request.RequestIds.offset_page;
 import static com.example.gurumenaviapp.util.GurumeNaviUtil.createUrlForGurumeNavi;
 import static com.example.gurumenaviapp.util.GurumeNaviUtil.parseGurumeNaviJson;
 
@@ -31,8 +33,8 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
     }
 
     @Override
-    public void searchWithRequest(List<Request> requestList) {
-        final URL url = createUrlForGurumeNavi(requestList);
+    public void search(RequestMap requestMap) {
+        final URL url = createUrlForGurumeNavi(requestMap);
 
         new ShowThumbnailTask().execute(url.toString());
     }
@@ -69,33 +71,22 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
     }
 
     @Override
-    public void onScrolled(RecyclerView recyclerView, List<Request> requests, int itemCount) {
+    public void onScrolled(RecyclerView recyclerView, RequestMap requestMap, int itemCount) {
         if (!recyclerView.canScrollVertically(1)) {
-            String hitPerPage = "0";
-            int offset = 1;
-
-            //filter
-            List<Request> requestList = new ArrayList<>();
-            for (Request request : requests) {
-                if (!offset_page.toString().equals(request.getName())) {
-                    requestList.add(request);
-                }
-
-                if (hit_per_page.toString().equals(request.getName())) {
-                    hitPerPage = request.getContent();
-                }
-            }
-
             try {
-                offset = itemCount / Integer.parseInt(hitPerPage) + 1 + (itemCount % Integer.parseInt(hitPerPage) != 0 ? 1 : 0);
-                requestList.add(new Request(offset_page, offset));
-                for (Request request : requestList) {
-                    System.out.println(request.getName() + request.getContent());
+                int hitPerPage = Integer.parseInt(requestMap.getOrElse(hit_per_page, "0"));
+                int offset = itemCount / hitPerPage + (itemCount % hitPerPage == 0 ? 0 : 1) + 1;
+                RequestMap newRequestMap = new RequestMap();
+
+                //filter
+                newRequestMap.put(makeRequest(offset_page, offset));
+                for (Map.Entry<RequestIds, String> entry : requestMap.entrySet()) {
+                    if (entry.getKey() == offset_page) newRequestMap.put(makeRequest(entry.getKey(), entry.getValue()));
                 }
 
-                searchWithRequest(requestList);
+                search(newRequestMap);
             } catch (ArithmeticException e) {
-                Log.d("error", "onScrolled: " + e);
+                System.out.println(e);
             }
         }
     }
@@ -140,9 +131,9 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
         }
     }
 
-    private List<Requests> filter(Requests[] requests, Function<Requests, Boolean> lambda) {
-        List<Requests> result = new ArrayList<>();
-        for (Requests request : requests) {
+    private List<RequestIds> filter(RequestIds[] requests, Function<RequestIds, Boolean> lambda) {
+        List<RequestIds> result = new ArrayList<>();
+        for (RequestIds request : requests) {
             if (lambda.apply(request)) result.add(request);
         }
 

@@ -2,8 +2,8 @@ package com.example.gurumenaviapp.search.detail;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import com.example.gurumenaviapp.data.request.Request;
-import com.example.gurumenaviapp.data.request.Requests;
+import com.example.gurumenaviapp.data.request.RequestIds;
+import com.example.gurumenaviapp.data.request.RequestMap;
 import com.example.gurumenaviapp.gson.data.GurumeNavi;
 import com.example.gurumenaviapp.gson.data.Rest;
 import com.example.gurumenaviapp.search.detail.data.RestaurantDetail;
@@ -12,6 +12,7 @@ import com.example.gurumenaviapp.util.GurumeNaviUtil;
 import java.net.URL;
 import java.util.Arrays;
 
+import static com.example.gurumenaviapp.data.request.Request.makeRequest;
 import static com.example.gurumenaviapp.util.GurumeNaviUtil.createUrlForGurumeNavi;
 
 public class RestaurantDetailPresenter implements RestaurantDetailContract.Presenter {
@@ -50,7 +51,8 @@ public class RestaurantDetailPresenter implements RestaurantDetailContract.Prese
 
     @Override
     public void searchDetail(String restaurantId) {
-        URL url = createUrlForGurumeNavi(Arrays.asList(new Request(Requests.id, restaurantId)));
+        URL url = createUrlForGurumeNavi(new RequestMap(Arrays.asList(makeRequest(RequestIds.id, restaurantId))));
+
         new ShowDetailTask().execute(url.toString());
     }
 

@@ -16,6 +16,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import com.example.gurumenaviapp.R;
 import com.example.gurumenaviapp.data.request.Request;
+import com.example.gurumenaviapp.data.request.RequestIds;
+import com.example.gurumenaviapp.data.request.RequestMap;
 import com.example.gurumenaviapp.gps.LocationListener;
 import com.example.gurumenaviapp.gps.data.LocationData;
 import com.example.gurumenaviapp.search.candidate.RestaurantListActivity;
@@ -23,7 +25,8 @@ import com.example.gurumenaviapp.util.Toaster;
 
 import java.util.*;
 
-import static com.example.gurumenaviapp.data.request.Requests.*;
+import static com.example.gurumenaviapp.data.request.Request.makeRequest;
+import static com.example.gurumenaviapp.data.request.RequestIds.*;
 import static com.example.gurumenaviapp.util.GurumeNaviUtil.createUrlForGurumeNavi;
 
 public class SearchScreenPresenter implements SearchScreenContract.Presenter {
@@ -71,17 +74,16 @@ public class SearchScreenPresenter implements SearchScreenContract.Presenter {
 
     @Override
     public void searchRestaurant() {
-        List<Request> requestList = generateRequests();
+        RequestMap requestMap = generateRequestMap();
 
         Intent restaurantCandidate = new Intent(context, RestaurantListActivity.class);
-        if (requestList != null) {
-            for (Request request : requestList) {
-                restaurantCandidate.putExtra(request.getName(), request.getContent());
+        if (requestMap != null) {
+            for (Map.Entry<RequestIds, String> entry : requestMap.entrySet()) {
+                restaurantCandidate.putExtra(entry.getKey().toString(), entry.getValue());
             }
 
             view.getViewActivity().startActivity(restaurantCandidate);
         }
-
     }
 
     @Override
@@ -142,19 +144,19 @@ public class SearchScreenPresenter implements SearchScreenContract.Presenter {
         System.out.println("longitude: " + locationData.getLongitude());
     }
 
-    private List<Request> generateRequests() {
+    private RequestMap generateRequestMap() {
         if (locationData != null) {
 
             List<Request> requestList = new ArrayList<>(Arrays.asList(
-                    new Request(latitude, locationData.getLatitude()),
-                    new Request(longitude, locationData.getLongitude()),
-                    new Request(range, loadRange()),
-                    new Request(hit_per_page, 15)
+                    makeRequest(latitude, locationData.getLatitude()),
+                    makeRequest(longitude, locationData.getLongitude()),
+                    makeRequest(range, loadRange()),
+                    makeRequest(hit_per_page, 15)
             ));
 
-            System.out.println(createUrlForGurumeNavi(requestList).toString());
+            System.out.println(createUrlForGurumeNavi(new RequestMap(requestList)).toString());
 
-            return requestList;
+            return new RequestMap(requestList);
         } else {
             Toaster.toast(context, "現在地を取得できません。");
 

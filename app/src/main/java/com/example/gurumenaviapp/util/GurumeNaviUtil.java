@@ -3,6 +3,8 @@ package com.example.gurumenaviapp.util;
 import android.text.TextUtils;
 import android.util.Log;
 import com.example.gurumenaviapp.data.request.Request;
+import com.example.gurumenaviapp.data.request.RequestIds;
+import com.example.gurumenaviapp.data.request.RequestMap;
 import com.example.gurumenaviapp.gson.data.GurumeNavi;
 import com.example.gurumenaviapp.gson.typeadapter.IntegerTypeAdapter;
 import com.google.gson.GsonBuilder;
@@ -15,8 +17,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import static com.example.gurumenaviapp.data.request.Requests.keyid;
+import static com.example.gurumenaviapp.data.request.Request.makeRequest;
+import static com.example.gurumenaviapp.data.request.RequestIds.keyid;
 import static com.example.gurumenaviapp.data.request.Sign.And;
 import static com.example.gurumenaviapp.data.request.Sign.Question;
 
@@ -41,11 +45,11 @@ public class GurumeNaviUtil {
         return null;
     }
 
-    public static URL createUrlForGurumeNavi(List<Request> requestList) {
+    public static URL createUrlForGurumeNavi(RequestMap requestMap) {
         GurumeNaviUrl gurumeNaviUrl = new GurumeNaviUrl();
 
-        for (Request request : requestList) {
-            gurumeNaviUrl.addRequest(request);
+        for (Map.Entry<RequestIds, String> entry : requestMap.entrySet()) {
+            gurumeNaviUrl.addRequest(makeRequest(entry.getKey(), entry.getValue()));
         }
 
         return gurumeNaviUrl.buildUrl();
@@ -57,20 +61,20 @@ public class GurumeNaviUtil {
 
         private List<Request> requestList;
 
-        public GurumeNaviUrl() {
+        GurumeNaviUrl() {
             this.host = "https://api.gnavi.co.jp/RestSearchAPI/v3/";
 
-            this.requestKeyid = new Request(keyid, token);
+            this.requestKeyid = makeRequest(keyid, token);
             this.requestList = new ArrayList<>();
 
             this.requestList.add(requestKeyid);
         }
 
-        public void addRequest(Request request) {
+        void addRequest(Request request) {
             requestList.add(request);
         }
 
-        public URL buildUrl() {
+        URL buildUrl() {
             try {
                 final String requests = makeRequests();
                 final String rawStringUrl = this.host + Question + requests;
