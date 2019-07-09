@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RadioGroup;
 import com.example.gurumenaviapp.R;
+import com.oxymoron.util.Toaster;
 
 import java.util.Map;
 
@@ -62,5 +63,10 @@ public class SearchScreenActivity extends AppCompatActivity implements SearchScr
     @Override
     public Activity getViewActivity() {
         return this;
+    }
+
+    @Override
+    public void toast(String message) {
+        Toaster.toast(this, message);
     }
 }

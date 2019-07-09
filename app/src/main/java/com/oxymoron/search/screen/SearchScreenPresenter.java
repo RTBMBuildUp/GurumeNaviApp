@@ -15,13 +15,12 @@ import android.util.Log;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import com.example.gurumenaviapp.R;
+import com.oxymoron.gps.LocationListener;
+import com.oxymoron.gps.data.LocationData;
 import com.oxymoron.request.Request;
 import com.oxymoron.request.RequestIds;
 import com.oxymoron.request.RequestMap;
-import com.oxymoron.gps.LocationListener;
-import com.oxymoron.gps.data.LocationData;
 import com.oxymoron.search.candidate.RestaurantListActivity;
-import com.oxymoron.util.Toaster;
 
 import java.util.*;
 
@@ -82,7 +81,7 @@ public class SearchScreenPresenter implements SearchScreenContract.Presenter {
                 restaurantCandidate.putExtra(entry.getKey().toString(), entry.getValue());
             }
 
-            view.getViewActivity().startActivity(restaurantCandidate);
+            view.startActivity(restaurantCandidate);
         }
     }
 
@@ -94,7 +93,7 @@ public class SearchScreenPresenter implements SearchScreenContract.Presenter {
         this.updateLocation(latitude, longitude);
         System.out.println("change the location");
 
-        Toaster.toast(context, "現在地が更新されました。");
+        view.toast("現在地が更新されました。");
     }
 
     @Override
@@ -114,6 +113,7 @@ public class SearchScreenPresenter implements SearchScreenContract.Presenter {
                 break;
         }
     }
+
 
     @Override
     public void onProviderEnabled(StringBuilder stringBuilder, String provider) {
@@ -158,7 +158,7 @@ public class SearchScreenPresenter implements SearchScreenContract.Presenter {
 
             return new RequestMap(requestList);
         } else {
-            Toaster.toast(context, "現在地を取得できません。");
+            view.toast("現在地を取得できません。");
 
             return null;
         }
@@ -197,7 +197,7 @@ public class SearchScreenPresenter implements SearchScreenContract.Presenter {
         } catch (Exception e) {
             e.printStackTrace();
 
-            Toaster.toast(context, "例外: 位置情報の権限を与えていますか？");
+            view.toast("例外: 位置情報の権限を与えていますか？");
         }
     }
 
@@ -216,8 +216,7 @@ public class SearchScreenPresenter implements SearchScreenContract.Presenter {
                     REQUEST_PERMISSION);
 
         } else {
-            Toaster.toast(context,
-                    "許可されないとアプリが実行できません");
+            view.toast("許可されないとアプリが実行できません");
 
             ActivityCompat.requestPermissions(activity,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION,},
