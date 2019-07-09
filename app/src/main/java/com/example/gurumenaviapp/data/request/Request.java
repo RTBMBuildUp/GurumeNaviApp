@@ -3,16 +3,20 @@ package com.example.gurumenaviapp.data.request;
 import static com.example.gurumenaviapp.data.request.Sign.Equal;
 
 public class Request {
-    private Requests requests;
+    private RequestIds requestIds;
     private String content;
 
-    public Request(Requests requests, Object content) {
-        this.requests = requests;
+    public static Request makeRequest(RequestIds requests, Object content) {
+        return new Request(requests, content);
+    }
+
+    private Request(RequestIds requestIds, Object content) {
+        this.requestIds = requestIds;
         this.content = content.toString();
     }
 
     public String getName() {
-        return this.requests.toString();
+        return this.requestIds.toString();
     }
 
     public String getContent() {
@@ -20,6 +24,6 @@ public class Request {
     }
 
     public String toStringForUrl() {
-        return this.requests + Equal.toString() + this.content;
+        return this.requestIds + Equal.toString() + this.content;
     }
 }

@@ -9,15 +9,16 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import com.example.gurumenaviapp.R;
-import com.example.gurumenaviapp.data.request.Request;
-import com.example.gurumenaviapp.data.request.Requests;
+import com.example.gurumenaviapp.data.request.RequestIds;
+import com.example.gurumenaviapp.data.request.RequestMap;
 import com.example.gurumenaviapp.search.candidate.data.RestaurantThumbnail;
 import com.example.gurumenaviapp.search.candidate.recyclerview.RestaurantListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.gurumenaviapp.data.request.Requests.keyid;
+import static com.example.gurumenaviapp.data.request.Request.makeRequest;
+import static com.example.gurumenaviapp.data.request.RequestIds.keyid;
 
 public class RestaurantListActivity extends AppCompatActivity implements RestaurantListContract.View {
     private RestaurantListContract.Presenter presenter;
@@ -26,22 +27,20 @@ public class RestaurantListActivity extends AppCompatActivity implements Restaur
     private RestaurantListAdapter adapter;
     private List<RestaurantThumbnail> itemList = new ArrayList<>();
 
-    private List<Request> requestList;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.restaurant_list);
         findViews();
 
-        requestList = initialRequestList();
+        RequestMap requestMap = initialRequestMap();
 
-        prepareRecyclerView();
+        prepareRecyclerView(requestMap);
 
         presenter = new RestaurantListPresenter(this, this);
 
         String token = getIntent().getStringExtra(keyid.toString());
-        presenter.searchWithRequest(requestList);
+        presenter.search(requestMap);
     }
 
     @Override
@@ -51,7 +50,7 @@ public class RestaurantListActivity extends AppCompatActivity implements Restaur
 
     @Override
     public void addRecyclerViewItem(RestaurantThumbnail item) {
-            presenter.setItem(itemList, item);
+        presenter.setItem(itemList, item);
         adapter.notifyItemInserted(itemList.size());
     }
 
@@ -66,22 +65,22 @@ public class RestaurantListActivity extends AppCompatActivity implements Restaur
         presenter.cleanItem(itemList);
     }
 
-    private List<Request> initialRequestList() {
-        List<Request> initialList = new ArrayList<>();
+    private RequestMap initialRequestMap() {
+        RequestMap result = new RequestMap();
 
         final Intent intent = getIntent();
-        for (Requests request : Requests.values()) {
+        for (RequestIds request : RequestIds.values()) {
             final String value = intent.getStringExtra(request.toString());
 
             if (value != null) {
-                initialList.add(new Request(request, value));
+                result.put(makeRequest(request, value));
             }
         }
 
-        return initialList;
+        return result;
     }
 
-    private void prepareRecyclerView() {
+    private void prepareRecyclerView(final RequestMap requestMap) {
         adapter = new RestaurantListAdapter(itemList);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -97,7 +96,7 @@ public class RestaurantListActivity extends AppCompatActivity implements Restaur
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                presenter.onScrolled(recyclerView, requestList, itemList.size());
+                presenter.onScrolled(recyclerView, requestMap, itemList.size());
             }
         });
     }

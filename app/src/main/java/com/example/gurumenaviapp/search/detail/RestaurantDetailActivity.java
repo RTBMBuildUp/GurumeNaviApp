@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.gurumenaviapp.R;
-import com.example.gurumenaviapp.data.request.Requests;
+import com.example.gurumenaviapp.data.request.RequestIds;
 import com.example.gurumenaviapp.search.detail.data.RestaurantDetail;
 import com.example.gurumenaviapp.util.Optional;
 
@@ -35,7 +35,7 @@ public class RestaurantDetailActivity extends AppCompatActivity implements Resta
         presenter = new RestaurantDetailPresenter(this, this);
 
         Intent intent = getIntent();
-        this.restaurantId = intent.getStringExtra(Requests.id.toString());
+        this.restaurantId = intent.getStringExtra(RequestIds.id.toString());
 
         presenter.searchDetail(this.restaurantId);
     }

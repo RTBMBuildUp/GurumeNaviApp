@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.example.gurumenaviapp.R;
-import com.example.gurumenaviapp.data.request.Requests;
+import com.example.gurumenaviapp.data.request.RequestIds;
 import com.example.gurumenaviapp.gson.data.Access;
 import com.example.gurumenaviapp.search.candidate.data.RestaurantThumbnail;
 import com.example.gurumenaviapp.search.detail.RestaurantDetailActivity;
@@ -47,7 +47,7 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantViewHo
                 Context context = view.getContext();
 
                 Intent intent = new Intent(context, RestaurantDetailActivity.class);
-                intent.putExtra(Requests.id.toString(), restaurantThumbnail.getRestaurantId());
+                intent.putExtra(RequestIds.id.toString(), restaurantThumbnail.getRestaurantId());
                 context.startActivity(intent);
             }
         });
