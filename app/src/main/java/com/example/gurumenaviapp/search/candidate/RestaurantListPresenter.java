@@ -43,7 +43,7 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
             if (itemList != null) {
                 int index = itemList.indexOf(item);
                 if (-1 == index) {
-                    itemList.add(0, item);
+                    itemList.add(item);
                 }
             }
         } catch (IndexOutOfBoundsException e) {
@@ -70,12 +70,12 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
 
     @Override
     public void onScrolled(RecyclerView recyclerView, List<Request> requests, int itemCount) {
-        if (!recyclerView.canScrollVertically(-1)) {
-            List<Request> requestList = new ArrayList<>();
+        if (!recyclerView.canScrollVertically(1)) {
             String hitPerPage = "0";
             int offset = 1;
 
             //filter
+            List<Request> requestList = new ArrayList<>();
             for (Request request : requests) {
                 if (!offset_page.toString().equals(request.getName())) {
                     requestList.add(request);
@@ -87,11 +87,12 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
             }
 
             try {
-                offset = (itemCount + 1) / Integer.parseInt(hitPerPage) + 1;
+                offset = itemCount / Integer.parseInt(hitPerPage) + 1 + (itemCount % Integer.parseInt(hitPerPage) != 0 ? 1 : 0);
                 requestList.add(new Request(offset_page, offset));
                 for (Request request : requestList) {
                     System.out.println(request.getName() + request.getContent());
                 }
+
                 searchWithRequest(requestList);
             } catch (ArithmeticException e) {
                 Log.d("error", "onScrolled: " + e);
