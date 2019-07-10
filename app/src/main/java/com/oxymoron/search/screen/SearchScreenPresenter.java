@@ -29,10 +29,6 @@ import static com.oxymoron.request.RequestIds.*;
 import static com.oxymoron.util.GurumeNaviUtil.createUrlForGurumeNavi;
 
 public class SearchScreenPresenter implements SearchScreenContract.Presenter {
-    private final int REQUEST_PERMISSION = 1000;
-    private final int MinTime = 1000;
-    private final float MinDistance = 50;
-
     private LocationData locationData;
     private Context context;
     private SearchScreenContract.View view;
@@ -68,7 +64,11 @@ public class SearchScreenPresenter implements SearchScreenContract.Presenter {
         LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         LocationListener listener = new LocationListener(this);
 
-        this.checkState(locationManager, listener);
+        if (locationManager != null) {
+            this.checkState(locationManager, listener);
+        }
+
+        view.toast("例外発生: GPSの起動に失敗しました。");
     }
 
     @Override
@@ -174,6 +174,8 @@ public class SearchScreenPresenter implements SearchScreenContract.Presenter {
 
     private void checkState(LocationManager manager, android.location.LocationListener listener) {
         final String provider = LocationManager.NETWORK_PROVIDER;
+        final int MinTime = 1000;
+        final float MinDistance = 50;
         final boolean gpsEnabled
                 = manager.isProviderEnabled(provider);
 
@@ -208,7 +210,9 @@ public class SearchScreenPresenter implements SearchScreenContract.Presenter {
     }
 
     private void requestLocationPermission() {
-        Activity activity = view.getViewActivity();
+        final Activity activity = view.getViewActivity();
+        final int REQUEST_PERMISSION = 1000;
+
         if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
                 Manifest.permission.ACCESS_FINE_LOCATION)) {
             ActivityCompat.requestPermissions(activity,
