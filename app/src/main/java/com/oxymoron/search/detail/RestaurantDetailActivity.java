@@ -24,20 +24,18 @@ public class RestaurantDetailActivity extends AppCompatActivity implements Resta
 
     private ImageView imageView;
 
-    private String restaurantId;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.restaurant_detail);
         findViews();
 
-        presenter = new RestaurantDetailPresenter(this, this);
+        presenter = new RestaurantDetailPresenter(this);
 
         Intent intent = getIntent();
-        this.restaurantId = intent.getStringExtra(RequestIds.id.toString());
+        String restaurantId = intent.getStringExtra(RequestIds.id.toString());
 
-        presenter.searchDetail(this.restaurantId);
+        presenter.searchDetail(restaurantId);
     }
 
     @Override
@@ -46,7 +44,7 @@ public class RestaurantDetailActivity extends AppCompatActivity implements Resta
     }
 
     @Override
-    public void setDetail(RestaurantDetail detail) {
+    public void showDetail(RestaurantDetail detail) {
         final String notFound = getResources().getString(R.string.not_found);
         final Bitmap notFoundImage = BitmapFactory.decodeResource(getResources(), R.drawable.default_not_found);
 

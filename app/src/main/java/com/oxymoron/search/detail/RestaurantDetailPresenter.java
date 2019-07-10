@@ -1,6 +1,5 @@
 package com.oxymoron.search.detail;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import com.oxymoron.request.RequestIds;
 import com.oxymoron.request.RequestMap;
@@ -17,11 +16,9 @@ import static com.oxymoron.util.GurumeNaviUtil.createUrlForGurumeNavi;
 
 public class RestaurantDetailPresenter implements RestaurantDetailContract.Presenter {
     private RestaurantDetailContract.View view;
-    private Context context;
 
-    RestaurantDetailPresenter(RestaurantDetailContract.View view, Context context) {
+    RestaurantDetailPresenter(RestaurantDetailContract.View view) {
         this.view = view;
-        this.context = context;
     }
 
     private class ShowDetailTask extends AsyncTask<String, Void, RestaurantDetail> {
@@ -40,7 +37,7 @@ public class RestaurantDetailPresenter implements RestaurantDetailContract.Prese
 
         @Override
         protected void onPostExecute(RestaurantDetail restaurantDetail) {
-            showDetail(restaurantDetail);
+            setDetail(restaurantDetail);
         }
     }
 
@@ -56,7 +53,7 @@ public class RestaurantDetailPresenter implements RestaurantDetailContract.Prese
         new ShowDetailTask().execute(url.toString());
     }
 
-    private void showDetail(RestaurantDetail detail) {
-        view.setDetail(detail);
+    private void setDetail(RestaurantDetail detail) {
+        view.showDetail(detail);
     }
 }

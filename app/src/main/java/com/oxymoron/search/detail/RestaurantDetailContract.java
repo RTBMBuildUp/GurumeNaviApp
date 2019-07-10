@@ -6,7 +6,7 @@ import com.oxymoron.search.detail.data.RestaurantDetail;
 
 public interface RestaurantDetailContract {
     interface View extends BaseView<Presenter> {
-        void setDetail(RestaurantDetail detail);
+        void showDetail(RestaurantDetail detail);
     }
 
     interface Presenter extends BasePresenter {
