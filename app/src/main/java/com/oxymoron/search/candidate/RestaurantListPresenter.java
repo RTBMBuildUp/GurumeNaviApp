@@ -131,32 +131,4 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
             return restaurantThumbnailList;
         }
     }
-
-    private List<RequestIds> filter(RequestIds[] requests, Function<RequestIds, Boolean> lambda) {
-        List<RequestIds> result = new ArrayList<>();
-        for (RequestIds request : requests) {
-            if (lambda.apply(request)) result.add(request);
-        }
-
-        return result;
-    }
-
-    private <T, R> List<R> map(List<T> list, Function<T, R> factor) {
-        List<R> result = new ArrayList<>();
-
-        for (T value : list)
-            result.add(factor.apply(value));
-
-        return result;
-    }
-
-    private void redrawItem(List<RestaurantThumbnail> restaurantThumbnailList) {
-        cleanItem(restaurantThumbnailList);
-        if (restaurantThumbnailList != null) {
-            for (RestaurantThumbnail result : restaurantThumbnailList) view.addRecyclerViewItem(result);
-        } else {
-            view.addRecyclerViewItem(new RestaurantThumbnail());
-        }
-    }
-
 }

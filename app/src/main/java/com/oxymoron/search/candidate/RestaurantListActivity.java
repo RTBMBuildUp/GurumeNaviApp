@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.oxymoron.request.Request.makeRequest;
-import static com.oxymoron.request.RequestIds.keyid;
+import static com.oxymoron.request.RequestIds.key_id;
 
 public class RestaurantListActivity extends AppCompatActivity implements RestaurantListContract.View {
     private RestaurantListContract.Presenter presenter;
@@ -39,7 +39,7 @@ public class RestaurantListActivity extends AppCompatActivity implements Restaur
 
         presenter = new RestaurantListPresenter(this, this);
 
-        String token = getIntent().getStringExtra(keyid.toString());
+        String token = getIntent().getStringExtra(key_id.toString());
         presenter.search(requestMap);
     }
 
@@ -73,7 +73,7 @@ public class RestaurantListActivity extends AppCompatActivity implements Restaur
             final String value = intent.getStringExtra(request.toString());
 
             if (value != null) {
-                result.put(makeRequest(request, value));
+                result.put(request, value);
             }
         }
 
