@@ -13,7 +13,7 @@ public class Optional<T> {
         return new Optional<T>(value);
     }
 
-    T get() {
+    public T get() {
         if (value != null) {
             return value;
         } else {

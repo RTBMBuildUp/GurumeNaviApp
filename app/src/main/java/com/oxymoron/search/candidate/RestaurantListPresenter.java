@@ -1,14 +1,13 @@
 package com.oxymoron.search.candidate;
 
-import android.arch.core.util.Function;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import com.oxymoron.request.RequestIds;
-import com.oxymoron.request.RequestMap;
 import com.oxymoron.gson.data.GurumeNavi;
 import com.oxymoron.gson.data.Rest;
+import com.oxymoron.request.RequestIds;
+import com.oxymoron.request.RequestMap;
 import com.oxymoron.search.candidate.data.RestaurantThumbnail;
 
 import java.net.URL;
@@ -17,7 +16,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import static com.oxymoron.request.Request.makeRequest;
 import static com.oxymoron.request.RequestIds.hit_per_page;
 import static com.oxymoron.request.RequestIds.offset_page;
 import static com.oxymoron.util.GurumeNaviUtil.createUrlForGurumeNavi;

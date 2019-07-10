@@ -17,7 +17,6 @@ import com.oxymoron.search.candidate.recyclerview.RestaurantListAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.oxymoron.request.Request.makeRequest;
 import static com.oxymoron.request.RequestIds.key_id;
 
 public class RestaurantListActivity extends AppCompatActivity implements RestaurantListContract.View {
