@@ -33,7 +33,7 @@ public class RestaurantDetailActivity extends AppCompatActivity implements Resta
         presenter = new RestaurantDetailPresenter(this);
 
         Intent intent = getIntent();
-        String restaurantId = intent.getStringExtra(RequestIds.id.toString());
+        String restaurantId = intent.getStringExtra(RequestIds.restaurant_id.toString());
 
         presenter.searchDetail(restaurantId);
     }

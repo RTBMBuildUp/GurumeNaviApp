@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.oxymoron.request.Request.makeRequest;
-import static com.oxymoron.request.RequestIds.keyid;
+import static com.oxymoron.request.RequestIds.key_id;
 import static com.oxymoron.request.Sign.And;
 import static com.oxymoron.request.Sign.Question;
 
@@ -49,7 +49,7 @@ public class GurumeNaviUtil {
         GurumeNaviUrl gurumeNaviUrl = new GurumeNaviUrl();
 
         for (Map.Entry<RequestIds, String> entry : requestMap.entrySet()) {
-            gurumeNaviUrl.addRequest(makeRequest(entry.getKey(), entry.getValue()));
+            gurumeNaviUrl.putRequest(makeRequest(entry.getKey(), entry.getValue()));
         }
 
         return gurumeNaviUrl.buildUrl();
@@ -59,24 +59,24 @@ public class GurumeNaviUtil {
         private String host;
         private Request requestKeyid;
 
-        private List<Request> requestList;
+        private RequestMap requestMap;
 
         GurumeNaviUrl() {
             this.host = "https://api.gnavi.co.jp/RestSearchAPI/v3/";
 
-            this.requestKeyid = makeRequest(keyid, token);
-            this.requestList = new ArrayList<>();
+            this.requestKeyid = makeRequest(key_id, token);
+            this.requestMap = new RequestMap();
 
-            this.requestList.add(requestKeyid);
+            this.putRequest(requestKeyid);
         }
 
-        void addRequest(Request request) {
-            requestList.add(request);
+        void putRequest(Request request) {
+            requestMap.put(request.getRequestId(), request.getValue());
         }
 
         URL buildUrl() {
             try {
-                final String requests = makeRequests();
+                final String requests = makeRequestString();
                 final String rawStringUrl = this.host + Question + requests;
 
                 System.out.println(rawStringUrl);
@@ -86,9 +86,10 @@ public class GurumeNaviUtil {
             }
         }
 
-        private String makeRequests() {
+        private String makeRequestString() {
             List<String> stringList = new ArrayList<>();
-            for (Request request : requestList) {
+            for (Map.Entry<RequestIds, String> entry : requestMap.entrySet()) {
+                Request request = makeRequest(entry.getKey(), entry.getValue());
                 stringList.add(request.toStringForUrl());
             }
 

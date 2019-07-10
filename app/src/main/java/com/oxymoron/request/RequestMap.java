@@ -1,5 +1,7 @@
 package com.oxymoron.request;
 
+import com.oxymoron.util.Optional;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,37 +15,31 @@ public class RequestMap {
 
     public RequestMap(List<Request> requestList) {
         for (Request request : requestList) {
-            RequestIds requestIds = RequestIds.valueOf(request.getName());
-            requestMap.put(requestIds, request.getContent());
+            requestMap.put(request.getRequestId(), request.getValue());
         }
     }
 
     public RequestMap(Request... requests) {
         for (Request request : requests) {
-            RequestIds requestIds = RequestIds.valueOf(request.getName());
-            requestMap.put(requestIds, request.getContent());
+            requestMap.put(request.getRequestId(), request.getValue());
         }
     }
 
-    public String put(Request request) {
-        RequestIds requestIds = RequestIds.valueOf(request.getName());
-        return this.put(requestIds, request.getContent());
+    public String put(RequestIds key, String value) {
+        return requestMap.put(key, value);
     }
 
     public String get(RequestIds key) {
         return getOrElse(key, null);
     }
 
-    public String getOrElse(RequestIds key, String content) {
-        String value = requestMap.get(key);
-        return value == null ? content : value;
+    public String getOrElse(RequestIds key, String defaultValue) {
+        Optional<String> optional = Optional.of(requestMap.get(key));
+
+        return optional.getOrElse(defaultValue);
     }
 
     public Set<Map.Entry<RequestIds, String>> entrySet() {
         return requestMap.entrySet();
-    }
-
-    private String put(RequestIds key, String value) {
-        return requestMap.put(key, value);
     }
 }

@@ -47,7 +47,7 @@ public class RestaurantDetailPresenter implements RestaurantDetailContract.Prese
 
     @Override
     public void searchDetail(String restaurantId) {
-        URL url = createUrlForGurumeNavi(new RequestMap(Arrays.asList(makeRequest(RequestIds.id, restaurantId))));
+        URL url = createUrlForGurumeNavi(new RequestMap(Arrays.asList(makeRequest(RequestIds.restaurant_id, restaurantId))));
 
         new ShowDetailTask().execute(url.toString());
     }

@@ -143,16 +143,12 @@ public class SearchScreenPresenter implements SearchScreenContract.Presenter {
     private RequestMap generateRequestMap() {
         if (locationData != null) {
 
-            List<Request> requestList = new ArrayList<>(Arrays.asList(
-                    makeRequest(latitude, locationData.getLatitude()),
-                    makeRequest(longitude, locationData.getLongitude()),
-                    makeRequest(range, loadRange()),
-                    makeRequest(hit_per_page, 15)
+            return new RequestMap(Arrays.asList(
+                    makeRequest(latitude, locationData.getLatitude().toString()),
+                    makeRequest(longitude, locationData.getLongitude().toString()),
+                    makeRequest(range, loadRange().toString()),
+                    makeRequest(hit_per_page, Integer.toString(15))
             ));
-
-            System.out.println(createUrlForGurumeNavi(new RequestMap(requestList)).toString());
-
-            return new RequestMap(requestList);
         } else {
             view.toast("現在地を取得できません。");
 

@@ -72,16 +72,17 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
 
     @Override
     public void onScrolled(RecyclerView recyclerView, RequestMap requestMap, int itemCount) {
-        if (!recyclerView.canScrollVertically(1)) {
+        final int bottom = 1;
+        if (!recyclerView.canScrollVertically(bottom)) {
             try {
                 int hitPerPage = Integer.parseInt(requestMap.getOrElse(hit_per_page, "0"));
                 int offset = itemCount / hitPerPage + (itemCount % hitPerPage == 0 ? 0 : 1) + 1;
                 RequestMap newRequestMap = new RequestMap();
 
                 //filter
-                newRequestMap.put(makeRequest(offset_page, offset));
+                newRequestMap.put(offset_page, Integer.toString(offset));
                 for (Map.Entry<RequestIds, String> entry : requestMap.entrySet()) {
-                    if (entry.getKey() == offset_page) newRequestMap.put(makeRequest(entry.getKey(), entry.getValue()));
+                    if (entry.getKey() != offset_page) newRequestMap.put(entry.getKey(), entry.getValue());
                 }
 
                 search(newRequestMap);

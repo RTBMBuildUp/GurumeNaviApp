@@ -3,27 +3,27 @@ package com.oxymoron.request;
 import static com.oxymoron.request.Sign.Equal;
 
 public class Request {
-    private RequestIds requestIds;
-    private String content;
+    private RequestIds requestId;
+    private String value;
 
-    public static Request makeRequest(RequestIds requests, Object content) {
-        return new Request(requests, content);
+    public static Request makeRequest(RequestIds requestId, String value) {
+        return new Request(requestId, value);
     }
 
-    private Request(RequestIds requestIds, Object content) {
-        this.requestIds = requestIds;
-        this.content = content.toString();
+    private Request(RequestIds requestId, String value) {
+        this.requestId = requestId;
+        this.value = value;
     }
 
-    public String getName() {
-        return this.requestIds.toString();
+    public RequestIds getRequestId() {
+        return requestId;
     }
 
-    public String getContent() {
-        return this.content;
+    public String getValue() {
+        return value;
     }
 
     public String toStringForUrl() {
-        return this.requestIds + Equal.toString() + this.content;
+        return this.requestId + Equal.toString() + this.value;
     }
 }
