@@ -205,7 +205,7 @@ public class SearchScreenPresenter implements SearchScreenContract.Presenter {
     private void enableLocationSettings() {
         Intent settingsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
 
-        this.context.startActivity(settingsIntent);
+        view.startActivity(settingsIntent);
     }
 
     private void requestLocationPermission() {
