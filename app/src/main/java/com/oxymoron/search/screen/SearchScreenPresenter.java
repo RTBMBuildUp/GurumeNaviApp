@@ -91,7 +91,6 @@ public class SearchScreenPresenter implements SearchScreenContract.Presenter {
         double longitude = location.getLongitude();
 
         this.updateLocation(latitude, longitude);
-        System.out.println("change the location");
 
         view.toast("現在地が更新されました。");
     }
@@ -139,9 +138,6 @@ public class SearchScreenPresenter implements SearchScreenContract.Presenter {
             locationData.setLatitude(latitude);
             locationData.setLongitude(longitude);
         }
-
-        System.out.println("laltitude: " + locationData.getLatitude());
-        System.out.println("longitude: " + locationData.getLongitude());
     }
 
     private RequestMap generateRequestMap() {
@@ -189,7 +185,7 @@ public class SearchScreenPresenter implements SearchScreenContract.Presenter {
             if (ActivityCompat.checkSelfPermission(context,
                     Manifest.permission.ACCESS_FINE_LOCATION) !=
                     PackageManager.PERMISSION_GRANTED) {
-                System.out.println("permmison error");
+                Log.d("LocationActivity", "permission error");
                 return;
             }
 

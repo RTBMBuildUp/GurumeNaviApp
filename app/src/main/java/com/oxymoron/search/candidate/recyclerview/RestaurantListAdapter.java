@@ -42,7 +42,6 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantViewHo
             public void onClick(View v) {
                 int position = viewHolder.getAdapterPosition();
                 RestaurantThumbnail restaurantThumbnail = restaurantThumbnailList.get(position);
-                System.out.println(position + " " + restaurantThumbnail);
 
                 Context context = view.getContext();
 

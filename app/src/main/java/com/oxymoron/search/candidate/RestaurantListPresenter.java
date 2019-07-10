@@ -49,7 +49,7 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
                 }
             }
         } catch (IndexOutOfBoundsException e) {
-            Log.d("error", "setItem: " + e);
+            Log.d("RestaurantListPresenter", "setItem: " + e);
         }
     }
 
@@ -60,7 +60,7 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
                 itemList.remove(position);
             }
         } catch (IndexOutOfBoundsException e) {
-            Log.d("error", "removeItem: " + e);
+            Log.d("RestaurantListPresenter", "removeItem: " + e);
         }
     }
 
@@ -86,7 +86,7 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
 
                 search(newRequestMap);
             } catch (ArithmeticException e) {
-                System.out.println(e);
+                Log.d("RestaurantListPresenter", "onScrolled: " + e);
             }
         }
     }

@@ -40,7 +40,7 @@ public class GurumeNaviUtil {
                             GurumeNavi.class
                     );
         } catch (IOException e) {
-            Log.d("error", "parseGurumeNaviJson: " + e);
+            Log.d("GurumeNaviUtil", "parseGurumeNaviJson: " + e);
         }
         return null;
     }

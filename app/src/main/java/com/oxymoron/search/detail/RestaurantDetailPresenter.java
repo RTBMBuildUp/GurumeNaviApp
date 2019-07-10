@@ -27,7 +27,6 @@ public class RestaurantDetailPresenter implements RestaurantDetailContract.Prese
             GurumeNavi gurumeNavi = GurumeNaviUtil.parseGurumeNaviJson(strings[0]);
 
             if (gurumeNavi != null && gurumeNavi.getRest() != null && gurumeNavi.getRest().get(0) != null) {
-                System.out.println("not null");
                 Rest restaurant = gurumeNavi.getRest().get(0);
                 return new RestaurantDetail(restaurant);
             }
