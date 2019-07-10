@@ -66,9 +66,9 @@ public class SearchScreenPresenter implements SearchScreenContract.Presenter {
 
         if (locationManager != null) {
             this.checkState(locationManager, listener);
+        } else {
+            view.toast("例外発生: GPSの起動に失敗しました。");
         }
-
-        view.toast("例外発生: GPSの起動に失敗しました。");
     }
 
     @Override
@@ -168,7 +168,6 @@ public class SearchScreenPresenter implements SearchScreenContract.Presenter {
         for (RadioButton radioButton : radioButtonList) {
             if (radioButton.isChecked()) return idRangeMap.get(radioButton.getId());
         }
-
         return idRangeMap.get(R.id.search_screen_range_radio_button_2);
     }
 
