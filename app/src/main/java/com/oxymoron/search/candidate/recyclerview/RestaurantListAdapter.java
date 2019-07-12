@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.example.gurumenaviapp.R;
 import com.oxymoron.request.RequestIds;
 import com.oxymoron.gson.data.Access;
+import com.oxymoron.search.candidate.RestaurantListContract;
 import com.oxymoron.search.candidate.data.RestaurantThumbnail;
 import com.oxymoron.search.detail.RestaurantDetailActivity;
 import com.oxymoron.util.Optional;
@@ -23,6 +24,7 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantViewHo
     private List<RestaurantThumbnail> restaurantThumbnailList;
 
     private View view;
+    private RecyclerViewContract.Presenter presenter;
 
     public RestaurantListAdapter(List<RestaurantThumbnail> restaurantThumbnailList) {
         this.restaurantThumbnailList = restaurantThumbnailList;
@@ -37,17 +39,12 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantViewHo
 
         final RestaurantViewHolder viewHolder = new RestaurantViewHolder(view);
 
+        this.presenter = new RecyclerViewPresenter(view.getContext(), viewHolder);
+
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int position = viewHolder.getAdapterPosition();
-                RestaurantThumbnail restaurantThumbnail = restaurantThumbnailList.get(position);
-
-                Context context = view.getContext();
-
-                Intent intent = new Intent(context, RestaurantDetailActivity.class);
-                intent.putExtra(RequestIds.restaurant_id.toString(), restaurantThumbnail.getRestaurantId());
-                context.startActivity(intent);
+                presenter.onClick(viewHolder, restaurantThumbnailList);
             }
         });
 
@@ -56,26 +53,7 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantViewHo
 
     @Override
     public void onBindViewHolder(@NonNull RestaurantViewHolder restaurantViewHolder, int position) {
-        final Resources resources = view.getResources();
-        final String notFound = resources.getString(R.string.not_found);
-        final Bitmap notFountImage = BitmapFactory.decodeResource(
-                view.getResources(), R.drawable.default_not_found
-        );
-
-        final RestaurantThumbnail result = restaurantThumbnailList.get(position);
-        final Access access = Optional.of(result.getAccess()).getOrElse(new Access());
-
-        restaurantViewHolder.name.setText(
-                Optional.of(result.getName()).getOrElse(notFound)
-        );
-
-        restaurantViewHolder.access.setText(
-                Optional.of(access.showUserAround()).getOrElse(notFound)
-        );
-
-        restaurantViewHolder.imageView.setImageBitmap(
-                Optional.of(result.getImage()).getOrElse(notFountImage)
-        );
+        presenter.onBindViewHolder(restaurantViewHolder, position, restaurantThumbnailList);
     }
 
     @Override

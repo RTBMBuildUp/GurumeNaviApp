@@ -12,6 +12,7 @@ import com.example.gurumenaviapp.R;
 import com.oxymoron.request.RequestIds;
 import com.oxymoron.request.RequestMap;
 import com.oxymoron.search.candidate.data.RestaurantThumbnail;
+import com.oxymoron.search.candidate.recyclerview.RecyclerViewPresenter;
 import com.oxymoron.search.candidate.recyclerview.RestaurantListAdapter;
 
 import java.util.ArrayList;
@@ -80,7 +81,7 @@ public class RestaurantListActivity extends AppCompatActivity implements Restaur
     }
 
     private void prepareRecyclerView(final RequestMap requestMap) {
-        adapter = new RestaurantListAdapter(itemList);
+        adapter = new RestaurantListAdapter(this.itemList);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
 

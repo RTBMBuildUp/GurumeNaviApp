@@ -1,5 +1,7 @@
 package com.oxymoron.search.candidate;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import com.oxymoron.BasePresenter;
 import com.oxymoron.BaseView;
@@ -14,6 +16,8 @@ public interface RestaurantListContract {
 
         void removeRecyclerViewItem(int position);
 
+        void startActivity(Intent intent);
+
         void cleanRecyclerViewItem();
     }
 
@@ -27,5 +31,7 @@ public interface RestaurantListContract {
         void search(RequestMap requestMap);
 
         void onScrolled(RecyclerView recyclerView, RequestMap requestMap, int itemCount);
+
+        void onClick(RecyclerView.ViewHolder viewHolder, Context context, List<RestaurantThumbnail> restaurantThumbnailList);
     }
 }
