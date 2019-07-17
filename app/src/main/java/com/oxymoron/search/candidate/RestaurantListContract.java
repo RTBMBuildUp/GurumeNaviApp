@@ -31,7 +31,5 @@ public interface RestaurantListContract {
         void search(RequestMap requestMap);
 
         void onScrolled(RecyclerView recyclerView, RequestMap requestMap, int itemCount);
-
-        void onClick(RecyclerView.ViewHolder viewHolder, Context context, List<RestaurantThumbnail> restaurantThumbnailList);
     }
 }

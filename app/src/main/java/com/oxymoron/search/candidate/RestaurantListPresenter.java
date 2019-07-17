@@ -1,7 +1,5 @@
 package com.oxymoron.search.candidate;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -10,7 +8,6 @@ import com.oxymoron.gson.data.Rest;
 import com.oxymoron.request.RequestIds;
 import com.oxymoron.request.RequestMap;
 import com.oxymoron.search.candidate.data.RestaurantThumbnail;
-import com.oxymoron.search.detail.RestaurantDetailActivity;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -25,11 +22,9 @@ import static com.oxymoron.util.GurumeNaviUtil.parseGurumeNaviJson;
 
 public class RestaurantListPresenter implements RestaurantListContract.Presenter {
     private RestaurantListContract.View view;
-    private Context context;
 
-    RestaurantListPresenter(RestaurantListContract.View view, Context context) {
+    RestaurantListPresenter(RestaurantListContract.View view) {
         this.view = view;
-        this.context = context;
     }
 
     @Override
@@ -90,16 +85,6 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
                 Log.d("RestaurantListPresenter", "onScrolled: " + e);
             }
         }
-    }
-
-    @Override
-    public void onClick(RecyclerView.ViewHolder viewHolder, Context context, List<RestaurantThumbnail> restaurantThumbnailList) {
-        int position = viewHolder.getAdapterPosition();
-        RestaurantThumbnail restaurantThumbnail = restaurantThumbnailList.get(position);
-
-        Intent intent = new Intent(context, RestaurantDetailActivity.class);
-        intent.putExtra(RequestIds.restaurant_id.toString(), restaurantThumbnail.getRestaurantId());
-        view.startActivity(intent);
     }
 
     @Override

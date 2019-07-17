@@ -37,7 +37,7 @@ public class RestaurantListActivity extends AppCompatActivity implements Restaur
 
         prepareRecyclerView(requestMap);
 
-        presenter = new RestaurantListPresenter(this, this);
+        presenter = new RestaurantListPresenter(this);
 
         String token = getIntent().getStringExtra(key_id.toString());
         presenter.search(requestMap);
@@ -81,18 +81,14 @@ public class RestaurantListActivity extends AppCompatActivity implements Restaur
     }
 
     private void prepareRecyclerView(final RequestMap requestMap) {
-        adapter = new RestaurantListAdapter(this.itemList);
+        this.adapter = new RestaurantListAdapter(this.itemList);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        this.recyclerView.setHasFixedSize(true);
+        this.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        this.recyclerView.setAdapter(adapter);
+        this.recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(adapter);
-        RecyclerView.ItemDecoration itemDecoration =
-                new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
-        recyclerView.addItemDecoration(itemDecoration);
-
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        this.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
