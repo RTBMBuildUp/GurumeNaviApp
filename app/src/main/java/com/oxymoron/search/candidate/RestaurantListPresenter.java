@@ -71,7 +71,7 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
         if (!recyclerView.canScrollVertically(bottom)) {
             try {
                 int hitPerPage = Integer.parseInt(requestMap.getOrElse(hit_per_page, "0"));
-                int offset = itemCount / hitPerPage + (itemCount % hitPerPage == 0 ? 0 : 1) + 1;
+                int offset = calculateNextOffset(itemCount, hitPerPage);
                 RequestMap newRequestMap = new RequestMap();
 
                 //filter
@@ -90,6 +90,11 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
     @Override
     public void start() {
 
+    }
+
+    private int calculateNextOffset(int itemCount, int hitPerPage) {
+        int currentOffset = itemCount / hitPerPage;
+        return currentOffset + (itemCount % hitPerPage == 0 ? 0 : 1) + 1;
     }
 
     private class ShowThumbnailTask extends AsyncTask<String, Void, List<RestaurantThumbnail>> {
