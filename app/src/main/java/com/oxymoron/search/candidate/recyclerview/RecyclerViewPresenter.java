@@ -36,23 +36,6 @@ public class RecyclerViewPresenter implements RecyclerViewContract.Presenter {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RestaurantViewHolder restaurantViewHolder, int position, List<RestaurantThumbnail> thumbnailList) {
-        final Resources resources = this.context.getResources();
-
-        final String notFound = resources.getString(R.string.not_found);
-
-        final RestaurantThumbnail result = thumbnailList.get(position);
-        final Access access = Optional.of(result.getAccess()).getOrElse(new Access());
-        final Bitmap notFountImage = BitmapFactory.decodeResource(
-                this.context.getResources(), R.drawable.default_not_found
-        );
-
-        view.setName(Optional.of(result.getName()).getOrElse(notFound));
-        view.setAccess(Optional.of(access.showUserAround()).getOrElse(notFound));
-        view.setImageView(Optional.of(result.getImage()).getOrElse(notFountImage));
-    }
-
-    @Override
     public void start() {
 
     }

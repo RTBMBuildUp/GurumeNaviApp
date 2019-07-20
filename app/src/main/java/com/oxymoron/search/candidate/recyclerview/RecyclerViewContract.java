@@ -24,6 +24,6 @@ public interface RecyclerViewContract {
     interface Presenter extends BasePresenter {
         void onClick(RecyclerView.ViewHolder viewHolder, List<RestaurantThumbnail> thumbnailList);
 
-        void onBindViewHolder(@NonNull RestaurantViewHolder restaurantViewHolder, int position, List<RestaurantThumbnail> thumbnailList);
+        //void onBindViewHolder(@NonNull RestaurantViewHolder restaurantViewHolder, int position, List<RestaurantThumbnail> thumbnailList);
     }
 }
