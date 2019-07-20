@@ -8,6 +8,9 @@ import com.oxymoron.gson.data.Rest;
 import com.oxymoron.request.RequestIds;
 import com.oxymoron.request.RequestMap;
 import com.oxymoron.search.candidate.data.RestaurantThumbnail;
+import com.oxymoron.util.Consumer;
+import com.oxymoron.util.Function;
+import com.oxymoron.util.Optional;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -97,31 +100,34 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
         return currentOffset + (itemCount % hitPerPage == 0 ? 0 : 1) + 1;
     }
 
-    private class ShowThumbnailTask extends AsyncTask<String, Void, List<RestaurantThumbnail>> {
+    private class ShowThumbnailTask extends AsyncTask<String, Void, Optional<List<RestaurantThumbnail>>> {
         @Override
-        protected List<RestaurantThumbnail> doInBackground(String... strings) {
-            GurumeNavi gurumeNavi = parseGurumeNaviJson(strings[0]);
-
-            if (gurumeNavi != null) {
-                List<Rest> restaurantList = gurumeNavi.getRest();
-                return createRestaurantThumbnailList(restaurantList);
-            }
-
-            return null;
+        protected Optional<List<RestaurantThumbnail>> doInBackground(String... strings) {
+            Optional<GurumeNavi> gurumeNavi = parseGurumeNaviJson(strings[0]);
+            return gurumeNavi.map(new Function<GurumeNavi, List<RestaurantThumbnail>>() {
+                @Override
+                public List<RestaurantThumbnail> apply(GurumeNavi value) {
+                    List<Rest> restaurantList = value.getRest();
+                    return createRestaurantThumbnailList(restaurantList);
+                }
+            });
         }
 
         @Override
-        protected void onPostExecute(List<RestaurantThumbnail> results) {
-            if (results != null) {
-                Collections.reverse(results);
-                for (RestaurantThumbnail result : results) {
-                    view.addRecyclerViewItem(result);
+        protected void onPostExecute(Optional<List<RestaurantThumbnail>> results) {
+            results.ifPresent(new Consumer<List<RestaurantThumbnail>>() {
+                @Override
+                public void accept(List<RestaurantThumbnail> value) {
+                    Collections.reverse(value);
+                    for (RestaurantThumbnail restaurantThumbnail : value) {
+                        view.addRecyclerViewItem(restaurantThumbnail);
+                    }
                 }
-            }
+            });
         }
 
         private List<RestaurantThumbnail> createRestaurantThumbnailList(List<Rest> restaurantList) {
-            List<RestaurantThumbnail> restaurantThumbnailList = new ArrayList<>();
+            final List<RestaurantThumbnail> restaurantThumbnailList = new ArrayList<>();
 
             for (Rest restaurant : restaurantList) {
                 RestaurantThumbnail restaurantThumbnail = new RestaurantThumbnail(restaurant);
@@ -129,6 +135,17 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
             }
 
             return restaurantThumbnailList;
+
+//            return restaurantList.map(new Function<List<Rest>, List<RestaurantThumbnail>>() {
+//                @Override
+//                public List<RestaurantThumbnail> apply(List<Rest> value) {
+//                    for (Rest restaurant : value) {
+//                        RestaurantThumbnail restaurantThumbnail = new RestaurantThumbnail(restaurant);
+//                        restaurantThumbnailList.add(restaurantThumbnail);
+//                    }
+//                    return restaurantThumbnailList;
+//                }
+//            }).get(); //best practice???
         }
     }
 }

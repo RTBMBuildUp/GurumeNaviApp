@@ -53,7 +53,20 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantViewHo
 
     @Override
     public void onBindViewHolder(@NonNull RestaurantViewHolder restaurantViewHolder, int position) {
-        presenter.onBindViewHolder(restaurantViewHolder, position, restaurantThumbnailList);
+//        presenter.onBindViewHolder(restaurantViewHolder, position, restaurantThumbnailList);
+        final Resources resources = view.getContext().getResources();
+
+        final String notFound = resources.getString(R.string.not_found);
+
+        final RestaurantThumbnail result = restaurantThumbnailList.get(position);
+        final Access access = Optional.of(result.getAccess()).getOrElse(new Access());
+        final Bitmap notFountImage = BitmapFactory.decodeResource(
+                view.getContext().getResources(), R.drawable.default_not_found
+        );
+
+        restaurantViewHolder.setName(Optional.of(result.getName()).getOrElse(notFound));
+        restaurantViewHolder.setAccess(Optional.of(access.showUserAround()).getOrElse(notFound));
+        restaurantViewHolder.setImageView(Optional.of(result.getImage()).getOrElse(notFountImage));
     }
 
     @Override

@@ -50,6 +50,6 @@ public class Optional<T> {
         if (isPresent()) {
             return value == null ? Optional.<R>empty() : of(function.apply(value));
         }
-        return Optional.<R>empty();
+        return Optional.empty();
     }
 }

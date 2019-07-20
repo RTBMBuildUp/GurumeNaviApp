@@ -3,6 +3,7 @@ package com.oxymoron.gson.data;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.oxymoron.util.Optional;
 
 import java.util.List;
 

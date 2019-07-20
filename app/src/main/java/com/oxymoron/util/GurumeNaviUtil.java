@@ -27,10 +27,10 @@ import static com.oxymoron.request.Sign.Question;
 public class GurumeNaviUtil {
     private static String token = "bf565ef4fdb696cfb6ff5a911941fa8d";
 
-    public static GurumeNavi parseGurumeNaviJson(String rawStringUrl) {
+    public static Optional<GurumeNavi> parseGurumeNaviJson(String rawStringUrl) {
         TypeAdapterFactory typeAdapterFactory = TypeAdapters.newFactory(int.class, Integer.class, new IntegerTypeAdapter());
         try {
-            return new GsonBuilder()
+            return Optional.of(new GsonBuilder()
                     .registerTypeAdapterFactory(typeAdapterFactory)
                     .create()
                     .fromJson(
@@ -38,11 +38,11 @@ public class GurumeNaviUtil {
                                     new URL(rawStringUrl).openStream()
                             ),
                             GurumeNavi.class
-                    );
+                    ));
         } catch (IOException e) {
             Log.d("GurumeNaviUtil", "parseGurumeNaviJson: " + e);
         }
-        return null;
+        return Optional.empty();
     }
 
     public static URL createUrlForGurumeNavi(RequestMap requestMap) {

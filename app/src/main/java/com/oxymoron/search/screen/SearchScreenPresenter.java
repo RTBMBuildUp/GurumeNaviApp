@@ -142,7 +142,6 @@ public class SearchScreenPresenter implements SearchScreenContract.Presenter {
 
     private RequestMap generateRequestMap() {
         if (locationData != null) {
-
             return new RequestMap(Arrays.asList(
                     makeRequest(latitude, locationData.getLatitude().toString()),
                     makeRequest(longitude, locationData.getLongitude().toString()),
@@ -209,7 +208,6 @@ public class SearchScreenPresenter implements SearchScreenContract.Presenter {
             ActivityCompat.requestPermissions(activity,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     REQUEST_PERMISSION);
-
         } else {
             view.toast("許可されないとアプリが実行できません");
 
