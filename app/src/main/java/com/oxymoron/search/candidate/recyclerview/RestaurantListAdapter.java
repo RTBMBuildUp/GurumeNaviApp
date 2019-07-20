@@ -53,7 +53,6 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantViewHo
 
     @Override
     public void onBindViewHolder(@NonNull RestaurantViewHolder restaurantViewHolder, int position) {
-//        presenter.onBindViewHolder(restaurantViewHolder, position, restaurantThumbnailList);
         final Resources resources = view.getContext().getResources();
 
         final String notFound = resources.getString(R.string.not_found);

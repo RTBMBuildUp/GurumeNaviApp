@@ -135,17 +135,6 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
             }
 
             return restaurantThumbnailList;
-
-//            return restaurantList.map(new Function<List<Rest>, List<RestaurantThumbnail>>() {
-//                @Override
-//                public List<RestaurantThumbnail> apply(List<Rest> value) {
-//                    for (Rest restaurant : value) {
-//                        RestaurantThumbnail restaurantThumbnail = new RestaurantThumbnail(restaurant);
-//                        restaurantThumbnailList.add(restaurantThumbnail);
-//                    }
-//                    return restaurantThumbnailList;
-//                }
-//            }).get(); //best practice???
         }
     }
 }

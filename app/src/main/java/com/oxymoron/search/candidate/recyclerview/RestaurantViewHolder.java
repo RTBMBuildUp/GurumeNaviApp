@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.gurumenaviapp.R;
 
-class RestaurantViewHolder extends RecyclerView.ViewHolder implements RecyclerViewContract.View {
+public class RestaurantViewHolder extends RecyclerView.ViewHolder implements RecyclerViewContract.View {
     private Context context;
 
     TextView name;

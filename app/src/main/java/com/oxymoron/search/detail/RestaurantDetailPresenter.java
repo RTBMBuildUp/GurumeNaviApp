@@ -37,13 +37,6 @@ public class RestaurantDetailPresenter implements RestaurantDetailContract.Prese
                     return new RestaurantDetail(restaurantList.get(0));
                 }
             });
-
-//            if (gurumeNavi != null && gurumeNavi.getRest() != null && gurumeNavi.getRest().get(0) != null) {
-//                Rest restaurant = gurumeNavi.getRest().get(0);
-//                return new RestaurantDetail(restaurant);
-//            }
-//
-//            return new RestaurantDetail();
         }
 
         @Override
