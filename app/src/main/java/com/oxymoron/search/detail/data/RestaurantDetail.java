@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import com.oxymoron.gson.data.Access;
 import com.oxymoron.gson.data.Rest;
+import com.oxymoron.util.Optional;
 
 import java.io.IOException;
 import java.net.URL;
@@ -39,23 +40,23 @@ public class RestaurantDetail {
         return name;
     }
 
-    public String getTel() {
-        return tel;
+    public Optional<String> getTel() {
+        return Optional.of(tel);
     }
 
     public String getAddress() {
         return address;
     }
 
-    public Access getAccess() {
-        return access;
+    public Optional<Access> getAccess() {
+        return Optional.of(access);
     }
 
-    public String getOpenTime() {
-        return openTime;
+    public Optional<String> getOpenTime() {
+        return Optional.of(openTime);
     }
 
-    public Bitmap getImage() {
-        return image;
+    public Optional<Bitmap> getImage() {
+        return Optional.of(image);
     }
 }

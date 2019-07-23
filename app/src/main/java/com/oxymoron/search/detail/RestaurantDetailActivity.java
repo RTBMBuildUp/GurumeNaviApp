@@ -9,8 +9,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.gurumenaviapp.R;
+import com.oxymoron.gson.data.Access;
 import com.oxymoron.request.RequestIds;
 import com.oxymoron.search.detail.data.RestaurantDetail;
+import com.oxymoron.util.Function;
 import com.oxymoron.util.Optional;
 
 public class RestaurantDetailActivity extends AppCompatActivity implements RestaurantDetailContract.View {
@@ -48,13 +50,20 @@ public class RestaurantDetailActivity extends AppCompatActivity implements Resta
         final String notFound = getResources().getString(R.string.not_found);
         final Bitmap notFoundImage = BitmapFactory.decodeResource(getResources(), R.drawable.default_not_found);
 
-        this.name.setText(Optional.of(detail.getName()).getOrElse(notFound));
-        this.tel.setText(Optional.of(detail.getTel()).getOrElse(notFound));
-        this.address.setText(Optional.of(detail.getAddress()).getOrElse(notFound));
-        this.access.setText(Optional.of(detail.getAccess().showUserAround()).getOrElse(notFound));
-        this.openTime.setText(Optional.of(detail.getOpenTime()).getOrElse(notFound));
+        this.name.setText(detail.getName());
+        this.tel.setText(detail.getTel().getOrElse(notFound));
+        this.address.setText(detail.getAddress());
 
-        this.imageView.setImageBitmap(Optional.of(detail.getImage()).getOrElse(notFoundImage));
+        this.access.setText(detail.getAccess().map(new Function<Access, String>() {
+            @Override
+            public String apply(Access value) {
+                return value.showUserAround();
+            }
+        }).getOrElse(notFound));
+
+        this.openTime.setText(detail.getOpenTime().getOrElse(notFound));
+
+        this.imageView.setImageBitmap(detail.getImage().getOrElse(notFoundImage));
     }
 
     private void findViews() {
