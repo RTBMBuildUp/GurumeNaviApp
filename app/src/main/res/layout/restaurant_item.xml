@@ -16,8 +16,10 @@
                 android:layout_width="91dp"
                 android:layout_height="99dp" tools:srcCompat="@drawable/default_not_found"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="4dp" android:id="@+id/restaurant_item_image" android:layout_marginTop="16dp"
-                app:layout_constraintTop_toTopOf="parent"/>
+                android:layout_marginStart="16dp" android:id="@+id/restaurant_item_image"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="16dp"/>
         <TextView
                 android:text="@string/rest_name"
                 android:layout_width="wrap_content"
