@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.gurumenaviapp.R;
+import com.oxymoron.search.candidate.data.RestaurantThumbnail;
 
 public class RestaurantViewHolder extends RecyclerView.ViewHolder implements RecyclerViewContract.View {
     private Context context;
@@ -21,6 +22,7 @@ public class RestaurantViewHolder extends RecyclerView.ViewHolder implements Rec
         super(view);
         this.context = view.getContext();
 
+
         this.name = view.findViewById(R.id.restaurant_item_name);
         this.access = view.findViewById(R.id.restaurant_item_access);
 
@@ -28,18 +30,12 @@ public class RestaurantViewHolder extends RecyclerView.ViewHolder implements Rec
     }
 
     @Override
-    public void setName(String name) {
-        this.name.setText(name);
-    }
+    public void setThumbnail(RestaurantThumbnail thumbnail) {
+        final String notFound = this.context.getResources().getString(R.string.not_found);
 
-    @Override
-    public void setAccess(String access) {
-        this.access.setText(access);
-    }
-
-    @Override
-    public void setImageView(Bitmap bitmapImage) {
-        this.imageView.setImageBitmap(bitmapImage);
+        setName(thumbnail.getName());
+        setAccess(thumbnail.getAccess().showUserAround());
+        setImageView(thumbnail.getImage());
     }
 
     @Override
@@ -50,5 +46,17 @@ public class RestaurantViewHolder extends RecyclerView.ViewHolder implements Rec
     @Override
     public void setPresenter(RecyclerViewContract.Presenter presenter) {
 
+    }
+
+    private void setName(String name) {
+        this.name.setText(name);
+    }
+
+    private void setAccess(String access) {
+        this.access.setText(access);
+    }
+
+    private void setImageView(Bitmap bitmapImage) {
+        this.imageView.setImageBitmap(bitmapImage);
     }
 }

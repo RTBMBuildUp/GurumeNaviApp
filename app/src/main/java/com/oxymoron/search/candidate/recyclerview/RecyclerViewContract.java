@@ -12,11 +12,7 @@ import java.util.List;
 
 public interface RecyclerViewContract {
     interface View extends BaseView<Presenter> {
-        void setName(String name);
-
-        void setAccess(String access);
-
-        void setImageView(Bitmap bitmapImage);
+        void setThumbnail(RestaurantThumbnail thumbnail);
 
         void startActivity(Intent intent);
     }

@@ -51,7 +51,7 @@ public class RestaurantListActivity extends AppCompatActivity implements Restaur
     @Override
     public void addRecyclerViewItem(RestaurantThumbnail item) {
         presenter.setItem(itemList, item);
-        adapter.notifyItemInserted(itemList.size());
+        adapter.notifyDataSetChanged();
     }
 
     @Override
