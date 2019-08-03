@@ -57,17 +57,17 @@ public class GurumeNaviUtil {
 
     private static class GurumeNaviUrl {
         private String host;
-        private Request requestKeyid;
+        private Request requestKey;
 
         private RequestMap requestMap;
 
         GurumeNaviUrl() {
             this.host = "https://api.gnavi.co.jp/RestSearchAPI/v3/";
 
-            this.requestKeyid = makeRequest(key_id, token);
+            this.requestKey = makeRequest(key_id, token);
             this.requestMap = new RequestMap();
 
-            this.putRequest(requestKeyid);
+            this.putRequest(requestKey);
         }
 
         void putRequest(Request request) {
