@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import com.oxymoron.gson.data.Access;
 import com.oxymoron.gson.data.Rest;
+import com.oxymoron.util.Optional;
 
 import java.io.IOException;
 import java.net.URL;
@@ -36,12 +37,12 @@ public class RestaurantThumbnail {
         return name;
     }
 
-    public Access getAccess() {
-        return access;
+    public Optional<Access> getAccess() {
+        return Optional.of(access);
     }
 
-    public Bitmap getImage() {
-        return image;
+    public Optional<Bitmap> getImage() {
+        return Optional.of(image);
     }
 
     public String getRestaurantId() {
