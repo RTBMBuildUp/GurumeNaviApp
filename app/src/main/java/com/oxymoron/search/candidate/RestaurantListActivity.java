@@ -12,7 +12,6 @@ import com.example.gurumenaviapp.R;
 import com.oxymoron.request.RequestIds;
 import com.oxymoron.request.RequestMap;
 import com.oxymoron.search.candidate.data.RestaurantThumbnail;
-import com.oxymoron.search.candidate.recyclerview.RecyclerViewPresenter;
 import com.oxymoron.search.candidate.recyclerview.RestaurantListAdapter;
 import com.oxymoron.search.detail.RestaurantDetailActivity;
 

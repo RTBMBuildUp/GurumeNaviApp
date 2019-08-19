@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.example.gurumenaviapp.R;
 import com.oxymoron.search.candidate.OnClickListener;
 import com.oxymoron.search.candidate.data.RestaurantThumbnail;
@@ -14,8 +15,6 @@ import java.util.List;
 public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantViewHolder> {
     private List<RestaurantThumbnail> restaurantThumbnailList;
 
-    private View view;
-    private RecyclerViewContract.Presenter presenter;
     private OnClickListener clickListener;
 
     public RestaurantListAdapter(List<RestaurantThumbnail> restaurantThumbnailList) {
@@ -29,15 +28,11 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantViewHo
     @NonNull
     @Override
     public RestaurantViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, final int i) {
-        view = LayoutInflater
+        View view = LayoutInflater
                 .from(viewGroup.getContext())
                 .inflate(R.layout.restaurant_item, viewGroup, false);
 
-        final RestaurantViewHolder viewHolder = new RestaurantViewHolder(view);
-
-        this.presenter = new RecyclerViewPresenter(view.getContext(), viewHolder);
-
-        return viewHolder;
+        return new RestaurantViewHolder(view);
     }
 
     @Override

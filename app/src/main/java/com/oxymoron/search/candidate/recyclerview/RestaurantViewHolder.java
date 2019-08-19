@@ -1,19 +1,19 @@
 package com.oxymoron.search.candidate.recyclerview;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.example.gurumenaviapp.R;
 import com.oxymoron.gson.data.Access;
 import com.oxymoron.search.candidate.data.RestaurantThumbnail;
 import com.oxymoron.util.Function;
 
-public class RestaurantViewHolder extends RecyclerView.ViewHolder implements RecyclerViewContract.View {
+public class RestaurantViewHolder extends RecyclerView.ViewHolder {
     private Context context;
 
     TextView name;
@@ -31,7 +31,6 @@ public class RestaurantViewHolder extends RecyclerView.ViewHolder implements Rec
         this.imageView = view.findViewById(R.id.restaurant_item_image);
     }
 
-    @Override
     public void setThumbnail(RestaurantThumbnail thumbnail) {
         final Bitmap notFoundImage = BitmapFactory.decodeResource(
                 this.context.getResources(), R.drawable.default_not_found
@@ -47,16 +46,6 @@ public class RestaurantViewHolder extends RecyclerView.ViewHolder implements Rec
         }).getOrElse(""));
 
         this.setImageView(thumbnail.getImage().getOrElse(notFoundImage));
-    }
-
-    @Override
-    public void startActivity(Intent intent) {
-        this.context.startActivity(intent);
-    }
-
-    @Override
-    public void setPresenter(RecyclerViewContract.Presenter presenter) {
-
     }
 
     private void setName(String name) {
