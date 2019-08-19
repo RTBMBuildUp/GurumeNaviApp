@@ -82,13 +82,10 @@ public class RestaurantListActivity extends AppCompatActivity implements Restaur
 
     private void prepareRecyclerView(final RequestMap requestMap) {
         this.adapter = new RestaurantListAdapter(this.itemList);
-        this.adapter.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(RestaurantThumbnail thumbnail) {
-                Intent intent = new Intent(RestaurantListActivity.this, RestaurantDetailActivity.class);
-                intent.putExtra(RequestIds.restaurant_id.toString(), thumbnail.getRestaurantId());
-                startActivity(intent);
-            }
+        this.adapter.setOnClickListener(thumbnail -> {
+            Intent intent = new Intent(RestaurantListActivity.this, RestaurantDetailActivity.class);
+            intent.putExtra(RequestIds.restaurant_id.toString(), thumbnail.getRestaurantId());
+            startActivity(intent);
         });
 
         this.recyclerView.setHasFixedSize(true);
