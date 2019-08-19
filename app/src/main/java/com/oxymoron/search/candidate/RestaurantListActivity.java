@@ -14,6 +14,7 @@ import com.oxymoron.request.RequestMap;
 import com.oxymoron.search.candidate.data.RestaurantThumbnail;
 import com.oxymoron.search.candidate.recyclerview.RecyclerViewPresenter;
 import com.oxymoron.search.candidate.recyclerview.RestaurantListAdapter;
+import com.oxymoron.search.detail.RestaurantDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,6 +83,14 @@ public class RestaurantListActivity extends AppCompatActivity implements Restaur
 
     private void prepareRecyclerView(final RequestMap requestMap) {
         this.adapter = new RestaurantListAdapter(this.itemList);
+        this.adapter.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(RestaurantThumbnail thumbnail) {
+                Intent intent = new Intent(RestaurantListActivity.this, RestaurantDetailActivity.class);
+                intent.putExtra(RequestIds.restaurant_id.toString(), thumbnail.getRestaurantId());
+                startActivity(intent);
+            }
+        });
 
         this.recyclerView.setHasFixedSize(true);
         this.recyclerView.setLayoutManager(new LinearLayoutManager(this));
