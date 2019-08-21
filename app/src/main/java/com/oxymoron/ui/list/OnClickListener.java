@@ -1,6 +1,6 @@
-package com.oxymoron.search.list;
+package com.oxymoron.ui.list;
 
-import com.oxymoron.search.list.data.RestaurantThumbnail;
+import com.oxymoron.ui.list.data.RestaurantThumbnail;
 
 public interface OnClickListener {
     public void onClick(RestaurantThumbnail thumbnail);

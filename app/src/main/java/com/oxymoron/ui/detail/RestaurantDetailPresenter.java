@@ -1,9 +1,8 @@
-package com.oxymoron.search.detail;
+package com.oxymoron.ui.detail;
 
 import com.oxymoron.api.GurumeNaviApiClient;
 import com.oxymoron.gson.data.Rest;
-import com.oxymoron.search.detail.data.RestaurantDetail;
-import com.oxymoron.api.GurumeNaviApiClientImpl;
+import com.oxymoron.ui.detail.data.RestaurantDetail;
 
 import java.util.List;
 

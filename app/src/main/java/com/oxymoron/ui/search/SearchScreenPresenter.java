@@ -1,4 +1,4 @@
-package com.oxymoron.search.search;
+package com.oxymoron.ui.search;
 
 import android.Manifest;
 import android.app.Activity;
@@ -20,7 +20,7 @@ import com.oxymoron.gps.LocationListener;
 import com.oxymoron.gps.data.LocationData;
 import com.oxymoron.request.RequestIds;
 import com.oxymoron.request.RequestMap;
-import com.oxymoron.search.list.RestaurantListActivity;
+import com.oxymoron.ui.list.RestaurantListActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;

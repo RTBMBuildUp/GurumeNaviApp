@@ -1,4 +1,4 @@
-package com.oxymoron.search.list;
+package com.oxymoron.ui.list;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,9 +12,9 @@ import com.example.gurumenaviapp.R;
 import com.oxymoron.api.GurumeNaviApiClientImpl;
 import com.oxymoron.request.RequestIds;
 import com.oxymoron.request.RequestMap;
-import com.oxymoron.search.list.data.RestaurantThumbnail;
-import com.oxymoron.search.list.recyclerview.RestaurantListAdapter;
-import com.oxymoron.search.detail.RestaurantDetailActivity;
+import com.oxymoron.ui.list.data.RestaurantThumbnail;
+import com.oxymoron.ui.list.recyclerview.RestaurantListAdapter;
+import com.oxymoron.ui.detail.RestaurantDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;

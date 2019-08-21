@@ -1,8 +1,8 @@
-package com.oxymoron.search.detail;
+package com.oxymoron.ui.detail;
 
 import com.oxymoron.BasePresenter;
 import com.oxymoron.BaseView;
-import com.oxymoron.search.detail.data.RestaurantDetail;
+import com.oxymoron.ui.detail.data.RestaurantDetail;
 
 public interface RestaurantDetailContract {
     interface View extends BaseView<Presenter> {

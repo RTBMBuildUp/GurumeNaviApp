@@ -1,11 +1,11 @@
-package com.oxymoron.search.list;
+package com.oxymoron.ui.list;
 
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import com.oxymoron.BasePresenter;
 import com.oxymoron.BaseView;
 import com.oxymoron.request.RequestMap;
-import com.oxymoron.search.list.data.RestaurantThumbnail;
+import com.oxymoron.ui.list.data.RestaurantThumbnail;
 
 import java.util.List;
 

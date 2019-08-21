@@ -1,4 +1,4 @@
-package com.oxymoron.search.list.recyclerview;
+package com.oxymoron.ui.list.recyclerview;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.gurumenaviapp.R;
 import com.oxymoron.gson.data.Access;
-import com.oxymoron.search.list.data.RestaurantThumbnail;
+import com.oxymoron.ui.list.data.RestaurantThumbnail;
 
 public class RestaurantViewHolder extends RecyclerView.ViewHolder {
     private Context context;

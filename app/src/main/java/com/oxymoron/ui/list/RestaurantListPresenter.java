@@ -1,4 +1,4 @@
-package com.oxymoron.search.list;
+package com.oxymoron.ui.list;
 
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -7,7 +7,7 @@ import com.oxymoron.api.GurumeNaviApiClient;
 import com.oxymoron.gson.data.Rest;
 import com.oxymoron.request.RequestIds;
 import com.oxymoron.request.RequestMap;
-import com.oxymoron.search.list.data.RestaurantThumbnail;
+import com.oxymoron.ui.list.data.RestaurantThumbnail;
 
 import java.util.ArrayList;
 import java.util.Collections;

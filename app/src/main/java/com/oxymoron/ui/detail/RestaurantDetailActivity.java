@@ -1,4 +1,4 @@
-package com.oxymoron.search.detail;
+package com.oxymoron.ui.detail;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -14,7 +14,7 @@ import com.example.gurumenaviapp.R;
 import com.oxymoron.api.GurumeNaviApiClientImpl;
 import com.oxymoron.gson.data.Access;
 import com.oxymoron.request.RequestIds;
-import com.oxymoron.search.detail.data.RestaurantDetail;
+import com.oxymoron.ui.detail.data.RestaurantDetail;
 import com.oxymoron.util.Function;
 
 public class RestaurantDetailActivity extends AppCompatActivity implements RestaurantDetailContract.View {
