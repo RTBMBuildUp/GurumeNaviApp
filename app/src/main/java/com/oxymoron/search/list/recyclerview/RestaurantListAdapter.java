@@ -1,4 +1,4 @@
-package com.oxymoron.search.candidate.recyclerview;
+package com.oxymoron.search.list.recyclerview;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.gurumenaviapp.R;
-import com.oxymoron.search.candidate.OnClickListener;
-import com.oxymoron.search.candidate.data.RestaurantThumbnail;
+import com.oxymoron.search.list.OnClickListener;
+import com.oxymoron.search.list.data.RestaurantThumbnail;
 
 import java.util.List;
 

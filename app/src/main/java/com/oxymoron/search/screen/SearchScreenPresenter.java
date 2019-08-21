@@ -20,7 +20,7 @@ import com.oxymoron.gps.LocationListener;
 import com.oxymoron.gps.data.LocationData;
 import com.oxymoron.request.RequestIds;
 import com.oxymoron.request.RequestMap;
-import com.oxymoron.search.candidate.RestaurantListActivity;
+import com.oxymoron.search.list.RestaurantListActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;

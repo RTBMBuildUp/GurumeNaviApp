@@ -18,7 +18,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.oxymoron.search.candidate.RestaurantListActivity"/>
+        <activity android:name="com.oxymoron.search.list.RestaurantListActivity"/>
         <activity android:name="com.oxymoron.search.detail.RestaurantDetailActivity"/>
 
     </application>

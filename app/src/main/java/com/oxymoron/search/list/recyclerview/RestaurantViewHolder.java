@@ -1,22 +1,17 @@
-package com.oxymoron.search.candidate.recyclerview;
+package com.oxymoron.search.list.recyclerview;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.CustomTarget;
-import com.bumptech.glide.request.transition.Transition;
 import com.example.gurumenaviapp.R;
 import com.oxymoron.gson.data.Access;
-import com.oxymoron.search.candidate.data.RestaurantThumbnail;
+import com.oxymoron.search.list.data.RestaurantThumbnail;
 
 public class RestaurantViewHolder extends RecyclerView.ViewHolder {
     private Context context;

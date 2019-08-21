@@ -1,13 +1,15 @@
 package com.oxymoron.search.screen;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.RadioGroup;
+
 import com.example.gurumenaviapp.R;
 import com.oxymoron.util.Toaster;
 
@@ -36,12 +38,7 @@ public class SearchScreenActivity extends AppCompatActivity implements SearchScr
 
         findViews();
 
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenter.searchRestaurant();
-            }
-        });
+        searchButton.setOnClickListener(v -> presenter.searchRestaurant());
 
         rangeRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -69,5 +66,20 @@ public class SearchScreenActivity extends AppCompatActivity implements SearchScr
     @Override
     public void toast(String message) {
         Toaster.toast(this, message);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        Log.d("log", "onRequestPermissionsResult: " + requestCode);
+        if (requestCode == 1000) {
+            Log.d("log", "onRequestPermissionsResult: request");
+            if (PackageManager.PERMISSION_GRANTED != grantResults[0]) {
+                Log.d("log", "onRequestPermissionsResult: deny");
+            } else {
+                presenter.activateGps();
+            }
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 }
