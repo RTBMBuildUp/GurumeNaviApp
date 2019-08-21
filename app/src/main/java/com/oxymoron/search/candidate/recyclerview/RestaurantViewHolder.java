@@ -61,15 +61,6 @@ public class RestaurantViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void setImageView(String imageUrl) {
-        Glide.with(context).asBitmap().load(imageUrl).into(new CustomTarget<Bitmap>() {
-            @Override
-            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                imageView.setImageBitmap(resource);
-            }
-
-            @Override
-            public void onLoadCleared(@Nullable Drawable placeholder) {
-            }
-        });
+        Glide.with(context).load(imageUrl).into(imageView);
     }
 }
