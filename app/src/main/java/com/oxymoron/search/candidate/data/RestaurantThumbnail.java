@@ -24,11 +24,11 @@ public class RestaurantThumbnail {
         this.name = restaurant.getName();
         this.access = restaurant.getAccess();
 
-        try {
-            this.image = BitmapFactory.decodeStream(new URL(restaurant.getImageUrl().getShopImage()).openStream());
-        } catch (IOException e) {
-            this.image = null;
-        }
+//        try {
+//            this.image = BitmapFactory.decodeStream(new URL(restaurant.getImageUrl().getShopImage()).openStream());
+//        } catch (IOException e) {
+//            this.image = null;
+//        }
 
         this.restaurantId = restaurant.getId();
     }

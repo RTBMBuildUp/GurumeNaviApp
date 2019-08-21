@@ -28,12 +28,12 @@ public class RestaurantDetail {
         this.access = restaurant.getAccess();
         this.openTime = restaurant.getOpentime();
 
-        try {
-            this.image = BitmapFactory.decodeStream(new URL(restaurant.getImageUrl().getShopImage()).openStream());
-        } catch (IOException e) {
-            this.image = null;
-            System.out.println(e);
-        }
+//        try {
+//            this.image = BitmapFactory.decodeStream(new URL(restaurant.getImageUrl().getShopImage()).openStream());
+//        } catch (IOException e) {
+//            this.image = null;
+//            System.out.println(e);
+//        }
     }
 
     public String getName() {

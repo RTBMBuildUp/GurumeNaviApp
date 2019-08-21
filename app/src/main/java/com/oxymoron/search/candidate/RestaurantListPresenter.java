@@ -10,6 +10,7 @@ import com.oxymoron.request.RequestMap;
 import com.oxymoron.search.candidate.data.RestaurantThumbnail;
 import com.oxymoron.util.Consumer;
 import com.oxymoron.util.Function;
+import com.oxymoron.util.GurumeNaviUtil;
 import com.oxymoron.util.Optional;
 
 import java.net.URL;
@@ -19,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 
 import static com.oxymoron.request.RequestIds.hit_per_page;
+import static com.oxymoron.request.RequestIds.latitude;
+import static com.oxymoron.request.RequestIds.longitude;
 import static com.oxymoron.request.RequestIds.offset_page;
 import static com.oxymoron.util.GurumeNaviUtil.createUrlForGurumeNavi;
 import static com.oxymoron.util.GurumeNaviUtil.parseGurumeNaviJson;
@@ -31,10 +34,13 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
     }
 
     @Override
-    public void search(RequestMap requestMap) {
-        final URL url = createUrlForGurumeNavi(requestMap);
+    public void search(String latitude, String longitude) {
+        showThumbnail(latitude, longitude);
+    }
 
-        new ShowThumbnailTask().execute(url.toString());
+    @Override
+    public void search(String latitude, String longitude, String hit_per_page, String offset_page) {
+        showThumbnail(latitude, longitude, hit_per_page, offset_page);
     }
 
     @Override
@@ -83,7 +89,7 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
                     if (entry.getKey() != offset_page) newRequestMap.put(entry.getKey(), entry.getValue());
                 }
 
-                search(newRequestMap);
+                search(newRequestMap.get(latitude), newRequestMap.get(longitude), newRequestMap.get(hit_per_page), newRequestMap.get(offset_page));
             } catch (ArithmeticException e) {
                 Log.d("RestaurantListPresenter", "onScrolled: " + e);
             }
@@ -98,6 +104,30 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
     private int calculateNextOffset(int itemCount, int hitPerPage) {
         int currentOffset = itemCount / hitPerPage;
         return currentOffset + (itemCount % hitPerPage == 0 ? 0 : 1) + 1;
+    }
+
+    private void showThumbnail(String latitude, String longitude) {
+        GurumeNaviUtil.parseGurumeNaviJson(latitude, longitude, parsedObj -> {
+            List<Rest> restaurantList = parsedObj.getRest();
+            List<RestaurantThumbnail> restaurantThumbnailList = createRestaurantThumbnailList(restaurantList);
+
+            Collections.reverse(restaurantThumbnailList);
+            for (RestaurantThumbnail restaurantThumbnail : restaurantThumbnailList) {
+                view.addRecyclerViewItem(restaurantThumbnail);
+            }
+        });
+    }
+
+    private void showThumbnail(String latitude, String longitude, String hit_per_page, String offset_page) {
+        GurumeNaviUtil.parseGurumeNaviJson(latitude, longitude, hit_per_page, offset_page, parsedObj -> {
+            List<Rest> restaurantList = parsedObj.getRest();
+            List<RestaurantThumbnail> restaurantThumbnailList = createRestaurantThumbnailList(restaurantList);
+
+            Collections.reverse(restaurantThumbnailList);
+            for (RestaurantThumbnail restaurantThumbnail : restaurantThumbnailList) {
+                view.addRecyclerViewItem(restaurantThumbnail);
+            }
+        });
     }
 
     private class ShowThumbnailTask extends AsyncTask<String, Void, Optional<List<RestaurantThumbnail>>> {
@@ -126,15 +156,16 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
             });
         }
 
-        private List<RestaurantThumbnail> createRestaurantThumbnailList(List<Rest> restaurantList) {
-            final List<RestaurantThumbnail> restaurantThumbnailList = new ArrayList<>();
+    }
 
-            for (Rest restaurant : restaurantList) {
-                RestaurantThumbnail restaurantThumbnail = new RestaurantThumbnail(restaurant);
-                restaurantThumbnailList.add(restaurantThumbnail);
-            }
+    private List<RestaurantThumbnail> createRestaurantThumbnailList(List<Rest> restaurantList) {
+        final List<RestaurantThumbnail> restaurantThumbnailList = new ArrayList<>();
 
-            return restaurantThumbnailList;
+        for (Rest restaurant : restaurantList) {
+            RestaurantThumbnail restaurantThumbnail = new RestaurantThumbnail(restaurant);
+            restaurantThumbnailList.add(restaurantThumbnail);
         }
+
+        return restaurantThumbnailList;
     }
 }

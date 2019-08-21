@@ -28,7 +28,9 @@ public interface RestaurantListContract {
 
         void cleanItem(List<RestaurantThumbnail> itemList);
 
-        void search(RequestMap requestMap);
+        void search(String latitude, String longitude, String hit_per_page, String offset_page);
+
+        void search(String latitude, String longitude);
 
         void onScrolled(RecyclerView recyclerView, RequestMap requestMap, int itemCount);
     }

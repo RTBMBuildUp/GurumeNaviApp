@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.oxymoron.request.RequestIds.key_id;
+import static com.oxymoron.request.RequestIds.latitude;
+import static com.oxymoron.request.RequestIds.longitude;
 
 public class RestaurantListActivity extends AppCompatActivity implements RestaurantListContract.View {
     private RestaurantListContract.Presenter presenter;
@@ -40,7 +42,7 @@ public class RestaurantListActivity extends AppCompatActivity implements Restaur
         presenter = new RestaurantListPresenter(this);
 
         String token = getIntent().getStringExtra(key_id.toString());
-        presenter.search(requestMap);
+        presenter.search(requestMap.get(latitude), requestMap.get(longitude));
     }
 
     @Override
