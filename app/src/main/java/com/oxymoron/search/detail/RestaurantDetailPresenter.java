@@ -2,7 +2,7 @@ package com.oxymoron.search.detail;
 
 import com.oxymoron.gson.data.Rest;
 import com.oxymoron.search.detail.data.RestaurantDetail;
-import com.oxymoron.api.GurumeNaviApiClient;
+import com.oxymoron.api.GurumeNaviApiClientImpl;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ public class RestaurantDetailPresenter implements RestaurantDetailContract.Prese
     }
 
     private void showDetail(String restaurantId) {
-        GurumeNaviApiClient.getInstance().loadRestaurantDetail(restaurantId, parsedObj -> {
+        GurumeNaviApiClientImpl.getInstance().loadRestaurantDetail(restaurantId, parsedObj -> {
             List<Rest> restaurantList = parsedObj.getRest();
             RestaurantDetail restaurantDetail = new RestaurantDetail(restaurantList.get(0));
             setDetail(restaurantDetail);

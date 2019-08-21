@@ -1,107 +1,12 @@
 package com.oxymoron.api;
 
-import com.example.gurumenaviapp.BuildConfig;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.internal.bind.TypeAdapters;
 import com.oxymoron.gson.data.GurumeNavi;
-import com.oxymoron.gson.typeadapter.IntegerTypeAdapter;
 import com.oxymoron.util.Consumer;
 
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+public interface GurumeNaviApiClient {
+    void loadRestaurantDetail(String restaurantId, Consumer<GurumeNavi> function);
 
-public class GurumeNaviApiClient {
-    private String token = "bf565ef4fdb696cfb6ff5a911941fa8d";
-    private GurumeNaviApi gurumeNaviApi = createGurumeNaviApi();
+    void loadRestaurantList(String latitude, String longitude, String hit_per_page, String offset_page, Consumer<GurumeNavi> function);
 
-    private static final GurumeNaviApiClient ourInstance = new GurumeNaviApiClient();
-
-    public static GurumeNaviApiClient getInstance() {
-        return ourInstance;
-    }
-
-    private GurumeNaviApiClient() {
-    }
-
-    public void loadRestaurantDetail(String restaurantId, Consumer<GurumeNavi> function) {
-        gurumeNaviApi.getGurumeNavi(token, restaurantId)
-                .enqueue(new Callback<GurumeNavi>() {
-                    @Override
-                    public void onResponse(Call<GurumeNavi> call, Response<GurumeNavi> response) {
-                        if (response.isSuccessful())
-                            function.accept(response.body());
-                    }
-
-                    @Override
-                    public void onFailure(Call<GurumeNavi> call, Throwable t) {
-
-                    }
-                });
-    }
-
-    public void loadRestaurantList(String latitude, String longitude, Consumer<GurumeNavi> function) {
-        gurumeNaviApi.getGurumeNavi(token, latitude, longitude)
-                .enqueue(new Callback<GurumeNavi>() {
-                    @Override
-                    public void onResponse(Call<GurumeNavi> call, Response<GurumeNavi> response) {
-                        if (response.isSuccessful())
-                            function.accept(response.body());
-                    }
-
-                    @Override
-                    public void onFailure(Call<GurumeNavi> call, Throwable t) {
-
-                    }
-                });
-    }
-
-    public void loadRestaurantList(String latitude, String longitude, String hit_per_page, String offset_page, Consumer<GurumeNavi> function) {
-        gurumeNaviApi.getGurumeNavi(token, latitude, longitude, hit_per_page, offset_page)
-                .enqueue(new Callback<GurumeNavi>() {
-                    @Override
-                    public void onResponse(Call<GurumeNavi> call, Response<GurumeNavi> response) {
-                        if (response.isSuccessful())
-                            function.accept(response.body());
-                    }
-
-                    @Override
-                    public void onFailure(Call<GurumeNavi> call, Throwable t) {
-
-                    }
-                });
-    }
-
-    private GurumeNaviApi createGurumeNaviApi() {
-        TypeAdapterFactory typeAdapterFactory =
-                TypeAdapters.newFactory(int.class, Integer.class, new IntegerTypeAdapter());
-
-        Gson myGson = new GsonBuilder()
-                .registerTypeAdapterFactory(typeAdapterFactory)
-                .create();
-
-        OkHttpClient.Builder builder = new OkHttpClient.Builder();
-
-        if (BuildConfig.DEBUG) {
-            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-            builder.addInterceptor(logging);
-        }
-
-        OkHttpClient client = builder.build();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.gnavi.co.jp/")
-                .addConverterFactory(GsonConverterFactory.create(myGson))
-                .client(client)
-                .build();
-
-        return retrofit.create(GurumeNaviApi.class);
-    }
+    void loadRestaurantList(String latitude, String longitude, Consumer<GurumeNavi> function);
 }

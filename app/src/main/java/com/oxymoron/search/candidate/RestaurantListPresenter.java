@@ -7,7 +7,7 @@ import com.oxymoron.gson.data.Rest;
 import com.oxymoron.request.RequestIds;
 import com.oxymoron.request.RequestMap;
 import com.oxymoron.search.candidate.data.RestaurantThumbnail;
-import com.oxymoron.api.GurumeNaviApiClient;
+import com.oxymoron.api.GurumeNaviApiClientImpl;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -101,7 +101,7 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
     }
 
     private void showThumbnail(String latitude, String longitude) {
-        GurumeNaviApiClient.getInstance().loadRestaurantList(latitude, longitude, parsedObj -> {
+        GurumeNaviApiClientImpl.getInstance().loadRestaurantList(latitude, longitude, parsedObj -> {
             List<Rest> restaurantList = parsedObj.getRest();
             List<RestaurantThumbnail> restaurantThumbnailList = createRestaurantThumbnailList(restaurantList);
 
@@ -113,7 +113,7 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
     }
 
     private void showThumbnail(String latitude, String longitude, String hit_per_page, String offset_page) {
-        GurumeNaviApiClient.getInstance().loadRestaurantList(latitude, longitude, hit_per_page, offset_page, parsedObj -> {
+        GurumeNaviApiClientImpl.getInstance().loadRestaurantList(latitude, longitude, hit_per_page, offset_page, parsedObj -> {
             List<Rest> restaurantList = parsedObj.getRest();
             List<RestaurantThumbnail> restaurantThumbnailList = createRestaurantThumbnailList(restaurantList);
 
