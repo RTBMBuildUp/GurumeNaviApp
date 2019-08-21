@@ -4,6 +4,7 @@ package com.oxymoron.gson.data;
 import android.support.annotation.Nullable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.oxymoron.util.Optional;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -20,16 +21,16 @@ public class ImageUrl {
     @Expose
     private String qrcode;
 
-    public String getShopImage1() {
-        return shopImage1;
+    public Optional<String> getShopImage1() {
+        return Optional.of(shopImage1);
     }
 
     public void setShopImage1(String shopImage1) {
         this.shopImage1 = shopImage1;
     }
 
-    public String getShopImage2() {
-        return shopImage2;
+    public Optional<String> getShopImage2() {
+        return Optional.of(shopImage2);
     }
 
     public void setShopImage2(String shopImage2) {
@@ -44,34 +45,13 @@ public class ImageUrl {
         this.qrcode = qrcode;
     }
 
-    public Boolean isExistShopImage() {
-        //bad practice???
-        try {
-            new URL(shopImage1);
-            new URL(shopImage2);
-
-            return true;
-        } catch (MalformedURLException e) {
-            return false;
-        }
-    }
-
     @Nullable
-    public String getShopImage() {
+    public Optional<String> getShopImage() {
         //bad practice???
-        try {
-            new URL(shopImage1);
-        } catch (MalformedURLException e) {
-            try {
-                new URL(shopImage2);
-            } catch (MalformedURLException error) {
-                return null;
-            }
+        if (getShopImage1().isPresent()) return getShopImage1();
+        if (getShopImage2().isPresent()) return  getShopImage2();
 
-            return shopImage2;
-        }
-
-        return shopImage1;
+        return Optional.empty();
     }
 
 }
