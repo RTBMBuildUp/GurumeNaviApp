@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.gurumenaviapp.R;
+import com.oxymoron.api.GurumeNaviApiClientImpl;
 import com.oxymoron.gson.data.Access;
 import com.oxymoron.request.RequestIds;
 import com.oxymoron.search.detail.data.RestaurantDetail;
@@ -33,7 +34,7 @@ public class RestaurantDetailActivity extends AppCompatActivity implements Resta
         setContentView(R.layout.restaurant_detail);
         findViews();
 
-        presenter = new RestaurantDetailPresenter(this);
+        presenter = new RestaurantDetailPresenter(this, GurumeNaviApiClientImpl.getInstance());
 
         Intent intent = getIntent();
         String restaurantId = intent.getStringExtra(RequestIds.restaurant_id.toString());

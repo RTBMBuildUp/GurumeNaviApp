@@ -1,5 +1,6 @@
 package com.oxymoron.search.detail;
 
+import com.oxymoron.api.GurumeNaviApiClient;
 import com.oxymoron.gson.data.Rest;
 import com.oxymoron.search.detail.data.RestaurantDetail;
 import com.oxymoron.api.GurumeNaviApiClientImpl;
@@ -8,13 +9,15 @@ import java.util.List;
 
 public class RestaurantDetailPresenter implements RestaurantDetailContract.Presenter {
     private RestaurantDetailContract.View view;
+    private GurumeNaviApiClient apiClient;
 
-    RestaurantDetailPresenter(RestaurantDetailContract.View view) {
+    RestaurantDetailPresenter(RestaurantDetailContract.View view, GurumeNaviApiClient apiClient) {
         this.view = view;
+        this.apiClient = apiClient;
     }
 
     private void showDetail(String restaurantId) {
-        GurumeNaviApiClientImpl.getInstance().loadRestaurantDetail(restaurantId, parsedObj -> {
+        apiClient.loadRestaurantDetail(restaurantId, parsedObj -> {
             List<Rest> restaurantList = parsedObj.getRest();
             RestaurantDetail restaurantDetail = new RestaurantDetail(restaurantList.get(0));
             setDetail(restaurantDetail);

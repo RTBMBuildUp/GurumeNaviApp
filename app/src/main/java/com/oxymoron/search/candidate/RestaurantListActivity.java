@@ -9,6 +9,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import com.example.gurumenaviapp.R;
+import com.oxymoron.api.GurumeNaviApiClientImpl;
 import com.oxymoron.request.RequestIds;
 import com.oxymoron.request.RequestMap;
 import com.oxymoron.search.candidate.data.RestaurantThumbnail;
@@ -39,7 +40,7 @@ public class RestaurantListActivity extends AppCompatActivity implements Restaur
 
         prepareRecyclerView(requestMap);
 
-        presenter = new RestaurantListPresenter(this);
+        presenter = new RestaurantListPresenter(this, GurumeNaviApiClientImpl.getInstance());
 
         String token = getIntent().getStringExtra(key_id.toString());
         presenter.search(requestMap.get(latitude), requestMap.get(longitude));

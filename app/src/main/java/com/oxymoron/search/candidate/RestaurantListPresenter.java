@@ -3,6 +3,7 @@ package com.oxymoron.search.candidate;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
+import com.oxymoron.api.GurumeNaviApiClient;
 import com.oxymoron.gson.data.Rest;
 import com.oxymoron.request.RequestIds;
 import com.oxymoron.request.RequestMap;
@@ -20,10 +21,12 @@ import static com.oxymoron.request.RequestIds.longitude;
 import static com.oxymoron.request.RequestIds.offset_page;
 
 public class RestaurantListPresenter implements RestaurantListContract.Presenter {
+    private GurumeNaviApiClient apiClient;
     private RestaurantListContract.View view;
 
-    RestaurantListPresenter(RestaurantListContract.View view) {
+    RestaurantListPresenter(RestaurantListContract.View view, GurumeNaviApiClient apiClient) {
         this.view = view;
+        this.apiClient = apiClient;
     }
 
     @Override
@@ -101,7 +104,7 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
     }
 
     private void showThumbnail(String latitude, String longitude) {
-        GurumeNaviApiClientImpl.getInstance().loadRestaurantList(latitude, longitude, parsedObj -> {
+        apiClient.loadRestaurantList(latitude, longitude, parsedObj -> {
             List<Rest> restaurantList = parsedObj.getRest();
             List<RestaurantThumbnail> restaurantThumbnailList = createRestaurantThumbnailList(restaurantList);
 
@@ -113,7 +116,7 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
     }
 
     private void showThumbnail(String latitude, String longitude, String hit_per_page, String offset_page) {
-        GurumeNaviApiClientImpl.getInstance().loadRestaurantList(latitude, longitude, hit_per_page, offset_page, parsedObj -> {
+        apiClient.loadRestaurantList(latitude, longitude, hit_per_page, offset_page, parsedObj -> {
             List<Rest> restaurantList = parsedObj.getRest();
             List<RestaurantThumbnail> restaurantThumbnailList = createRestaurantThumbnailList(restaurantList);
 
