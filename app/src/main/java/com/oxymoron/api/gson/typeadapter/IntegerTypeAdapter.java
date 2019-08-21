@@ -1,4 +1,4 @@
-package com.oxymoron.gson.typeadapter;
+package com.oxymoron.api.gson.typeadapter;
 
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.TypeAdapter;

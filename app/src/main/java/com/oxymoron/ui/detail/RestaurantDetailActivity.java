@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.gurumenaviapp.R;
 import com.oxymoron.api.GurumeNaviApiClientImpl;
-import com.oxymoron.gson.data.Access;
+import com.oxymoron.api.gson.data.Access;
 import com.oxymoron.request.RequestIds;
 import com.oxymoron.ui.detail.data.RestaurantDetail;
 import com.oxymoron.util.Function;

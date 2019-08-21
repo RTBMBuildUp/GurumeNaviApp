@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.gurumenaviapp.R;
-import com.oxymoron.ui.list.OnClickListener;
 import com.oxymoron.ui.list.data.RestaurantThumbnail;
 
 import java.util.List;

@@ -1,13 +1,10 @@
 
-package com.oxymoron.gson.data;
+package com.oxymoron.api.gson.data;
 
 import android.support.annotation.Nullable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.oxymoron.util.Optional;
-
-import java.net.MalformedURLException;
-import java.net.URL;
 
 public class ImageUrl {
 

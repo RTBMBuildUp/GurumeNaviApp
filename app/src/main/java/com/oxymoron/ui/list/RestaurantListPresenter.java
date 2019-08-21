@@ -4,7 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.oxymoron.api.GurumeNaviApiClient;
-import com.oxymoron.gson.data.Rest;
+import com.oxymoron.api.gson.data.Rest;
 import com.oxymoron.request.RequestIds;
 import com.oxymoron.request.RequestMap;
 import com.oxymoron.ui.list.data.RestaurantThumbnail;

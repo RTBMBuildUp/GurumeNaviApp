@@ -1,6 +1,6 @@
 package com.oxymoron.api;
 
-import com.oxymoron.gson.data.GurumeNavi;
+import com.oxymoron.api.gson.data.GurumeNavi;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

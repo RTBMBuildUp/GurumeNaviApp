@@ -1,7 +1,7 @@
 package com.oxymoron.ui.detail;
 
 import com.oxymoron.api.GurumeNaviApiClient;
-import com.oxymoron.gson.data.Rest;
+import com.oxymoron.api.gson.data.Rest;
 import com.oxymoron.ui.detail.data.RestaurantDetail;
 
 import java.util.List;

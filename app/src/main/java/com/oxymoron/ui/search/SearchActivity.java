@@ -37,7 +37,7 @@ import static com.oxymoron.request.RequestIds.latitude;
 import static com.oxymoron.request.RequestIds.longitude;
 import static com.oxymoron.request.RequestIds.range;
 
-public class SearchScreenActivity extends AppCompatActivity {
+public class SearchActivity extends AppCompatActivity {
     private Button searchButton;
 
     private LocationData locationData;

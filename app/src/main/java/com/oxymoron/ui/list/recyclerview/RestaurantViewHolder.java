@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.gurumenaviapp.R;
-import com.oxymoron.gson.data.Access;
+import com.oxymoron.api.gson.data.Access;
 import com.oxymoron.ui.list.data.RestaurantThumbnail;
 
 public class RestaurantViewHolder extends RecyclerView.ViewHolder {

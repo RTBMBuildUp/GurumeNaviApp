@@ -1,4 +1,4 @@
-package com.oxymoron.ui.list;
+package com.oxymoron.ui.list.recyclerview;
 
 import com.oxymoron.ui.list.data.RestaurantThumbnail;
 
