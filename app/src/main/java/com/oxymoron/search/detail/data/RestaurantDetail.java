@@ -1,13 +1,8 @@
 package com.oxymoron.search.detail.data;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import com.oxymoron.gson.data.Access;
 import com.oxymoron.gson.data.Rest;
 import com.oxymoron.util.Optional;
-
-import java.io.IOException;
-import java.net.URL;
 
 public class RestaurantDetail {
     private String name;
@@ -16,7 +11,7 @@ public class RestaurantDetail {
     private Access access;
     private String openTime;
 
-    private Bitmap image;
+    private Optional<String> imageUrl;
 
     public RestaurantDetail() {
     }
@@ -28,12 +23,7 @@ public class RestaurantDetail {
         this.access = restaurant.getAccess();
         this.openTime = restaurant.getOpentime();
 
-//        try {
-//            this.image = BitmapFactory.decodeStream(new URL(restaurant.getImageUrl().getShopImage()).openStream());
-//        } catch (IOException e) {
-//            this.image = null;
-//            System.out.println(e);
-//        }
+        this.imageUrl = restaurant.getImageUrl().getShopImage();
     }
 
     public String getName() {
@@ -56,7 +46,7 @@ public class RestaurantDetail {
         return Optional.of(openTime);
     }
 
-    public Optional<Bitmap> getImage() {
-        return Optional.of(image);
+    public Optional<String> getImageUrl() {
+        return imageUrl;
     }
 }

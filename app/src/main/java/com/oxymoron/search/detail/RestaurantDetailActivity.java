@@ -8,12 +8,13 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 import com.example.gurumenaviapp.R;
 import com.oxymoron.gson.data.Access;
 import com.oxymoron.request.RequestIds;
 import com.oxymoron.search.detail.data.RestaurantDetail;
 import com.oxymoron.util.Function;
-import com.oxymoron.util.Optional;
 
 public class RestaurantDetailActivity extends AppCompatActivity implements RestaurantDetailContract.View {
     private RestaurantDetailContract.Presenter presenter;
@@ -63,7 +64,11 @@ public class RestaurantDetailActivity extends AppCompatActivity implements Resta
 
         this.openTime.setText(detail.getOpenTime().getOrElse(notFound));
 
-        this.imageView.setImageBitmap(detail.getImage().getOrElse(notFoundImage));
+        if (detail.getImageUrl().isPresent()) {
+            this.setImageView(detail.getImageUrl().get());
+        } else {
+            this.imageView.setImageBitmap(notFoundImage);
+        }
     }
 
     private void findViews() {
@@ -74,5 +79,9 @@ public class RestaurantDetailActivity extends AppCompatActivity implements Resta
         this.openTime = findViewById(R.id.restaurant_detail_open_time);
 
         this.imageView = findViewById(R.id.restaurant_item_image);
+    }
+
+    private void setImageView(String imageUrl) {
+        Glide.with(this).load(imageUrl).into(imageView);
     }
 }
