@@ -3,15 +3,20 @@ package com.oxymoron.search.candidate.recyclerview;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.gurumenaviapp.R;
 import com.oxymoron.gson.data.Access;
 import com.oxymoron.search.candidate.data.RestaurantThumbnail;
-import com.oxymoron.util.Function;
 
 public class RestaurantViewHolder extends RecyclerView.ViewHolder {
     private Context context;
@@ -38,14 +43,13 @@ public class RestaurantViewHolder extends RecyclerView.ViewHolder {
 
         this.setName(thumbnail.getName());
 
-        this.setAccess(thumbnail.getAccess().map(new Function<Access, String>() {
-            @Override
-            public String apply(Access value) {
-                return value.showUserAround();
-            }
-        }).getOrElse(""));
+        this.setAccess(thumbnail.getAccess().map(Access::showUserAround).getOrElse(""));
 
-        this.setImageView(thumbnail.getImage().getOrElse(notFoundImage));
+        if (thumbnail.getImageUrl().isPresent()) {
+            this.setImageView(thumbnail.getImageUrl().get());
+        } else {
+            this.imageView.setImageBitmap(notFoundImage);
+        }
     }
 
     private void setName(String name) {
@@ -56,7 +60,16 @@ public class RestaurantViewHolder extends RecyclerView.ViewHolder {
         this.access.setText(access);
     }
 
-    private void setImageView(Bitmap bitmapImage) {
-        this.imageView.setImageBitmap(bitmapImage);
+    private void setImageView(String imageUrl) {
+        Glide.with(context).asBitmap().load(imageUrl).into(new CustomTarget<Bitmap>() {
+            @Override
+            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                imageView.setImageBitmap(resource);
+            }
+
+            @Override
+            public void onLoadCleared(@Nullable Drawable placeholder) {
+            }
+        });
     }
 }

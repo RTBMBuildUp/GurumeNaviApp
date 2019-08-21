@@ -1,19 +1,14 @@
 package com.oxymoron.search.candidate;
 
-import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import com.oxymoron.gson.data.GurumeNavi;
+
 import com.oxymoron.gson.data.Rest;
 import com.oxymoron.request.RequestIds;
 import com.oxymoron.request.RequestMap;
 import com.oxymoron.search.candidate.data.RestaurantThumbnail;
-import com.oxymoron.util.Consumer;
-import com.oxymoron.util.Function;
 import com.oxymoron.util.GurumeNaviUtil;
-import com.oxymoron.util.Optional;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -23,8 +18,6 @@ import static com.oxymoron.request.RequestIds.hit_per_page;
 import static com.oxymoron.request.RequestIds.latitude;
 import static com.oxymoron.request.RequestIds.longitude;
 import static com.oxymoron.request.RequestIds.offset_page;
-import static com.oxymoron.util.GurumeNaviUtil.createUrlForGurumeNavi;
-import static com.oxymoron.util.GurumeNaviUtil.parseGurumeNaviJson;
 
 public class RestaurantListPresenter implements RestaurantListContract.Presenter {
     private RestaurantListContract.View view;
@@ -86,7 +79,8 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
                 //filter
                 newRequestMap.put(offset_page, Integer.toString(offset));
                 for (Map.Entry<RequestIds, String> entry : requestMap.entrySet()) {
-                    if (entry.getKey() != offset_page) newRequestMap.put(entry.getKey(), entry.getValue());
+                    if (entry.getKey() != offset_page)
+                        newRequestMap.put(entry.getKey(), entry.getValue());
                 }
 
                 search(newRequestMap.get(latitude), newRequestMap.get(longitude), newRequestMap.get(hit_per_page), newRequestMap.get(offset_page));
@@ -128,34 +122,6 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
                 view.addRecyclerViewItem(restaurantThumbnail);
             }
         });
-    }
-
-    private class ShowThumbnailTask extends AsyncTask<String, Void, Optional<List<RestaurantThumbnail>>> {
-        @Override
-        protected Optional<List<RestaurantThumbnail>> doInBackground(String... strings) {
-            Optional<GurumeNavi> gurumeNavi = parseGurumeNaviJson(strings[0]);
-            return gurumeNavi.map(new Function<GurumeNavi, List<RestaurantThumbnail>>() {
-                @Override
-                public List<RestaurantThumbnail> apply(GurumeNavi value) {
-                    List<Rest> restaurantList = value.getRest();
-                    return createRestaurantThumbnailList(restaurantList);
-                }
-            });
-        }
-
-        @Override
-        protected void onPostExecute(Optional<List<RestaurantThumbnail>> results) {
-            results.ifPresent(new Consumer<List<RestaurantThumbnail>>() {
-                @Override
-                public void accept(List<RestaurantThumbnail> value) {
-                    Collections.reverse(value);
-                    for (RestaurantThumbnail restaurantThumbnail : value) {
-                        view.addRecyclerViewItem(restaurantThumbnail);
-                    }
-                }
-            });
-        }
-
     }
 
     private List<RestaurantThumbnail> createRestaurantThumbnailList(List<Rest> restaurantList) {

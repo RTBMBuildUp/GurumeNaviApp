@@ -2,6 +2,8 @@ package com.oxymoron.search.candidate.data;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+
+import com.bumptech.glide.Glide;
 import com.oxymoron.gson.data.Access;
 import com.oxymoron.gson.data.Rest;
 import com.oxymoron.util.Optional;
@@ -12,8 +14,7 @@ import java.net.URL;
 public class RestaurantThumbnail {
     private String name;
     private Access access;
-
-    private Bitmap image;
+    private Optional<String> imageUrl;
 
     private String restaurantId;
 
@@ -23,12 +24,7 @@ public class RestaurantThumbnail {
     public RestaurantThumbnail(Rest restaurant) {
         this.name = restaurant.getName();
         this.access = restaurant.getAccess();
-
-//        try {
-//            this.image = BitmapFactory.decodeStream(new URL(restaurant.getImageUrl().getShopImage()).openStream());
-//        } catch (IOException e) {
-//            this.image = null;
-//        }
+        this.imageUrl = restaurant.getImageUrl().getShopImage();
 
         this.restaurantId = restaurant.getId();
     }
@@ -41,8 +37,8 @@ public class RestaurantThumbnail {
         return Optional.of(access);
     }
 
-    public Optional<Bitmap> getImage() {
-        return Optional.of(image);
+    public Optional<String> getImageUrl() {
+        return imageUrl;
     }
 
     public String getRestaurantId() {
