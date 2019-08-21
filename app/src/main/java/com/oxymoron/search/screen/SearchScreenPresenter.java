@@ -14,19 +14,25 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+
 import com.example.gurumenaviapp.R;
 import com.oxymoron.gps.LocationListener;
 import com.oxymoron.gps.data.LocationData;
-import com.oxymoron.request.Request;
 import com.oxymoron.request.RequestIds;
 import com.oxymoron.request.RequestMap;
 import com.oxymoron.search.candidate.RestaurantListActivity;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.oxymoron.request.Request.makeRequest;
-import static com.oxymoron.request.RequestIds.*;
-import static com.oxymoron.util.GurumeNaviUtil.createUrlForGurumeNavi;
+import static com.oxymoron.request.RequestIds.hit_per_page;
+import static com.oxymoron.request.RequestIds.latitude;
+import static com.oxymoron.request.RequestIds.longitude;
+import static com.oxymoron.request.RequestIds.range;
 
 public class SearchScreenPresenter implements SearchScreenContract.Presenter {
     private LocationData locationData;
