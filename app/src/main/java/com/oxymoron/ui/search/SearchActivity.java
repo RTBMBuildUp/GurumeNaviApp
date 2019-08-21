@@ -45,6 +45,8 @@ public class SearchActivity extends AppCompatActivity {
     private Map<Integer, Integer> idRangeMap;
     private List<RadioButton> radioButtonList;
 
+    private final int LOCATION_REQUEST_PERMISSION = 1000;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_screen);
@@ -69,7 +71,7 @@ public class SearchActivity extends AppCompatActivity {
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         Log.d("log", "onRequestPermissionsResult: " + requestCode);
-        if (requestCode == 1000) {
+        if (requestCode == LOCATION_REQUEST_PERMISSION) {
             Log.d("log", "onRequestPermissionsResult: request");
             if (PackageManager.PERMISSION_GRANTED != grantResults[0]) {
                 Log.d("log", "onRequestPermissionsResult: deny");
@@ -235,19 +237,17 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void requestLocationPermission() {
-        final int REQUEST_PERMISSION = 1000;
-
         if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)) {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    REQUEST_PERMISSION);
+                    LOCATION_REQUEST_PERMISSION);
         } else {
             Toaster.toast(this, "許可されないとアプリが実行できません");
 
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION,},
-                    REQUEST_PERMISSION);
+                    LOCATION_REQUEST_PERMISSION);
         }
     }
 
