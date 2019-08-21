@@ -2,7 +2,7 @@ package com.oxymoron.gps;
 
 import android.location.Location;
 import android.os.Bundle;
-import com.oxymoron.search.screen.SearchScreenContract;
+import com.oxymoron.search.search.SearchScreenContract;
 
 public class LocationListener implements android.location.LocationListener {
     private SearchScreenContract.Presenter presenter;

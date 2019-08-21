@@ -1,4 +1,4 @@
-package com.oxymoron.search.screen;
+package com.oxymoron.search.search;
 
 import android.Manifest;
 import android.app.Activity;
