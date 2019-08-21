@@ -3,6 +3,7 @@ package com.oxymoron.util;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.example.gurumenaviapp.BuildConfig;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.TypeAdapterFactory;
@@ -21,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -113,9 +116,20 @@ public class GurumeNaviUtil {
                 .registerTypeAdapterFactory(typeAdapterFactory)
                 .create();
 
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+
+        if (BuildConfig.DEBUG) {
+            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+            builder.addInterceptor(logging);
+        }
+
+        OkHttpClient client = builder.build();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.gnavi.co.jp/")
                 .addConverterFactory(GsonConverterFactory.create(myGson))
+                .client(client)
                 .build();
 
         return retrofit.create(GurumeNaviApi.class);
