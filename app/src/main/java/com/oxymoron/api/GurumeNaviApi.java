@@ -1,4 +1,4 @@
-package com.oxymoron.util;
+package com.oxymoron.api;
 
 import com.oxymoron.gson.data.GurumeNavi;
 

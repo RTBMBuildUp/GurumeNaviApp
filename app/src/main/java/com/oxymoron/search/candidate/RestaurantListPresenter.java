@@ -7,7 +7,7 @@ import com.oxymoron.gson.data.Rest;
 import com.oxymoron.request.RequestIds;
 import com.oxymoron.request.RequestMap;
 import com.oxymoron.search.candidate.data.RestaurantThumbnail;
-import com.oxymoron.util.GurumeNaviApiClient;
+import com.oxymoron.api.GurumeNaviApiClient;
 
 import java.util.ArrayList;
 import java.util.Collections;

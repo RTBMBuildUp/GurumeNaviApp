@@ -1,4 +1,4 @@
-package com.oxymoron.util;
+package com.oxymoron.api;
 
 import com.example.gurumenaviapp.BuildConfig;
 import com.google.gson.Gson;
@@ -7,6 +7,7 @@ import com.google.gson.TypeAdapterFactory;
 import com.google.gson.internal.bind.TypeAdapters;
 import com.oxymoron.gson.data.GurumeNavi;
 import com.oxymoron.gson.typeadapter.IntegerTypeAdapter;
+import com.oxymoron.util.Consumer;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
