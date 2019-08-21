@@ -1,8 +1,5 @@
 package com.oxymoron.util;
 
-import android.text.TextUtils;
-import android.util.Log;
-
 import com.example.gurumenaviapp.BuildConfig;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -10,17 +7,6 @@ import com.google.gson.TypeAdapterFactory;
 import com.google.gson.internal.bind.TypeAdapters;
 import com.oxymoron.gson.data.GurumeNavi;
 import com.oxymoron.gson.typeadapter.IntegerTypeAdapter;
-import com.oxymoron.request.Request;
-import com.oxymoron.request.RequestIds;
-import com.oxymoron.request.RequestMap;
-
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -30,17 +16,21 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static com.oxymoron.request.Request.makeRequest;
-import static com.oxymoron.request.RequestIds.key_id;
-import static com.oxymoron.request.Sign.And;
-import static com.oxymoron.request.Sign.Question;
+public class GurumeNaviApiClient {
+    private String token = "bf565ef4fdb696cfb6ff5a911941fa8d";
+    private GurumeNaviApi gurumeNaviApi = createGurumeNaviApi();
 
-public class GurumeNaviUtil {
-    private static String token = "bf565ef4fdb696cfb6ff5a911941fa8d";
-    private static GurumeNaviApi gurumeNaviApi = createGurumeNaviApi();
+    private static final GurumeNaviApiClient ourInstance = new GurumeNaviApiClient();
 
-    public static void parseGurumeNaviJson(String restaurantId, Consumer<GurumeNavi> function) {
-        createGurumeNaviApi().getGurumeNavi(token, restaurantId)
+    public static GurumeNaviApiClient getInstance() {
+        return ourInstance;
+    }
+
+    private GurumeNaviApiClient() {
+    }
+
+    public void loadRestaurantDetail(String restaurantId, Consumer<GurumeNavi> function) {
+        gurumeNaviApi.getGurumeNavi(token, restaurantId)
                 .enqueue(new Callback<GurumeNavi>() {
                     @Override
                     public void onResponse(Call<GurumeNavi> call, Response<GurumeNavi> response) {
@@ -55,8 +45,8 @@ public class GurumeNaviUtil {
                 });
     }
 
-    public static void parseGurumeNaviJson(String latitude, String longitude, Consumer<GurumeNavi> function) {
-        createGurumeNaviApi().getGurumeNavi(token, latitude, longitude)
+    public void loadRestaurantList(String latitude, String longitude, Consumer<GurumeNavi> function) {
+        gurumeNaviApi.getGurumeNavi(token, latitude, longitude)
                 .enqueue(new Callback<GurumeNavi>() {
                     @Override
                     public void onResponse(Call<GurumeNavi> call, Response<GurumeNavi> response) {
@@ -71,8 +61,8 @@ public class GurumeNaviUtil {
                 });
     }
 
-    public static void parseGurumeNaviJson(String latitude, String longitude, String hit_per_page, String offset_page, Consumer<GurumeNavi> function) {
-        createGurumeNaviApi().getGurumeNavi(token, latitude, longitude, hit_per_page, offset_page)
+    public void loadRestaurantList(String latitude, String longitude, String hit_per_page, String offset_page, Consumer<GurumeNavi> function) {
+        gurumeNaviApi.getGurumeNavi(token, latitude, longitude, hit_per_page, offset_page)
                 .enqueue(new Callback<GurumeNavi>() {
                     @Override
                     public void onResponse(Call<GurumeNavi> call, Response<GurumeNavi> response) {
@@ -87,7 +77,7 @@ public class GurumeNaviUtil {
                 });
     }
 
-    private static GurumeNaviApi createGurumeNaviApi() {
+    private GurumeNaviApi createGurumeNaviApi() {
         TypeAdapterFactory typeAdapterFactory =
                 TypeAdapters.newFactory(int.class, Integer.class, new IntegerTypeAdapter());
 
