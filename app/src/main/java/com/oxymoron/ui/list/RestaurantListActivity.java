@@ -84,11 +84,6 @@ public class RestaurantListActivity extends AppCompatActivity implements Restaur
         adapter.notifyItemRemoved(position);
     }
 
-    @Override
-    public void cleanRecyclerViewItem() {
-        presenter.cleanItem(itemList);
-    }
-
     public static Intent createIntent(Context packageContext, Range range, LocationInformation locationInformation) {
         Intent intent = new Intent(packageContext, RestaurantListActivity.class);
 
