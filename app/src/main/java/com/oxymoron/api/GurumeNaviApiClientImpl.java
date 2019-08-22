@@ -65,8 +65,8 @@ public class GurumeNaviApiClientImpl implements GurumeNaviApiClient {
     }
 
     @Override
-    public void loadRestaurantList(String latitude, String longitude, String hit_per_page, String offset_page, Consumer<GurumeNavi> function) {
-        gurumeNaviApi.getGurumeNavi(token, latitude, longitude, hit_per_page, offset_page)
+    public void loadRestaurantList(String latitude, String longitude, String offset_page, Consumer<GurumeNavi> function) {
+        gurumeNaviApi.getGurumeNavi(token, latitude, longitude, offset_page)
                 .enqueue(new Callback<GurumeNavi>() {
                     @Override
                     public void onResponse(Call<GurumeNavi> call, Response<GurumeNavi> response) {

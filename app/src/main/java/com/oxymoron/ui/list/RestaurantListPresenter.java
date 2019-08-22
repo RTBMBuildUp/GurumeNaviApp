@@ -5,23 +5,19 @@ import android.util.Log;
 
 import com.oxymoron.api.GurumeNaviApiClient;
 import com.oxymoron.api.gson.data.Rest;
-import com.oxymoron.request.RequestIds;
-import com.oxymoron.request.RequestMap;
+import com.oxymoron.request.LocationInformation;
+import com.oxymoron.request.PageState;
 import com.oxymoron.ui.list.data.RestaurantThumbnail;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-
-import static com.oxymoron.request.RequestIds.hit_per_page;
-import static com.oxymoron.request.RequestIds.latitude;
-import static com.oxymoron.request.RequestIds.longitude;
-import static com.oxymoron.request.RequestIds.offset_page;
 
 public class RestaurantListPresenter implements RestaurantListContract.Presenter {
     private GurumeNaviApiClient apiClient;
     private RestaurantListContract.View view;
+
+    private PageState pageState;
 
     RestaurantListPresenter(RestaurantListContract.View view, GurumeNaviApiClient apiClient) {
         this.view = view;
@@ -29,13 +25,21 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
     }
 
     @Override
-    public void search(String latitude, String longitude) {
+    public void search(LocationInformation locationInformation) {
+        String latitude = locationInformation.getLatitude().toString();
+        String longitude = locationInformation.getLongitude().toString();
+
         showThumbnail(latitude, longitude);
     }
 
     @Override
-    public void search(String latitude, String longitude, String hit_per_page, String offset_page) {
-        showThumbnail(latitude, longitude, hit_per_page, offset_page);
+    public void search(LocationInformation locationInformation, PageState pageState) {
+        String latitude = locationInformation.getLatitude().toString();
+        String longitude = locationInformation.getLongitude().toString();
+
+        String offset_page = pageState.getOffsetPage().toString();
+
+        showThumbnail(latitude, longitude, offset_page);
     }
 
     @Override
@@ -70,22 +74,15 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
     }
 
     @Override
-    public void onScrolled(RecyclerView recyclerView, RequestMap requestMap, int itemCount) {
+    public void onScrolled(RecyclerView recyclerView, LocationInformation locationInformation, int itemCount) {
+        if (pageState == null) return;
+
         final int bottom = 1;
         if (!recyclerView.canScrollVertically(bottom)) {
             try {
-                int hitPerPage = Integer.parseInt(requestMap.getOrElse(hit_per_page, "0"));
-                int offset = calculateNextOffset(itemCount, hitPerPage);
-                RequestMap newRequestMap = new RequestMap();
+                this.pageState = pageState.getNextPageState();
 
-                //filter
-                newRequestMap.put(offset_page, Integer.toString(offset));
-                for (Map.Entry<RequestIds, String> entry : requestMap.entrySet()) {
-                    if (entry.getKey() != offset_page)
-                        newRequestMap.put(entry.getKey(), entry.getValue());
-                }
-
-                search(newRequestMap.get(latitude), newRequestMap.get(longitude), newRequestMap.get(hit_per_page), newRequestMap.get(offset_page));
+                search(locationInformation, pageState);
             } catch (ArithmeticException e) {
                 Log.d("RestaurantListPresenter", "onScrolled: " + e);
             }
@@ -104,6 +101,8 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
 
     private void showThumbnail(String latitude, String longitude) {
         apiClient.loadRestaurantList(latitude, longitude, parsedObj -> {
+            pageState = new PageState(parsedObj.getPageOffset());
+
             List<Rest> restaurantList = parsedObj.getRest();
             List<RestaurantThumbnail> restaurantThumbnailList = createRestaurantThumbnailList(restaurantList);
 
@@ -114,8 +113,10 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
         });
     }
 
-    private void showThumbnail(String latitude, String longitude, String hit_per_page, String offset_page) {
-        apiClient.loadRestaurantList(latitude, longitude, hit_per_page, offset_page, parsedObj -> {
+    private void showThumbnail(String latitude, String longitude, String offset_page) {
+        apiClient.loadRestaurantList(latitude, longitude, offset_page, parsedObj -> {
+            pageState = new PageState(parsedObj.getPageOffset());
+
             List<Rest> restaurantList = parsedObj.getRest();
             List<RestaurantThumbnail> restaurantThumbnailList = createRestaurantThumbnailList(restaurantList);
 

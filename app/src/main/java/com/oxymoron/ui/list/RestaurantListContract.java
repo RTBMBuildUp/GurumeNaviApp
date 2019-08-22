@@ -2,9 +2,11 @@ package com.oxymoron.ui.list;
 
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+
 import com.oxymoron.BasePresenter;
 import com.oxymoron.BaseView;
-import com.oxymoron.request.RequestMap;
+import com.oxymoron.request.LocationInformation;
+import com.oxymoron.request.PageState;
 import com.oxymoron.ui.list.data.RestaurantThumbnail;
 
 import java.util.List;
@@ -27,10 +29,10 @@ public interface RestaurantListContract {
 
         void cleanItem(List<RestaurantThumbnail> itemList);
 
-        void search(String latitude, String longitude, String hit_per_page, String offset_page);
+        void search(LocationInformation locationInformation);
 
-        void search(String latitude, String longitude);
+        void search(LocationInformation locationInformation, PageState pageState);
 
-        void onScrolled(RecyclerView recyclerView, RequestMap requestMap, int itemCount);
+        void onScrolled(RecyclerView recyclerView, LocationInformation locationInformation, int itemCount);
     }
 }

@@ -21,7 +21,6 @@ public interface GurumeNaviApi {
             @Query("keyid") String keyid,
             @Query("latitude") String latitude,
             @Query("longitude") String longitude,
-            @Query("hit_per_page") String hit_per_page,
             @Query("offset_page") String offset_page);
 
 }

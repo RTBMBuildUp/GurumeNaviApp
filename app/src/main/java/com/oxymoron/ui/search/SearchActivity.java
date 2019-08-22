@@ -19,28 +19,19 @@ import android.widget.Button;
 import android.widget.RadioButton;
 
 import com.example.gurumenaviapp.R;
-import com.oxymoron.gps.data.LocationData;
-import com.oxymoron.request.RequestIds;
-import com.oxymoron.request.RequestMap;
+import com.oxymoron.request.LocationInformation;
 import com.oxymoron.ui.list.RestaurantListActivity;
 import com.oxymoron.util.Toaster;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.oxymoron.request.Request.makeRequest;
-import static com.oxymoron.request.RequestIds.hit_per_page;
-import static com.oxymoron.request.RequestIds.latitude;
-import static com.oxymoron.request.RequestIds.longitude;
-import static com.oxymoron.request.RequestIds.range;
-
 public class SearchActivity extends AppCompatActivity {
     private Button searchButton;
 
-    private LocationData locationData;
+    private LocationInformation locationInformation;
 
     private Map<Integer, Integer> idRangeMap;
     private List<RadioButton> radioButtonList;
@@ -104,16 +95,8 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     public void searchRestaurant() {
-        RequestMap requestMap = generateRequestMap();
-
-        Intent restaurantCandidate = new Intent(this, RestaurantListActivity.class);
-        if (requestMap != null) {
-            for (Map.Entry<RequestIds, String> entry : requestMap.entrySet()) {
-                restaurantCandidate.putExtra(entry.getKey().toString(), entry.getValue());
-            }
-
-            startActivity(restaurantCandidate);
-        }
+        Intent intent = RestaurantListActivity.createIntent(this, locationInformation);
+        this.startActivity(intent);
     }
 
     private class LocationListener implements android.location.LocationListener {
@@ -168,27 +151,12 @@ public class SearchActivity extends AppCompatActivity {
         }
 
         private void updateLocation(double latitude, double longitude) {
-            if (locationData == null) {
-                locationData = new LocationData(latitude, longitude);
+            if (locationInformation == null) {
+                locationInformation = new LocationInformation(latitude, longitude);
             } else {
-                locationData.setLatitude(latitude);
-                locationData.setLongitude(longitude);
+                locationInformation.setLatitude(latitude);
+                locationInformation.setLongitude(longitude);
             }
-        }
-    }
-
-    private RequestMap generateRequestMap() {
-        if (locationData != null) {
-            return new RequestMap(Arrays.asList(
-                    makeRequest(latitude, locationData.getLatitude().toString()),
-                    makeRequest(longitude, locationData.getLongitude().toString()),
-                    makeRequest(range, loadRange().toString()),
-                    makeRequest(hit_per_page, Integer.toString(15))
-            ));
-        } else {
-            Toaster.toast(this, "現在地を取得できません。");
-
-            return null;
         }
     }
 

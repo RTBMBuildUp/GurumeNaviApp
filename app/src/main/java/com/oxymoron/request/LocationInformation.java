@@ -1,10 +1,14 @@
-package com.oxymoron.gps.data;
+package com.oxymoron.request;
 
-public class LocationData {
+import java.io.Serializable;
+
+public class LocationInformation implements Serializable {
+    public final static String name = "LocationInformation";
+
     private double latitude;
     private double longitude;
 
-    public LocationData(double latitude, double longitude) {
+    public LocationInformation(double latitude, double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -13,12 +17,12 @@ public class LocationData {
         this.latitude = latitude;
     }
 
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
-
     public Double getLatitude() {
         return latitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     public Double getLongitude() {
