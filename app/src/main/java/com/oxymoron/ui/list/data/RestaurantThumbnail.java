@@ -11,9 +11,6 @@ public class RestaurantThumbnail {
 
     private String restaurantId;
 
-    public RestaurantThumbnail() {
-    }
-
     public RestaurantThumbnail(Rest restaurant) {
         this.name = restaurant.getName();
         this.access = restaurant.getAccess();

@@ -13,9 +13,6 @@ public class RestaurantDetail {
 
     private Optional<String> imageUrl;
 
-    public RestaurantDetail() {
-    }
-
     public RestaurantDetail(Rest restaurant) {
         this.name = restaurant.getName();
         this.tel = restaurant.getTel();

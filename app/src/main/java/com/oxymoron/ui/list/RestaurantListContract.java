@@ -1,6 +1,5 @@
 package com.oxymoron.ui.list;
 
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 
 import com.oxymoron.BasePresenter;
@@ -17,10 +16,6 @@ public interface RestaurantListContract {
         void addRecyclerViewItem(RestaurantThumbnail item);
 
         void removeRecyclerViewItem(int position);
-
-        void startActivity(Intent intent);
-
-        void cleanRecyclerViewItem();
     }
 
     interface Presenter extends BasePresenter {

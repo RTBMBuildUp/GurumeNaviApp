@@ -16,7 +16,6 @@ import com.oxymoron.api.GurumeNaviApiClientImpl;
 import com.oxymoron.api.gson.data.Access;
 import com.oxymoron.request.RequestIds;
 import com.oxymoron.ui.detail.data.RestaurantDetail;
-import com.oxymoron.util.Function;
 
 public class RestaurantDetailActivity extends AppCompatActivity implements RestaurantDetailContract.View {
     private RestaurantDetailContract.Presenter presenter;
@@ -49,10 +48,9 @@ public class RestaurantDetailActivity extends AppCompatActivity implements Resta
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -71,12 +69,7 @@ public class RestaurantDetailActivity extends AppCompatActivity implements Resta
         this.tel.setText(detail.getTel().getOrElse(notFound));
         this.address.setText(detail.getAddress());
 
-        this.access.setText(detail.getAccess().map(new Function<Access, String>() {
-            @Override
-            public String apply(Access value) {
-                return value.showUserAround();
-            }
-        }).getOrElse(notFound));
+        this.access.setText(detail.getAccess().map(Access::showUserAround).getOrElse(notFound));
 
         this.openTime.setText(detail.getOpenTime().getOrElse(notFound));
 

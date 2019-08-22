@@ -38,12 +38,7 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantViewHo
     public void onBindViewHolder(@NonNull RestaurantViewHolder restaurantViewHolder, int position) {
         final RestaurantThumbnail thumbnail = restaurantThumbnailList.get(position);
 
-        restaurantViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clickListener.onClick(thumbnail);
-            }
-        });
+        restaurantViewHolder.itemView.setOnClickListener(v -> clickListener.onClick(thumbnail));
 
         restaurantViewHolder.setThumbnail(thumbnail);
     }

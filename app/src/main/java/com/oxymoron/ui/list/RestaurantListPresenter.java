@@ -95,11 +95,6 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
 
     }
 
-    private int calculateNextOffset(int itemCount, int hitPerPage) {
-        int currentOffset = itemCount / hitPerPage;
-        return currentOffset + (itemCount % hitPerPage == 0 ? 0 : 1) + 1;
-    }
-
     private void showThumbnail(Integer range, String latitude, String longitude) {
         apiClient.loadRestaurantList(range, latitude, longitude, parsedObj -> {
             pageState = new PageState(parsedObj.getPageOffset());

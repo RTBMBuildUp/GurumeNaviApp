@@ -13,7 +13,7 @@ import com.example.gurumenaviapp.R;
 import com.oxymoron.api.gson.data.Access;
 import com.oxymoron.ui.list.data.RestaurantThumbnail;
 
-public class RestaurantViewHolder extends RecyclerView.ViewHolder {
+class RestaurantViewHolder extends RecyclerView.ViewHolder {
     private Context context;
 
     TextView name;
@@ -31,7 +31,7 @@ public class RestaurantViewHolder extends RecyclerView.ViewHolder {
         this.imageView = view.findViewById(R.id.restaurant_item_image);
     }
 
-    public void setThumbnail(RestaurantThumbnail thumbnail) {
+    void setThumbnail(RestaurantThumbnail thumbnail) {
         final Bitmap notFoundImage = BitmapFactory.decodeResource(
                 this.context.getResources(), R.drawable.default_not_found
         );
