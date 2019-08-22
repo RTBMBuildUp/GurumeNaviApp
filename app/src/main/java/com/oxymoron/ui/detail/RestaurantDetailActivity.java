@@ -74,7 +74,7 @@ public class RestaurantDetailActivity extends AppCompatActivity implements Resta
 
     private void findViews() {
         this.name = findViewById(R.id.restaurant_detail_name);
-        this.tel = findViewById(R.id.restaurant_detail_telphone);
+        this.tel = findViewById(R.id.restaurant_detail_telephone);
         this.address = findViewById(R.id.restaurant_detail_address);
         this.access = findViewById(R.id.restaurant_detail_access);
         this.openTime = findViewById(R.id.restaurant_detail_open_time);
