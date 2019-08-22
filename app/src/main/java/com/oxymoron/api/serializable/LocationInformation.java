@@ -13,16 +13,8 @@ public class LocationInformation implements Serializable {
         this.longitude = longitude;
     }
 
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
     public Double getLatitude() {
         return latitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
     }
 
     public Double getLongitude() {

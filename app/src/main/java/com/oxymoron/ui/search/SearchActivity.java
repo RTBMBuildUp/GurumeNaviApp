@@ -154,12 +154,7 @@ public class SearchActivity extends AppCompatActivity {
         }
 
         private void updateLocation(double latitude, double longitude) {
-            if (locationInformation == null) {
-                locationInformation = new LocationInformation(latitude, longitude);
-            } else {
-                locationInformation.setLatitude(latitude);
-                locationInformation.setLongitude(longitude);
-            }
+            locationInformation = new LocationInformation(latitude, longitude);
         }
     }
 
