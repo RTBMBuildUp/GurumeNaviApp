@@ -20,6 +20,7 @@ import android.widget.RadioButton;
 
 import com.example.gurumenaviapp.R;
 import com.oxymoron.request.LocationInformation;
+import com.oxymoron.request.Range;
 import com.oxymoron.ui.list.RestaurantListActivity;
 import com.oxymoron.util.Toaster;
 
@@ -96,7 +97,7 @@ public class SearchActivity extends AppCompatActivity {
 
     public void searchRestaurant() {
         if (locationInformation != null) {
-            Intent intent = RestaurantListActivity.createIntent(this, locationInformation);
+            Intent intent = RestaurantListActivity.createIntent(this, loadRange(), locationInformation);
             this.startActivity(intent);
         }
     }
@@ -162,11 +163,11 @@ public class SearchActivity extends AppCompatActivity {
         }
     }
 
-    private Integer loadRange() {
+    private Range loadRange() {
         for (RadioButton radioButton : radioButtonList) {
-            if (radioButton.isChecked()) return idRangeMap.get(radioButton.getId());
+            if (radioButton.isChecked()) return new Range(idRangeMap.get(radioButton.getId()));
         }
-        return idRangeMap.get(R.id.search_screen_range_radio_button_2);
+        return new Range(idRangeMap.get(R.id.search_screen_range_radio_button_2));
     }
 
     private void checkState(LocationManager manager, android.location.LocationListener listener) {

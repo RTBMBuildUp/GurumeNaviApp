@@ -7,6 +7,7 @@ import com.oxymoron.BasePresenter;
 import com.oxymoron.BaseView;
 import com.oxymoron.request.LocationInformation;
 import com.oxymoron.request.PageState;
+import com.oxymoron.request.Range;
 import com.oxymoron.ui.list.data.RestaurantThumbnail;
 
 import java.util.List;
@@ -29,10 +30,10 @@ public interface RestaurantListContract {
 
         void cleanItem(List<RestaurantThumbnail> itemList);
 
-        void search(LocationInformation locationInformation);
+        void search(Range range, LocationInformation locationInformation);
 
-        void search(LocationInformation locationInformation, PageState pageState);
+        void search(Range range, LocationInformation locationInformation, PageState pageState);
 
-        void onScrolled(RecyclerView recyclerView, LocationInformation locationInformation, int itemCount);
+        void onScrolled(RecyclerView recyclerView, Range range, LocationInformation locationInformation, int itemCount);
     }
 }

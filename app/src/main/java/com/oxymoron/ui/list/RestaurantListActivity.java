@@ -14,7 +14,7 @@ import android.view.MenuItem;
 import com.example.gurumenaviapp.R;
 import com.oxymoron.api.GurumeNaviApiClientImpl;
 import com.oxymoron.request.LocationInformation;
-import com.oxymoron.request.PageState;
+import com.oxymoron.request.Range;
 import com.oxymoron.request.RequestIds;
 import com.oxymoron.ui.detail.RestaurantDetailActivity;
 import com.oxymoron.ui.list.data.RestaurantThumbnail;
@@ -24,7 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RestaurantListActivity extends AppCompatActivity implements RestaurantListContract.View {
-    private static final String KEY_LOCATION_INFORMATION = "KEY_LOCATION_INFORMATION";
+    private final static String KEY_LOCATION_INFORMATION = "KEY_LOCATION_INFORMATION";
+    private final static String KEY_RANGE = "KEY_RANGE";
 
     private RestaurantListContract.Presenter presenter;
 
@@ -33,7 +34,7 @@ public class RestaurantListActivity extends AppCompatActivity implements Restaur
     private List<RestaurantThumbnail> itemList = new ArrayList<>();
 
     private LocationInformation locationInformation;
-    private PageState pageState;
+    private Range range;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,20 +49,20 @@ public class RestaurantListActivity extends AppCompatActivity implements Restaur
         Intent intent = this.getIntent();
         this.locationInformation =
                 ((LocationInformation) intent.getSerializableExtra(KEY_LOCATION_INFORMATION));
+        this.range = ((Range) intent.getSerializableExtra(KEY_RANGE));
 
         prepareRecyclerView();
 
         presenter = new RestaurantListPresenter(this, GurumeNaviApiClientImpl.getInstance());
 
-        presenter.search(locationInformation);
+        presenter.search(range, locationInformation);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -88,10 +89,11 @@ public class RestaurantListActivity extends AppCompatActivity implements Restaur
         presenter.cleanItem(itemList);
     }
 
-    public static Intent createIntent(Context packageContext, LocationInformation locationInformation) {
+    public static Intent createIntent(Context packageContext, Range range, LocationInformation locationInformation) {
         Intent intent = new Intent(packageContext, RestaurantListActivity.class);
 
         intent.putExtra(KEY_LOCATION_INFORMATION, locationInformation);
+        intent.putExtra(KEY_RANGE, range);
 
         return intent;
     }
@@ -113,7 +115,7 @@ public class RestaurantListActivity extends AppCompatActivity implements Restaur
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                presenter.onScrolled(recyclerView, locationInformation, itemList.size());
+                presenter.onScrolled(recyclerView, range, locationInformation, itemList.size());
             }
         });
     }

@@ -8,17 +8,19 @@ import retrofit2.http.Query;
 
 public interface GurumeNaviApi {
     @GET("RestSearchAPI/v3/")
-    public Call<GurumeNavi> getGurumeNavi(@Query("keyid") String keyid, @Query("id") String id);
+    Call<GurumeNavi> getGurumeNavi(@Query("keyid") String keyid, @Query("id") String id);
 
     @GET("RestSearchAPI/v3/")
-    public Call<GurumeNavi> getGurumeNavi(
+    Call<GurumeNavi> getGurumeNavi(
             @Query("keyid") String keyid,
+            @Query("range") Integer range,
             @Query("latitude") String latitude,
             @Query("longitude") String longitude);
 
     @GET("RestSearchAPI/v3/")
-    public Call<GurumeNavi> getGurumeNavi(
+    Call<GurumeNavi> getGurumeNavi(
             @Query("keyid") String keyid,
+            @Query("range") Integer range,
             @Query("latitude") String latitude,
             @Query("longitude") String longitude,
             @Query("offset_page") String offset_page);
