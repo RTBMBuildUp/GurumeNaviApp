@@ -7,4 +7,5 @@
     <string name="not_found">不明</string>
     <string name="access">アクセス</string>
     <string name="open_time">営業時間</string>
+    <string name="todo">TODO</string>
 </resources>

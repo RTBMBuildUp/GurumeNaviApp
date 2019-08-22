@@ -8,4 +8,5 @@
     <string name="not_found">NotFound</string>
     <string name="access">Access</string>
     <string name="open_time">OpenTime</string>
+    <string name="todo">ToDo</string>
 </resources>
