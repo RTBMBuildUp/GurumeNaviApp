@@ -56,7 +56,7 @@ public class GurumeNaviApiClientImpl implements GurumeNaviApiClient {
     public void loadRestaurantList(Range range, LocationInformation locationInformation, Consumer<GurumeNavi> function) {
         gurumeNaviApi.getGurumeNavi(
                 token,
-                range.getValue(),
+                range.getRadius(),
                 locationInformation.getLatitude().toString(),
                 locationInformation.getLongitude().toString()
         ).enqueue(new Callback<GurumeNavi>() {
@@ -81,7 +81,7 @@ public class GurumeNaviApiClientImpl implements GurumeNaviApiClient {
             Consumer<GurumeNavi> function) {
 
         gurumeNaviApi.getGurumeNavi(token,
-                range.getValue(),
+                range.getRadius(),
                 locationInformation.getLatitude().toString(),
                 locationInformation.getLongitude().toString(),
                 pageState.getOffsetPage().toString()

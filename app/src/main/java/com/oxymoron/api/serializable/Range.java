@@ -3,13 +3,13 @@ package com.oxymoron.api.serializable;
 import java.io.Serializable;
 
 public class Range implements Serializable {
-    private Integer value;
+    private Integer radius;
 
-    public Range(Integer value) {
-        this.value = value;
+    public Range(Integer radius) {
+        this.radius = radius;
     }
 
-    public Integer getValue() {
-        return value;
+    public Integer getRadius() {
+        return radius;
     }
 }
