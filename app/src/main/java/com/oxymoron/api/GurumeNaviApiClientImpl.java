@@ -10,6 +10,9 @@ import com.google.gson.TypeAdapterFactory;
 import com.google.gson.internal.bind.TypeAdapters;
 import com.oxymoron.api.gson.data.GurumeNavi;
 import com.oxymoron.api.gson.typeadapter.IntegerTypeAdapter;
+import com.oxymoron.request.LocationInformation;
+import com.oxymoron.request.PageState;
+import com.oxymoron.request.Range;
 import com.oxymoron.util.Consumer;
 
 import okhttp3.OkHttpClient;
@@ -51,37 +54,50 @@ public class GurumeNaviApiClientImpl implements GurumeNaviApiClient {
     }
 
     @Override
-    public void loadRestaurantList(Integer range, String latitude, String longitude, Consumer<GurumeNavi> function) {
-        gurumeNaviApi.getGurumeNavi(token, range, latitude, longitude)
-                .enqueue(new Callback<GurumeNavi>() {
-                    @Override
-                    public void onResponse(@NonNull Call<GurumeNavi> call, @NonNull Response<GurumeNavi> response) {
-                        if (response.isSuccessful())
-                            function.accept(response.body());
-                    }
+    public void loadRestaurantList(Range range, LocationInformation locationInformation, Consumer<GurumeNavi> function) {
+        gurumeNaviApi.getGurumeNavi(
+                token,
+                range.getValue(),
+                locationInformation.getLatitude().toString(),
+                locationInformation.getLongitude().toString()
+        ).enqueue(new Callback<GurumeNavi>() {
+            @Override
+            public void onResponse(@NonNull Call<GurumeNavi> call, @NonNull Response<GurumeNavi> response) {
+                if (response.isSuccessful())
+                    function.accept(response.body());
+            }
 
-                    @Override
-                    public void onFailure(@Nullable Call<GurumeNavi> call, @NonNull Throwable t) {
+            @Override
+            public void onFailure(@Nullable Call<GurumeNavi> call, @NonNull Throwable t) {
 
-                    }
-                });
+            }
+        });
     }
 
     @Override
-    public void loadRestaurantList(Integer range, String latitude, String longitude, String offset_page, Consumer<GurumeNavi> function) {
-        gurumeNaviApi.getGurumeNavi(token, range, latitude, longitude, offset_page)
-                .enqueue(new Callback<GurumeNavi>() {
-                    @Override
-                    public void onResponse(@NonNull Call<GurumeNavi> call, @NonNull Response<GurumeNavi> response) {
-                        if (response.isSuccessful())
-                            function.accept(response.body());
-                    }
+    public void loadRestaurantList(
+            Range range,
+            LocationInformation locationInformation,
+            PageState pageState,
+            Consumer<GurumeNavi> function) {
 
-                    @Override
-                    public void onFailure(@NonNull Call<GurumeNavi> call, @Nullable Throwable t) {
+        gurumeNaviApi.getGurumeNavi(token,
+                range.getValue(),
+                locationInformation.getLatitude().toString(),
+                locationInformation.getLongitude().toString(),
+                pageState.getOffsetPage().toString()
+        ).enqueue(new Callback<GurumeNavi>() {
+            @Override
+            public void onResponse(@NonNull Call<GurumeNavi> call, @NonNull Response<GurumeNavi> response) {
+                if (response.isSuccessful())
+                    function.accept(response.body());
+            }
 
-                    }
-                });
+            @Override
+            public void onFailure(@NonNull Call<GurumeNavi> call, @Nullable Throwable t) {
+
+            }
+        });
     }
 
     private GurumeNaviApi createGurumeNaviApi() {

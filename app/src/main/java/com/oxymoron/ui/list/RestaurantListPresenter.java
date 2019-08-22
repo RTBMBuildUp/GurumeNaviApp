@@ -27,20 +27,12 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
 
     @Override
     public void search(Range range, LocationInformation locationInformation) {
-        String latitude = locationInformation.getLatitude().toString();
-        String longitude = locationInformation.getLongitude().toString();
-
-        showThumbnail(range.getValue(), latitude, longitude);
+        showThumbnail(range, locationInformation);
     }
 
     @Override
     public void search(Range range, LocationInformation locationInformation, PageState pageState) {
-        String latitude = locationInformation.getLatitude().toString();
-        String longitude = locationInformation.getLongitude().toString();
-
-        String offset_page = pageState.getOffsetPage().toString();
-
-        showThumbnail(range.getValue(), latitude, longitude, offset_page);
+        showThumbnail(range, locationInformation, pageState);
     }
 
     @Override
@@ -76,16 +68,14 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
 
     @Override
     public void onScrolled(RecyclerView recyclerView, Range range, LocationInformation locationInformation, int itemCount) {
-        if (pageState == null) return;
-
-        final int bottom = 1;
-        if (!recyclerView.canScrollVertically(bottom)) {
-            try {
-                this.pageState = pageState.getNextPageState();
-
-                search(range, locationInformation, pageState);
-            } catch (ArithmeticException e) {
-                Log.d("RestaurantListPresenter", "onScrolled: " + e);
+        if (this.pageState != null) {
+            final int bottom = 1;
+            if (!recyclerView.canScrollVertically(bottom)) {
+                try {
+                    search(range, locationInformation, this.pageState.getNextPageState());
+                } catch (ArithmeticException e) {
+                    Log.d("RestaurantListPresenter", "onScrolled: " + e);
+                }
             }
         }
     }
@@ -95,8 +85,8 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
 
     }
 
-    private void showThumbnail(Integer range, String latitude, String longitude) {
-        apiClient.loadRestaurantList(range, latitude, longitude, parsedObj -> {
+    private void showThumbnail(Range range, LocationInformation locationInformation) {
+        apiClient.loadRestaurantList(range, locationInformation, parsedObj -> {
             pageState = new PageState(parsedObj.getPageOffset());
 
             List<Rest> restaurantList = parsedObj.getRest();
@@ -109,9 +99,9 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
         });
     }
 
-    private void showThumbnail(Integer range, String latitude, String longitude, String offset_page) {
-        apiClient.loadRestaurantList(range, latitude, longitude, offset_page, parsedObj -> {
-            pageState = new PageState(parsedObj.getPageOffset());
+    private void showThumbnail(Range range, LocationInformation locationInformation, PageState pageState) {
+        apiClient.loadRestaurantList(range, locationInformation, pageState, parsedObj -> {
+            this.pageState = pageState;
 
             List<Rest> restaurantList = parsedObj.getRest();
             List<RestaurantThumbnail> restaurantThumbnailList = createRestaurantThumbnailList(restaurantList);
