@@ -95,8 +95,10 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     public void searchRestaurant() {
-        Intent intent = RestaurantListActivity.createIntent(this, locationInformation);
-        this.startActivity(intent);
+        if (locationInformation != null) {
+            Intent intent = RestaurantListActivity.createIntent(this, locationInformation);
+            this.startActivity(intent);
+        }
     }
 
     private class LocationListener implements android.location.LocationListener {
