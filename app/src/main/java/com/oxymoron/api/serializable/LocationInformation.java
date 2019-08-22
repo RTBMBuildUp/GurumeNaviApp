@@ -3,12 +3,10 @@ package com.oxymoron.api.serializable;
 import java.io.Serializable;
 
 public class LocationInformation implements Serializable {
-    public final static String name = "LocationInformation";
+    private final Double latitude;
+    private final Double longitude;
 
-    private double latitude;
-    private double longitude;
-
-    public LocationInformation(double latitude, double longitude) {
+    public LocationInformation(Double latitude, Double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }

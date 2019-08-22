@@ -3,7 +3,7 @@ package com.oxymoron.api.serializable;
 import java.io.Serializable;
 
 public class Range implements Serializable {
-    private Integer radius;
+    private final Integer radius;
 
     public Range(Integer radius) {
         this.radius = radius;
