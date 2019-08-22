@@ -2,6 +2,7 @@
 package com.oxymoron.api.gson.data;
 
 import android.support.annotation.Nullable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.oxymoron.util.Optional;
@@ -19,7 +20,7 @@ public class ImageUrl {
     private String qrcode;
 
     public Optional<String> getShopImage1() {
-        return Optional.of(shopImage1);
+        return shopImage1.equals("") ? Optional.empty() : Optional.of(this.shopImage1);
     }
 
     public void setShopImage1(String shopImage1) {
@@ -27,7 +28,7 @@ public class ImageUrl {
     }
 
     public Optional<String> getShopImage2() {
-        return Optional.of(shopImage2);
+        return shopImage2.equals("") ? Optional.empty() : Optional.of(this.shopImage2);
     }
 
     public void setShopImage2(String shopImage2) {
@@ -44,9 +45,8 @@ public class ImageUrl {
 
     @Nullable
     public Optional<String> getShopImage() {
-        //bad practice???
         if (getShopImage1().isPresent()) return getShopImage1();
-        if (getShopImage2().isPresent()) return  getShopImage2();
+        if (getShopImage2().isPresent()) return getShopImage2();
 
         return Optional.empty();
     }
