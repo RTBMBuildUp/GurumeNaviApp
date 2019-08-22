@@ -1,8 +1,8 @@
-package com.oxymoron.request;
+package com.oxymoron.api;
 
 import java.io.Serializable;
 
-public class PageState implements Serializable {
+public class PageState {
     public final static String name = "PageState";
 
     private Integer offsetPage;
@@ -11,7 +11,7 @@ public class PageState implements Serializable {
         this.offsetPage = offsetPage;
     }
 
-    public Integer getOffsetPage() {
+    Integer getOffsetPage() {
         return this.offsetPage;
     }
 

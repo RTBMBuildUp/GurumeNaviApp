@@ -19,8 +19,8 @@ import android.widget.Button;
 import android.widget.RadioButton;
 
 import com.example.gurumenaviapp.R;
-import com.oxymoron.request.LocationInformation;
-import com.oxymoron.request.Range;
+import com.oxymoron.api.serializable.LocationInformation;
+import com.oxymoron.api.serializable.Range;
 import com.oxymoron.ui.list.RestaurantListActivity;
 import com.oxymoron.util.Toaster;
 

@@ -1,9 +1,8 @@
 package com.oxymoron.api;
 
 import com.oxymoron.api.gson.data.GurumeNavi;
-import com.oxymoron.request.LocationInformation;
-import com.oxymoron.request.PageState;
-import com.oxymoron.request.Range;
+import com.oxymoron.api.serializable.LocationInformation;
+import com.oxymoron.api.serializable.Range;
 import com.oxymoron.util.Consumer;
 
 public interface GurumeNaviApiClient {

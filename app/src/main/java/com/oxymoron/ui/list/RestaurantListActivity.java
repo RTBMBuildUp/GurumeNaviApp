@@ -13,8 +13,8 @@ import android.view.MenuItem;
 
 import com.example.gurumenaviapp.R;
 import com.oxymoron.api.GurumeNaviApiClientImpl;
-import com.oxymoron.request.LocationInformation;
-import com.oxymoron.request.Range;
+import com.oxymoron.api.serializable.LocationInformation;
+import com.oxymoron.api.serializable.Range;
 import com.oxymoron.request.RequestIds;
 import com.oxymoron.ui.detail.RestaurantDetailActivity;
 import com.oxymoron.ui.list.data.RestaurantThumbnail;

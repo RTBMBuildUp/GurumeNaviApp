@@ -5,9 +5,9 @@ import android.util.Log;
 
 import com.oxymoron.api.GurumeNaviApiClient;
 import com.oxymoron.api.gson.data.Rest;
-import com.oxymoron.request.LocationInformation;
-import com.oxymoron.request.PageState;
-import com.oxymoron.request.Range;
+import com.oxymoron.api.serializable.LocationInformation;
+import com.oxymoron.api.PageState;
+import com.oxymoron.api.serializable.Range;
 import com.oxymoron.ui.list.data.RestaurantThumbnail;
 
 import java.util.ArrayList;

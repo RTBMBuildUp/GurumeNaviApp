@@ -10,9 +10,8 @@ import com.google.gson.TypeAdapterFactory;
 import com.google.gson.internal.bind.TypeAdapters;
 import com.oxymoron.api.gson.data.GurumeNavi;
 import com.oxymoron.api.gson.typeadapter.IntegerTypeAdapter;
-import com.oxymoron.request.LocationInformation;
-import com.oxymoron.request.PageState;
-import com.oxymoron.request.Range;
+import com.oxymoron.api.serializable.LocationInformation;
+import com.oxymoron.api.serializable.Range;
 import com.oxymoron.util.Consumer;
 
 import okhttp3.OkHttpClient;
