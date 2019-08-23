@@ -23,7 +23,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class GurumeNaviApiClientImpl implements GurumeNaviApiClient {
-    private String token = "bf565ef4fdb696cfb6ff5a911941fa8d";
+    private String token = "2d3e1a633f1ba26c5d7f0a3a037ab225";
     private GurumeNaviApi gurumeNaviApi = createGurumeNaviApi();
 
     private static final GurumeNaviApiClientImpl ourInstance = new GurumeNaviApiClientImpl();
