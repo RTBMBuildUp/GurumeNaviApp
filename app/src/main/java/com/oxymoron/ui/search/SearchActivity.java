@@ -127,15 +127,15 @@ public class SearchActivity extends AppCompatActivity {
             switch (status) {
                 case LocationProvider.AVAILABLE:
                     stringBuilder.append("LocationProvider.AVAILABLE\n");
-                    System.out.println(stringBuilder);
+                    Log.d("log", "onStatusChanged: " + stringBuilder);
                     break;
                 case LocationProvider.OUT_OF_SERVICE:
                     stringBuilder.append("LocationProvider.OUT_OF_SERVICE\n");
-                    System.out.println(stringBuilder);
+                    Log.d("log", "onStatusChanged: " + stringBuilder);
                     break;
                 case LocationProvider.TEMPORARILY_UNAVAILABLE:
                     stringBuilder.append("LocationProvider.TEMPORARILY_UNAVAILABLE\n");
-                    System.out.println(stringBuilder);
+                    Log.d("log", "onStatusChanged: " + stringBuilder);
                     break;
             }
         }
@@ -144,13 +144,13 @@ public class SearchActivity extends AppCompatActivity {
         @Override
         public void onProviderEnabled(String provider) {
             stringBuilder.append(provider).append("is enabled\n");
-            System.out.println(stringBuilder);
+            Log.d("log", "onStatusChanged: " + stringBuilder);
         }
 
         @Override
         public void onProviderDisabled(String provider) {
             stringBuilder.append(provider).append("is disabled\n");
-            System.out.println(stringBuilder);
+            Log.d("log", "onStatusChanged: " + stringBuilder);
         }
     }
 
