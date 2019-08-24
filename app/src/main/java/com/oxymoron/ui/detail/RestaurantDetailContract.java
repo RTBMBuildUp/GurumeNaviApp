@@ -2,6 +2,7 @@ package com.oxymoron.ui.detail;
 
 import com.oxymoron.BasePresenter;
 import com.oxymoron.BaseView;
+import com.oxymoron.api.serializable.RestaurantId;
 import com.oxymoron.ui.detail.data.RestaurantDetail;
 
 public interface RestaurantDetailContract {
@@ -10,6 +11,6 @@ public interface RestaurantDetailContract {
     }
 
     interface Presenter extends BasePresenter {
-        void searchDetail(String restaurantId);
+        void searchDetail(RestaurantId restaurantId);
     }
 }

@@ -12,6 +12,7 @@ import com.oxymoron.api.gson.data.GurumeNavi;
 import com.oxymoron.api.gson.typeadapter.IntegerTypeAdapter;
 import com.oxymoron.api.serializable.LocationInformation;
 import com.oxymoron.api.serializable.Range;
+import com.oxymoron.api.serializable.RestaurantId;
 import com.oxymoron.util.Consumer;
 
 import okhttp3.OkHttpClient;
@@ -36,8 +37,8 @@ public class GurumeNaviApiClientImpl implements GurumeNaviApiClient {
     }
 
     @Override
-    public void loadRestaurantDetail(String restaurantId, Consumer<GurumeNavi> function) {
-        gurumeNaviApi.getGurumeNavi(token, restaurantId)
+    public void loadRestaurantDetail(RestaurantId restaurantId, Consumer<GurumeNavi> function) {
+        gurumeNaviApi.getGurumeNavi(token, restaurantId.getId())
                 .enqueue(new Callback<GurumeNavi>() {
                     @Override
                     public void onResponse(@NonNull Call<GurumeNavi> call, @NonNull Response<GurumeNavi> response) {

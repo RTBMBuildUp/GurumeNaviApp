@@ -1,5 +1,6 @@
 package com.oxymoron.ui.detail;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,10 +15,12 @@ import com.bumptech.glide.Glide;
 import com.example.gurumenaviapp.R;
 import com.oxymoron.api.GurumeNaviApiClientImpl;
 import com.oxymoron.api.gson.data.Access;
-import com.oxymoron.request.RequestIds;
+import com.oxymoron.api.serializable.RestaurantId;
 import com.oxymoron.ui.detail.data.RestaurantDetail;
 
 public class RestaurantDetailActivity extends AppCompatActivity implements RestaurantDetailContract.View {
+    private final static String KEY_RESTAURANT_ID = "KEY_RESTAURANT_ID";
+
     private RestaurantDetailContract.Presenter presenter;
 
     private TextView name;
@@ -41,9 +44,15 @@ public class RestaurantDetailActivity extends AppCompatActivity implements Resta
         presenter = new RestaurantDetailPresenter(this, GurumeNaviApiClientImpl.getInstance());
 
         final Intent intent = getIntent();
-        final String restaurantId = intent.getStringExtra(RequestIds.restaurant_id.toString());
+        final RestaurantId restaurantId = ((RestaurantId) intent.getSerializableExtra(KEY_RESTAURANT_ID));
 
         presenter.searchDetail(restaurantId);
+    }
+
+    public static Intent createIntent(Context packageContext, RestaurantId restaurantId) {
+        final Intent intent = new Intent(packageContext, RestaurantDetailActivity.class);
+
+        return intent.putExtra(KEY_RESTAURANT_ID, restaurantId);
     }
 
     @Override

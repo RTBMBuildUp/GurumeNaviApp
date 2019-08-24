@@ -15,7 +15,7 @@ import com.oxymoron.api.GurumeNaviApiClientImpl;
 import com.oxymoron.api.PageState;
 import com.oxymoron.api.serializable.LocationInformation;
 import com.oxymoron.api.serializable.Range;
-import com.oxymoron.request.RequestIds;
+import com.oxymoron.api.serializable.RestaurantId;
 import com.oxymoron.ui.detail.RestaurantDetailActivity;
 import com.oxymoron.ui.list.data.RestaurantThumbnail;
 import com.oxymoron.ui.list.recyclerview.EndlessScrollListener;
@@ -99,8 +99,9 @@ public class RestaurantListActivity extends AppCompatActivity implements Restaur
 
         this.adapter = new RestaurantListAdapter(this.itemList);
         this.adapter.setOnClickListener(thumbnail -> {
-            final Intent intent = new Intent(RestaurantListActivity.this, RestaurantDetailActivity.class);
-            intent.putExtra(RequestIds.restaurant_id.toString(), thumbnail.getRestaurantId());
+            final RestaurantId restaurantId = new RestaurantId(thumbnail.getRestaurantId());
+            final Intent intent = RestaurantDetailActivity.createIntent(RestaurantListActivity.this, restaurantId);
+
             startActivity(intent);
         });
 
