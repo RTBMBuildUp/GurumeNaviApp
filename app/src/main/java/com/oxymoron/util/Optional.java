@@ -10,7 +10,7 @@ public class Optional<T> {
     }
 
     public static <T> Optional<T> of(T value) {
-        return new Optional<>(value);
+        return new Optional<T>(value);
     }
 
     public static <T> Optional<T> empty() { return of(null);}
@@ -41,22 +41,15 @@ public class Optional<T> {
     }
 
     public void ifPresent(Consumer<T> consumer) {
-        ifPresentOrElse(consumer, () -> {
-        });
-    }
-
-    public void ifPresentOrElse(Consumer<T> consumer, Runnable runnable) {
         if (isPresent()) {
             consumer.accept(value);
-        } else {
-            runnable.run();
         }
     }
 
     public <R> Optional<R> map(Function<T, R> function) {
         if (isPresent()) {
-            return value == null ? Optional.empty() : of(function.apply(value));
+            return value == null ? Optional.<R>empty() : of(function.apply(value));
         }
-        return Optional.empty();
+        return Optional.<R>empty();
     }
 }

@@ -82,10 +82,11 @@ public class RestaurantDetailActivity extends AppCompatActivity implements Resta
 
         this.openTime.setText(detail.getOpenTime().getOrElse(notFound));
 
-        detail.getImageUrl().ifPresentOrElse(
-                this::setImageView,
-                () -> this.imageView.setImageBitmap(notFoundImage)
-        );
+        if (detail.getImageUrl().isPresent()) {
+            this.setImageView(detail.getImageUrl().get());
+        } else {
+            this.imageView.setImageBitmap(notFoundImage);
+        }
     }
 
     private void findViews() {
