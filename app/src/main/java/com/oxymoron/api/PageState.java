@@ -1,8 +1,6 @@
 package com.oxymoron.api;
 
 public class PageState {
-    public final static String name = "PageState";
-
     private final Integer offsetPage;
 
     public PageState(Integer offsetPage) {

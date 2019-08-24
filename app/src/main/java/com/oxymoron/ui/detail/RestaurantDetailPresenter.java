@@ -4,8 +4,8 @@ import com.oxymoron.api.GurumeNaviApiClient;
 import com.oxymoron.ui.detail.data.RestaurantDetail;
 
 public class RestaurantDetailPresenter implements RestaurantDetailContract.Presenter {
-    private RestaurantDetailContract.View view;
-    private GurumeNaviApiClient apiClient;
+    private final RestaurantDetailContract.View view;
+    private final GurumeNaviApiClient apiClient;
 
     RestaurantDetailPresenter(RestaurantDetailContract.View view, GurumeNaviApiClient apiClient) {
         this.view = view;

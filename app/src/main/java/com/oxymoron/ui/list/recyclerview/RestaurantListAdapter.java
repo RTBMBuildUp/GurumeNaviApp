@@ -12,7 +12,7 @@ import com.oxymoron.ui.list.data.RestaurantThumbnail;
 import java.util.List;
 
 public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantViewHolder> {
-    private List<RestaurantThumbnail> restaurantThumbnailList;
+    private final List<RestaurantThumbnail> restaurantThumbnailList;
 
     private OnClickListener clickListener;
 
@@ -27,7 +27,7 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantViewHo
     @NonNull
     @Override
     public RestaurantViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, final int i) {
-        View view = LayoutInflater
+        final View view = LayoutInflater
                 .from(viewGroup.getContext())
                 .inflate(R.layout.restaurant_item, viewGroup, false);
 
@@ -39,7 +39,6 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantViewHo
         final RestaurantThumbnail thumbnail = restaurantThumbnailList.get(position);
 
         restaurantViewHolder.itemView.setOnClickListener(v -> clickListener.onClick(thumbnail));
-
         restaurantViewHolder.setThumbnail(thumbnail);
     }
 

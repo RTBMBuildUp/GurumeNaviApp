@@ -23,8 +23,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class GurumeNaviApiClientImpl implements GurumeNaviApiClient {
-    private String token = "2d3e1a633f1ba26c5d7f0a3a037ab225";
-    private GurumeNaviApi gurumeNaviApi = createGurumeNaviApi();
+    private final String token = "2d3e1a633f1ba26c5d7f0a3a037ab225";
+    private final GurumeNaviApi gurumeNaviApi = createGurumeNaviApi();
 
     private static final GurumeNaviApiClientImpl ourInstance = new GurumeNaviApiClientImpl();
 
@@ -100,14 +100,14 @@ public class GurumeNaviApiClientImpl implements GurumeNaviApiClient {
     }
 
     private GurumeNaviApi createGurumeNaviApi() {
-        TypeAdapterFactory typeAdapterFactory =
+        final TypeAdapterFactory typeAdapterFactory =
                 TypeAdapters.newFactory(int.class, Integer.class, new IntegerTypeAdapter());
 
-        Gson myGson = new GsonBuilder()
+        final Gson myGson = new GsonBuilder()
                 .registerTypeAdapterFactory(typeAdapterFactory)
                 .create();
 
-        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        final OkHttpClient.Builder builder = new OkHttpClient.Builder();
 
         if (BuildConfig.DEBUG) {
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
@@ -117,7 +117,7 @@ public class GurumeNaviApiClientImpl implements GurumeNaviApiClient {
 
         OkHttpClient client = builder.build();
 
-        Retrofit retrofit = new Retrofit.Builder()
+        final Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.gnavi.co.jp/")
                 .addConverterFactory(GsonConverterFactory.create(myGson))
                 .client(client)

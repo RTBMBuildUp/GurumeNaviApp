@@ -15,8 +15,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class RestaurantListPresenter implements RestaurantListContract.Presenter {
-    private GurumeNaviApiClient apiClient;
-    private RestaurantListContract.View view;
+    private final GurumeNaviApiClient apiClient;
+    private final RestaurantListContract.View view;
 
     private PageState pageState;
 
@@ -90,7 +90,7 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
             pageState = new PageState(parsedObj.getPageOffset());
 
             parsedObj.getRest().ifPresent(list -> {
-                List<RestaurantThumbnail> restaurantThumbnailList = createRestaurantThumbnailList(list);
+                final List<RestaurantThumbnail> restaurantThumbnailList = createRestaurantThumbnailList(list);
 
                 Collections.reverse(restaurantThumbnailList);
                 for (RestaurantThumbnail restaurantThumbnail : restaurantThumbnailList) {
@@ -105,7 +105,7 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
             this.pageState = pageState;
 
             parsedObj.getRest().ifPresent(list -> {
-                List<RestaurantThumbnail> restaurantThumbnailList = createRestaurantThumbnailList(list);
+                final List<RestaurantThumbnail> restaurantThumbnailList = createRestaurantThumbnailList(list);
 
                 Collections.reverse(restaurantThumbnailList);
                 for (RestaurantThumbnail restaurantThumbnail : restaurantThumbnailList) {
@@ -119,7 +119,7 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
         final List<RestaurantThumbnail> restaurantThumbnailList = new ArrayList<>();
 
         for (Rest restaurant : restaurantList) {
-            RestaurantThumbnail restaurantThumbnail = new RestaurantThumbnail(restaurant);
+            final RestaurantThumbnail restaurantThumbnail = new RestaurantThumbnail(restaurant);
             restaurantThumbnailList.add(restaurantThumbnail);
         }
 

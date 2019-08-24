@@ -32,7 +32,7 @@ public class RestaurantListActivity extends AppCompatActivity implements Restaur
 
     private RecyclerView recyclerView;
     private RestaurantListAdapter adapter;
-    private List<RestaurantThumbnail> itemList = new ArrayList<>();
+    private final List<RestaurantThumbnail> itemList = new ArrayList<>();
 
     private LocationInformation locationInformation;
     private Range range;
@@ -47,7 +47,7 @@ public class RestaurantListActivity extends AppCompatActivity implements Restaur
 
         findViews();
 
-        Intent intent = this.getIntent();
+        final Intent intent = this.getIntent();
         this.locationInformation =
                 ((LocationInformation) intent.getSerializableExtra(KEY_LOCATION_INFORMATION));
         this.range = ((Range) intent.getSerializableExtra(KEY_RANGE));
@@ -86,7 +86,7 @@ public class RestaurantListActivity extends AppCompatActivity implements Restaur
     }
 
     public static Intent createIntent(Context packageContext, Range range, LocationInformation locationInformation) {
-        Intent intent = new Intent(packageContext, RestaurantListActivity.class);
+        final Intent intent = new Intent(packageContext, RestaurantListActivity.class);
 
         intent.putExtra(KEY_LOCATION_INFORMATION, locationInformation);
         intent.putExtra(KEY_RANGE, range);
@@ -99,7 +99,7 @@ public class RestaurantListActivity extends AppCompatActivity implements Restaur
 
         this.adapter = new RestaurantListAdapter(this.itemList);
         this.adapter.setOnClickListener(thumbnail -> {
-            Intent intent = new Intent(RestaurantListActivity.this, RestaurantDetailActivity.class);
+            final Intent intent = new Intent(RestaurantListActivity.this, RestaurantDetailActivity.class);
             intent.putExtra(RequestIds.restaurant_id.toString(), thumbnail.getRestaurantId());
             startActivity(intent);
         });

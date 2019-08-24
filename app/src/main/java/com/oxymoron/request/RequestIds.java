@@ -5,7 +5,7 @@ public enum RequestIds {
     longitude("longitude"), range("range"), hit_per_page("hit_per_page"),
     offset_page("offset_page");
 
-    private String id;
+    private final String id;
 
     RequestIds(String id) {
         this.id = id;

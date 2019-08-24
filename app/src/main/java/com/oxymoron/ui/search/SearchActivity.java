@@ -85,8 +85,8 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     public void activateGps() {
-        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        LocationListener listener = new LocationListener(this);
+        final LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        final LocationListener listener = new LocationListener(this);
 
         if (locationManager != null) {
             this.checkState(locationManager, listener);
@@ -97,15 +97,15 @@ public class SearchActivity extends AppCompatActivity {
 
     public void searchRestaurant() {
         if (locationInformation != null) {
-            Intent intent = RestaurantListActivity.createIntent(this, loadRange(), locationInformation);
+            final Intent intent = RestaurantListActivity.createIntent(this, loadRange(), locationInformation);
             this.startActivity(intent);
         }
     }
 
     private class LocationListener implements android.location.LocationListener {
-        private Context context;
+        private final Context context;
 
-        private StringBuilder stringBuilder;
+        private final StringBuilder stringBuilder;
 
         LocationListener(Context context) {
             this.context = context;
@@ -114,8 +114,8 @@ public class SearchActivity extends AppCompatActivity {
 
         @Override
         public void onLocationChanged(Location location) {
-            double latitude = location.getLatitude();
-            double longitude = location.getLongitude();
+            final double latitude = location.getLatitude();
+            final double longitude = location.getLongitude();
 
             this.updateLocation(latitude, longitude);
 
@@ -197,7 +197,7 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void enableLocationSettings() {
-        Intent settingsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+        final Intent settingsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
 
         startActivity(settingsIntent);
     }
@@ -228,7 +228,7 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private List<RadioButton> initialRadioButtonList() {
-        List<RadioButton> radioButtonList = new ArrayList<>();
+        final List<RadioButton> radioButtonList = new ArrayList<>();
         for (Map.Entry<Integer, Integer> entry : idRangeMap.entrySet()) {
             radioButtonList.add(this.findViewById(entry.getKey()));
         }

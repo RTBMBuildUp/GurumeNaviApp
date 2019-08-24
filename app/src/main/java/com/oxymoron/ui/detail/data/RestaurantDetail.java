@@ -5,13 +5,13 @@ import com.oxymoron.api.gson.data.Rest;
 import com.oxymoron.util.Optional;
 
 public class RestaurantDetail {
-    private String name;
-    private String tel;
-    private String address;
-    private Access access;
-    private String openTime;
+    private final String name;
+    private final String tel;
+    private final String address;
+    private final Access access;
+    private final String openTime;
 
-    private Optional<String> imageUrl;
+    private final Optional<String> imageUrl;
 
     public RestaurantDetail(Rest restaurant) {
         this.name = restaurant.getName();
