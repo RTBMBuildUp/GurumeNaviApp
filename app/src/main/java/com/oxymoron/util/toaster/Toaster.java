@@ -1,4 +1,4 @@
-package com.oxymoron.util;
+package com.oxymoron.util.toaster;
 
 import android.content.Context;
 import android.widget.Toast;
