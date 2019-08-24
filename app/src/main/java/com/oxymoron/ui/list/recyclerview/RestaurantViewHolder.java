@@ -40,11 +40,10 @@ class RestaurantViewHolder extends RecyclerView.ViewHolder {
 
         this.setAccess(thumbnail.getAccess().map(Access::showUserAround).getOrElse(""));
 
-        if (thumbnail.getImageUrl().isPresent()) {
-            this.setImageView(thumbnail.getImageUrl().get());
-        } else {
-            this.imageView.setImageBitmap(notFoundImage);
-        }
+        thumbnail.getImageUrl().ifPresentOrElse(
+                this::setImageView,
+                () -> this.imageView.setImageBitmap(notFoundImage)
+        );
     }
 
     private void setName(String name) {
