@@ -3,7 +3,6 @@ package com.oxymoron.ui.list;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -13,11 +12,13 @@ import android.view.MenuItem;
 
 import com.example.gurumenaviapp.R;
 import com.oxymoron.api.GurumeNaviApiClientImpl;
+import com.oxymoron.api.PageState;
 import com.oxymoron.api.serializable.LocationInformation;
 import com.oxymoron.api.serializable.Range;
 import com.oxymoron.request.RequestIds;
 import com.oxymoron.ui.detail.RestaurantDetailActivity;
 import com.oxymoron.ui.list.data.RestaurantThumbnail;
+import com.oxymoron.ui.list.recyclerview.EndlessScrollListener;
 import com.oxymoron.ui.list.recyclerview.RestaurantListAdapter;
 
 import java.util.ArrayList;
@@ -94,6 +95,8 @@ public class RestaurantListActivity extends AppCompatActivity implements Restaur
     }
 
     private void prepareRecyclerView() {
+        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+
         this.adapter = new RestaurantListAdapter(this.itemList);
         this.adapter.setOnClickListener(thumbnail -> {
             Intent intent = new Intent(RestaurantListActivity.this, RestaurantDetailActivity.class);
@@ -102,15 +105,16 @@ public class RestaurantListActivity extends AppCompatActivity implements Restaur
         });
 
         this.recyclerView.setHasFixedSize(true);
-        this.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        this.recyclerView.setLayoutManager(linearLayoutManager);
         this.recyclerView.setAdapter(adapter);
         this.recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
-        this.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        this.recyclerView.addOnScrollListener(new EndlessScrollListener(linearLayoutManager) {
             @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                presenter.onScrolled(recyclerView, range, locationInformation, itemList.size());
+            public boolean onLoadMore(int page, int totalItemsCount) {
+                presenter.search(range, locationInformation, new PageState(page));
+
+                return true;
             }
         });
     }

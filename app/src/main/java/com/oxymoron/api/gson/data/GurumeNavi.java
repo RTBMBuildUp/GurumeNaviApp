@@ -3,6 +3,7 @@ package com.oxymoron.api.gson.data;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.oxymoron.util.Optional;
 
 import java.util.List;
 
@@ -56,8 +57,8 @@ public class GurumeNavi {
         this.pageOffset = pageOffset;
     }
 
-    public List<Rest> getRest() {
-        return rest;
+    public Optional<List<Rest>> getRest() {
+        return Optional.of(rest);
     }
 
     public void setRest(List<Rest> rest) {

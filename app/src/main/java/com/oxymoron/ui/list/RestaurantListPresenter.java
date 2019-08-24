@@ -4,9 +4,9 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.oxymoron.api.GurumeNaviApiClient;
+import com.oxymoron.api.PageState;
 import com.oxymoron.api.gson.data.Rest;
 import com.oxymoron.api.serializable.LocationInformation;
-import com.oxymoron.api.PageState;
 import com.oxymoron.api.serializable.Range;
 import com.oxymoron.ui.list.data.RestaurantThumbnail;
 
@@ -89,13 +89,14 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
         apiClient.loadRestaurantList(range, locationInformation, parsedObj -> {
             pageState = new PageState(parsedObj.getPageOffset());
 
-            List<Rest> restaurantList = parsedObj.getRest();
-            List<RestaurantThumbnail> restaurantThumbnailList = createRestaurantThumbnailList(restaurantList);
+            parsedObj.getRest().ifPresent(list -> {
+                List<RestaurantThumbnail> restaurantThumbnailList = createRestaurantThumbnailList(list);
 
-            Collections.reverse(restaurantThumbnailList);
-            for (RestaurantThumbnail restaurantThumbnail : restaurantThumbnailList) {
-                view.addRecyclerViewItem(restaurantThumbnail);
-            }
+                Collections.reverse(restaurantThumbnailList);
+                for (RestaurantThumbnail restaurantThumbnail : restaurantThumbnailList) {
+                    view.addRecyclerViewItem(restaurantThumbnail);
+                }
+            });
         });
     }
 
@@ -103,13 +104,14 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
         apiClient.loadRestaurantList(range, locationInformation, pageState, parsedObj -> {
             this.pageState = pageState;
 
-            List<Rest> restaurantList = parsedObj.getRest();
-            List<RestaurantThumbnail> restaurantThumbnailList = createRestaurantThumbnailList(restaurantList);
+            parsedObj.getRest().ifPresent(list -> {
+                List<RestaurantThumbnail> restaurantThumbnailList = createRestaurantThumbnailList(list);
 
-            Collections.reverse(restaurantThumbnailList);
-            for (RestaurantThumbnail restaurantThumbnail : restaurantThumbnailList) {
-                view.addRecyclerViewItem(restaurantThumbnail);
-            }
+                Collections.reverse(restaurantThumbnailList);
+                for (RestaurantThumbnail restaurantThumbnail : restaurantThumbnailList) {
+                    view.addRecyclerViewItem(restaurantThumbnail);
+                }
+            });
         });
     }
 
