@@ -117,7 +117,7 @@ public class SearchActivity extends AppCompatActivity {
             final double latitude = location.getLatitude();
             final double longitude = location.getLongitude();
 
-            this.updateLocation(latitude, longitude);
+            locationInformation = new LocationInformation(latitude, longitude);
 
             Toaster.toast(context, "現在地が更新されました。");
         }
@@ -151,10 +151,6 @@ public class SearchActivity extends AppCompatActivity {
         public void onProviderDisabled(String provider) {
             stringBuilder.append(provider).append("is disabled\n");
             System.out.println(stringBuilder);
-        }
-
-        private void updateLocation(double latitude, double longitude) {
-            locationInformation = new LocationInformation(latitude, longitude);
         }
     }
 
