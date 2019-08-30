@@ -1,4 +1,4 @@
-package com.oxymoron.ui.detail.data;
+package com.oxymoron.data;
 
 import com.oxymoron.api.gson.data.Access;
 import com.oxymoron.api.gson.data.Rest;

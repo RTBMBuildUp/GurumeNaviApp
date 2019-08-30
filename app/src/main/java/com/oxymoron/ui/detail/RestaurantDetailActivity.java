@@ -16,7 +16,7 @@ import com.example.gurumenaviapp.R;
 import com.oxymoron.api.GurumeNaviApiClientImpl;
 import com.oxymoron.api.gson.data.Access;
 import com.oxymoron.api.serializable.RestaurantId;
-import com.oxymoron.ui.detail.data.RestaurantDetail;
+import com.oxymoron.data.RestaurantDetail;
 
 public class RestaurantDetailActivity extends AppCompatActivity implements RestaurantDetailContract.View {
     private final static String KEY_RESTAURANT_ID = "KEY_RESTAURANT_ID";
