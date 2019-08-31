@@ -1,7 +1,8 @@
 package com.oxymoron.ui.list;
 
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.oxymoron.api.GurumeNaviApiClient;
 import com.oxymoron.api.PageState;

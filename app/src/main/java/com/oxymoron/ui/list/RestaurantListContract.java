@@ -1,11 +1,11 @@
 package com.oxymoron.ui.list;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.oxymoron.BasePresenter;
 import com.oxymoron.BaseView;
-import com.oxymoron.api.serializable.LocationInformation;
 import com.oxymoron.api.PageState;
+import com.oxymoron.api.serializable.LocationInformation;
 import com.oxymoron.api.serializable.Range;
 import com.oxymoron.ui.list.data.RestaurantThumbnail;
 

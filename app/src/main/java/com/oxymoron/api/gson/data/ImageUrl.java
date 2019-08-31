@@ -1,7 +1,7 @@
 
 package com.oxymoron.api.gson.data;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
