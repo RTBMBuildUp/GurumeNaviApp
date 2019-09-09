@@ -3,6 +3,7 @@ package com.oxymoron.api.gson.data;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.oxymoron.util.Optional;
 
 public class Rest {
 
@@ -195,8 +196,8 @@ public class Rest {
         this.address = address;
     }
 
-    public String getTel() {
-        return tel;
+    public Optional<String> getTel() {
+        return tel.equals("") ? Optional.empty() : Optional.of(tel);
     }
 
     public void setTel(String tel) {

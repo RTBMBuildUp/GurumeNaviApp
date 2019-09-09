@@ -16,8 +16,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class RestaurantListPresenter implements RestaurantListContract.Presenter {
-    private final GurumeNaviApiClient apiClient;
     private final RestaurantListContract.View view;
+    private final GurumeNaviApiClient apiClient;
 
     private PageState pageState;
 

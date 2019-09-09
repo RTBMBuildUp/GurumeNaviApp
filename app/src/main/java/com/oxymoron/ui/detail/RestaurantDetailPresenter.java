@@ -1,8 +1,8 @@
 package com.oxymoron.ui.detail;
 
 import com.oxymoron.api.GurumeNaviApiClient;
+import com.oxymoron.api.RestaurantDetail;
 import com.oxymoron.api.serializable.RestaurantId;
-import com.oxymoron.data.RestaurantDetail;
 
 public class RestaurantDetailPresenter implements RestaurantDetailContract.Presenter {
     private final RestaurantDetailContract.View view;

@@ -1,7 +1,7 @@
 
 package com.oxymoron.api.gson.data;
 
-import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -43,7 +43,7 @@ public class ImageUrl {
         this.qrcode = qrcode;
     }
 
-    @Nullable
+    @NonNull
     public Optional<String> getShopImage() {
         if (getShopImage1().isPresent()) return getShopImage1();
         if (getShopImage2().isPresent()) return getShopImage2();
