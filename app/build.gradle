@@ -80,4 +80,7 @@ dependencies {
 
     implementation 'com.android.support:multidex:1.0.3'
 
+    // navigation fragment
+    implementation 'androidx.navigation:navigation-fragment:2.0.0'
+    implementation 'androidx.navigation:navigation-ui:2.0.0'
 }
