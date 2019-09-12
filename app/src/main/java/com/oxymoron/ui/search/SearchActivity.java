@@ -34,6 +34,8 @@ public class SearchActivity extends AppCompatActivity {
     private Button searchButton;
 
     private LocationInformation locationInformation;
+    private LocationManager locationManager;
+    private LocationListener locationListener;
 
     private Map<Integer, Integer> idRangeMap;
     private List<RadioButton> radioButtonList;
@@ -58,10 +60,23 @@ public class SearchActivity extends AppCompatActivity {
         this.searchButton.setOnClickListener(v -> this.searchRestaurant());
     }
 
-    private void findViews() {
-        this.searchButton = findViewById(R.id.search_screen_search_button);
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("log", "onStop: ");
+
+        this.inactivateGps();
     }
 
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        Log.d("log", "onPostResume: ");
+
+        this.activateGps();
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         Log.d("log", "onRequestPermissionsResult: " + requestCode);
         if (requestCode == LOCATION_REQUEST_PERMISSION) {
@@ -76,7 +91,29 @@ public class SearchActivity extends AppCompatActivity {
         }
     }
 
-    public void checkPermission() {
+    private void activateGps() {
+        this.locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        this.locationListener = new LocationListener(this);
+
+        if (locationManager != null) {
+            this.checkState(locationManager, this.locationListener);
+        } else {
+            Toaster.toast(this, "例外発生: GPSの起動に失敗しました。");
+        }
+    }
+
+    private void inactivateGps() {
+        this.locationManager.removeUpdates(this.locationListener);
+    }
+
+    private void searchRestaurant() {
+        if (locationInformation != null) {
+            final Intent intent = RestaurantListActivity.createIntent(this, loadRange(), locationInformation);
+            this.startActivity(intent);
+        }
+    }
+
+    private void checkPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             activateGps();
@@ -85,25 +122,12 @@ public class SearchActivity extends AppCompatActivity {
         }
     }
 
-    public void activateGps() {
-        final LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        final LocationListener listener = new LocationListener(this);
-
-        if (locationManager != null) {
-            this.checkState(locationManager, listener);
-        } else {
-            Toaster.toast(this, "例外発生: GPSの起動に失敗しました。");
-        }
-    }
-
-    public void searchRestaurant() {
-        if (locationInformation != null) {
-            final Intent intent = RestaurantListActivity.createIntent(this, loadRange(), locationInformation);
-            this.startActivity(intent);
-        }
+    private void findViews() {
+        this.searchButton = findViewById(R.id.search_screen_search_button);
     }
 
     private class LocationListener implements android.location.LocationListener {
+
         private final Context context;
 
         private final StringBuilder stringBuilder;
