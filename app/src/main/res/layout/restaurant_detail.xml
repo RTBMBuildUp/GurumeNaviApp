@@ -19,7 +19,7 @@
 
             android:adjustViewBounds="true"
 
-            android:contentDescription="TODO"
+            android:contentDescription="@string/todo"
 
             app:layout_constraintEnd_toEndOf="@+id/restaurant_detail_whole_constraint"
             app:layout_constraintStart_toStartOf="@+id/restaurant_detail_whole_constraint"

@@ -1,6 +1,7 @@
 package com.oxymoron.ui.search;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,13 +12,17 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioButton;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 import com.example.gurumenaviapp.R;
 import com.oxymoron.api.search.serializable.LocationInformation;
@@ -29,8 +34,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
-public class SearchActivity extends AppCompatActivity {
+public class SearchFragment extends Fragment {
     private Button searchButton;
 
     private LocationInformation locationInformation;
@@ -40,11 +46,25 @@ public class SearchActivity extends AppCompatActivity {
     private Map<Integer, Integer> idRangeMap;
     private List<RadioButton> radioButtonList;
 
+    private Context context;
+    private Activity activity;
+
     private final int LOCATION_REQUEST_PERMISSION = 1000;
 
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.search_screen);
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_search, container, false);
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        this.activity = this.getActivity();
+        this.context = this.getContext();
 
         if (Build.VERSION.SDK_INT >= 23) {
             checkPermission();
@@ -52,16 +72,16 @@ public class SearchActivity extends AppCompatActivity {
             activateGps();
         }
 
-        this.findViews();
+        this.findViews(view);
 
         idRangeMap = initialIdRangeMap();
-        radioButtonList = initialRadioButtonList();
+        radioButtonList = initialRadioButtonList(view);
 
         this.searchButton.setOnClickListener(v -> this.searchRestaurant());
     }
 
     @Override
-    protected void onStop() {
+    public void onStop() {
         super.onStop();
         Log.d("log", "onStop: ");
 
@@ -69,9 +89,9 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPostResume() {
-        super.onPostResume();
-        Log.d("log", "onPostResume: ");
+    public void onResume() {
+        super.onResume();
+        Log.d("log", "onResume: ");
 
         this.activateGps();
     }
@@ -92,13 +112,15 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void activateGps() {
-        this.locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        this.locationListener = new LocationListener(this);
+        this.locationManager =
+                (LocationManager) Objects.requireNonNull(this.context).getSystemService(Context.LOCATION_SERVICE);
+
+        this.locationListener = new LocationListener(this.context);
 
         if (locationManager != null) {
             this.checkState(locationManager, this.locationListener);
         } else {
-            Toaster.toast(this, "例外発生: GPSの起動に失敗しました。");
+            Toaster.toast(this.context, "例外発生: GPSの起動に失敗しました。");
         }
     }
 
@@ -108,13 +130,13 @@ public class SearchActivity extends AppCompatActivity {
 
     private void searchRestaurant() {
         if (locationInformation != null) {
-            final Intent intent = RestaurantListActivity.createIntent(this, loadRange(), locationInformation);
+            final Intent intent = RestaurantListActivity.createIntent(this.context, loadRange(), locationInformation);
             this.startActivity(intent);
         }
     }
 
     private void checkPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        if (ContextCompat.checkSelfPermission(this.context, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             activateGps();
         } else {
@@ -122,8 +144,8 @@ public class SearchActivity extends AppCompatActivity {
         }
     }
 
-    private void findViews() {
-        this.searchButton = findViewById(R.id.search_screen_search_button);
+    private void findViews(View view) {
+        this.searchButton = view.findViewById(R.id.fragment_search_search_button);
     }
 
     private class LocationListener implements android.location.LocationListener {
@@ -183,7 +205,7 @@ public class SearchActivity extends AppCompatActivity {
         for (RadioButton radioButton : radioButtonList) {
             if (radioButton.isChecked()) return new Range(idRangeMap.get(radioButton.getId()));
         }
-        return new Range(idRangeMap.get(R.id.search_screen_range_radio_button_2));
+        return new Range(idRangeMap.get(R.id.fragment_search_range_radio_button_2));
     }
 
     private void checkState(LocationManager manager, android.location.LocationListener listener) {
@@ -201,7 +223,7 @@ public class SearchActivity extends AppCompatActivity {
 
         //FusedLocationProviderClient...
         try {
-            if (ActivityCompat.checkSelfPermission(this,
+            if (ActivityCompat.checkSelfPermission(this.context,
                     Manifest.permission.ACCESS_FINE_LOCATION) !=
                     PackageManager.PERMISSION_GRANTED) {
                 Log.d("LocationActivity", "permission error");
@@ -213,7 +235,7 @@ public class SearchActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
 
-            Toaster.toast(this, "例外: 位置情報の権限を与えていますか？");
+            Toaster.toast(this.context, "例外: 位置情報の権限を与えていますか？");
         }
     }
 
@@ -224,15 +246,15 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void requestLocationPermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this.activity,
                 Manifest.permission.ACCESS_FINE_LOCATION)) {
-            ActivityCompat.requestPermissions(this,
+            ActivityCompat.requestPermissions(this.activity,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     LOCATION_REQUEST_PERMISSION);
         } else {
-            Toaster.toast(this, "許可されないとアプリが実行できません");
+            Toaster.toast(this.context, "許可されないとアプリが実行できません");
 
-            ActivityCompat.requestPermissions(this,
+            ActivityCompat.requestPermissions(this.activity,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION,},
                     LOCATION_REQUEST_PERMISSION);
         }
@@ -240,18 +262,18 @@ public class SearchActivity extends AppCompatActivity {
 
     private Map<Integer, Integer> initialIdRangeMap() {
         return new HashMap<Integer, Integer>() {{
-            put(R.id.search_screen_range_radio_button_1, 1);
-            put(R.id.search_screen_range_radio_button_2, 2);
-            put(R.id.search_screen_range_radio_button_3, 3);
-            put(R.id.search_screen_range_radio_button_4, 4);
-            put(R.id.search_screen_range_radio_button_5, 5);
+            put(R.id.fragment_search_range_radio_button_1, 1);
+            put(R.id.fragment_search_range_radio_button_2, 2);
+            put(R.id.fragment_search_range_radio_button_3, 3);
+            put(R.id.fragment_search_range_radio_button_4, 4);
+            put(R.id.fragment_search_range_radio_button_5, 5);
         }};
     }
 
-    private List<RadioButton> initialRadioButtonList() {
+    private List<RadioButton> initialRadioButtonList(View view) {
         final List<RadioButton> radioButtonList = new ArrayList<>();
         for (Map.Entry<Integer, Integer> entry : idRangeMap.entrySet()) {
-            radioButtonList.add(this.findViewById(entry.getKey()));
+            radioButtonList.add(view.findViewById(entry.getKey()));
         }
 
         return radioButtonList;
