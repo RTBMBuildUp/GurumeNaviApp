@@ -164,9 +164,13 @@ public class SearchFragment extends Fragment {
             final double latitude = location.getLatitude();
             final double longitude = location.getLongitude();
 
-            locationInformation = new LocationInformation(latitude, longitude);
+            if (locationInformation == null) {
+                locationInformation = new LocationInformation(latitude, longitude);
+            } else if (locationInformation.equals(new LocationInformation(latitude, longitude))) {
+                locationInformation = new LocationInformation(latitude, longitude);
 
-            Toaster.toast(context, "現在地が更新されました。");
+                Toaster.toast(context, "現在地が更新されました。");
+            }
         }
 
         @Override

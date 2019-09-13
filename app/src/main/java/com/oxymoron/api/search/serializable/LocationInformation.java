@@ -1,5 +1,7 @@
 package com.oxymoron.api.search.serializable;
 
+import androidx.annotation.Nullable;
+
 import java.io.Serializable;
 
 public class LocationInformation implements Serializable {
@@ -17,5 +19,15 @@ public class LocationInformation implements Serializable {
 
     public Double getLongitude() {
         return longitude;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (this == obj) return true;
+        if (obj == null || this.getClass() != obj.getClass()) return false;
+        LocationInformation locationInformation = ((LocationInformation) obj);
+
+        return locationInformation.getLatitude().equals(this.getLatitude()) &&
+                locationInformation.getLongitude().equals(this.getLongitude());
     }
 }
