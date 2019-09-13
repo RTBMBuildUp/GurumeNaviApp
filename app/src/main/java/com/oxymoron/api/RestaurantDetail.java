@@ -1,7 +1,7 @@
 package com.oxymoron.api;
 
-import com.oxymoron.api.gson.data.Access;
-import com.oxymoron.api.gson.data.Rest;
+import com.oxymoron.api.search.gson.data.Access;
+import com.oxymoron.api.search.gson.data.Rest;
 import com.oxymoron.util.Optional;
 
 public class RestaurantDetail {

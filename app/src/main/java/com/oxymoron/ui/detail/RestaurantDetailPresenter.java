@@ -1,14 +1,14 @@
 package com.oxymoron.ui.detail;
 
-import com.oxymoron.api.GurumeNaviApiClient;
 import com.oxymoron.api.RestaurantDetail;
-import com.oxymoron.api.serializable.RestaurantId;
+import com.oxymoron.api.search.RestaurantSearchApiClient;
+import com.oxymoron.api.search.serializable.RestaurantId;
 
 public class RestaurantDetailPresenter implements RestaurantDetailContract.Presenter {
     private final RestaurantDetailContract.View view;
-    private final GurumeNaviApiClient apiClient;
+    private final RestaurantSearchApiClient apiClient;
 
-    RestaurantDetailPresenter(RestaurantDetailContract.View view, GurumeNaviApiClient apiClient) {
+    RestaurantDetailPresenter(RestaurantDetailContract.View view, RestaurantSearchApiClient apiClient) {
         this.view = view;
         this.apiClient = apiClient;
     }

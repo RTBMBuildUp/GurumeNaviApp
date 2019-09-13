@@ -4,11 +4,11 @@ import android.util.Log;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.oxymoron.api.GurumeNaviApiClient;
-import com.oxymoron.api.PageState;
-import com.oxymoron.api.gson.data.Rest;
-import com.oxymoron.api.serializable.LocationInformation;
-import com.oxymoron.api.serializable.Range;
+import com.oxymoron.api.search.PageState;
+import com.oxymoron.api.search.RestaurantSearchApiClient;
+import com.oxymoron.api.search.gson.data.Rest;
+import com.oxymoron.api.search.serializable.LocationInformation;
+import com.oxymoron.api.search.serializable.Range;
 import com.oxymoron.ui.list.data.RestaurantThumbnail;
 
 import java.util.ArrayList;
@@ -17,11 +17,11 @@ import java.util.List;
 
 public class RestaurantListPresenter implements RestaurantListContract.Presenter {
     private final RestaurantListContract.View view;
-    private final GurumeNaviApiClient apiClient;
+    private final RestaurantSearchApiClient apiClient;
 
     private PageState pageState;
 
-    RestaurantListPresenter(RestaurantListContract.View view, GurumeNaviApiClient apiClient) {
+    RestaurantListPresenter(RestaurantListContract.View view, RestaurantSearchApiClient apiClient) {
         this.view = view;
         this.apiClient = apiClient;
     }

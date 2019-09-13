@@ -1,5 +1,5 @@
 
-package com.oxymoron.api.gson.data;
+package com.oxymoron.api.search.gson.data;
 
 import androidx.annotation.NonNull;
 

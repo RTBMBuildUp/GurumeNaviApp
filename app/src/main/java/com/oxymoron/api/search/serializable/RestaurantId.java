@@ -1,4 +1,4 @@
-package com.oxymoron.api.serializable;
+package com.oxymoron.api.search.serializable;
 
 import java.io.Serializable;
 

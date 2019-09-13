@@ -1,6 +1,6 @@
 package com.oxymoron.data.typeconverter;
 
-import com.oxymoron.api.gson.data.Access;
+import com.oxymoron.api.search.gson.data.Access;
 
 public class AccessConverter implements TypeConverter<Access, String> {
     @androidx.room.TypeConverter

@@ -1,24 +1,24 @@
-package com.oxymoron.api;
+package com.oxymoron.api.search;
 
-import com.oxymoron.api.gson.data.GurumeNavi;
+import com.oxymoron.api.search.gson.data.RestaurantSearchResult;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
-public interface GurumeNaviApi {
+public interface RestaurantSearchApi {
     @GET("RestSearchAPI/v3/")
-    Call<GurumeNavi> getGurumeNavi(@Query("keyid") String keyid, @Query("id") String id);
+    Call<RestaurantSearchResult> getRestaurantSearchResult(@Query("keyid") String keyid, @Query("id") String id);
 
     @GET("RestSearchAPI/v3/")
-    Call<GurumeNavi> getGurumeNavi(
+    Call<RestaurantSearchResult> getRestaurantSearchResult(
             @Query("keyid") String keyid,
             @Query("range") Integer range,
             @Query("latitude") String latitude,
             @Query("longitude") String longitude);
 
     @GET("RestSearchAPI/v3/")
-    Call<GurumeNavi> getGurumeNavi(
+    Call<RestaurantSearchResult> getRestaurantSearchResult(
             @Query("keyid") String keyid,
             @Query("range") Integer range,
             @Query("latitude") String latitude,

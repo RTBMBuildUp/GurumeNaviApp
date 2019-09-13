@@ -12,11 +12,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gurumenaviapp.R;
-import com.oxymoron.api.GurumeNaviApiClientImpl;
-import com.oxymoron.api.PageState;
-import com.oxymoron.api.serializable.LocationInformation;
-import com.oxymoron.api.serializable.Range;
-import com.oxymoron.api.serializable.RestaurantId;
+import com.oxymoron.api.search.PageState;
+import com.oxymoron.api.search.RestaurantSearchApiClientImpl;
+import com.oxymoron.api.search.serializable.LocationInformation;
+import com.oxymoron.api.search.serializable.Range;
+import com.oxymoron.api.search.serializable.RestaurantId;
 import com.oxymoron.ui.detail.RestaurantDetailActivity;
 import com.oxymoron.ui.list.data.RestaurantThumbnail;
 import com.oxymoron.ui.list.recyclerview.EndlessScrollListener;
@@ -55,7 +55,7 @@ public class RestaurantListActivity extends AppCompatActivity implements Restaur
 
         prepareRecyclerView();
 
-        presenter = new RestaurantListPresenter(this, GurumeNaviApiClientImpl.getInstance());
+        presenter = new RestaurantListPresenter(this, RestaurantSearchApiClientImpl.getInstance());
 
         presenter.search(range, locationInformation);
     }

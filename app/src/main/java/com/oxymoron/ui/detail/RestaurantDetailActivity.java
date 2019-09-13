@@ -14,10 +14,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.gurumenaviapp.R;
-import com.oxymoron.api.GurumeNaviApiClientImpl;
 import com.oxymoron.api.RestaurantDetail;
-import com.oxymoron.api.gson.data.Access;
-import com.oxymoron.api.serializable.RestaurantId;
+import com.oxymoron.api.search.RestaurantSearchApiClientImpl;
+import com.oxymoron.api.search.gson.data.Access;
+import com.oxymoron.api.search.serializable.RestaurantId;
 
 public class RestaurantDetailActivity extends AppCompatActivity implements RestaurantDetailContract.View {
     private final static String KEY_RESTAURANT_ID = "KEY_RESTAURANT_ID";
@@ -42,7 +42,7 @@ public class RestaurantDetailActivity extends AppCompatActivity implements Resta
 
         findViews();
 
-        presenter = new RestaurantDetailPresenter(this, GurumeNaviApiClientImpl.getInstance());
+        presenter = new RestaurantDetailPresenter(this, RestaurantSearchApiClientImpl.getInstance());
 
         final Intent intent = getIntent();
         final RestaurantId restaurantId = ((RestaurantId) intent.getSerializableExtra(KEY_RESTAURANT_ID));

@@ -1,4 +1,4 @@
-package com.oxymoron.api;
+package com.oxymoron.api.search;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -8,11 +8,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.internal.bind.TypeAdapters;
-import com.oxymoron.api.gson.data.GurumeNavi;
-import com.oxymoron.api.gson.typeadapter.IntegerTypeAdapter;
-import com.oxymoron.api.serializable.LocationInformation;
-import com.oxymoron.api.serializable.Range;
-import com.oxymoron.api.serializable.RestaurantId;
+import com.oxymoron.api.search.gson.data.RestaurantSearchResult;
+import com.oxymoron.api.search.gson.typeadapter.IntegerTypeAdapter;
+import com.oxymoron.api.search.serializable.LocationInformation;
+import com.oxymoron.api.search.serializable.Range;
+import com.oxymoron.api.search.serializable.RestaurantId;
 import com.oxymoron.util.Consumer;
 
 import okhttp3.OkHttpClient;
@@ -23,52 +23,52 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class GurumeNaviApiClientImpl implements GurumeNaviApiClient {
+public class RestaurantSearchApiClientImpl implements RestaurantSearchApiClient {
     private final String token = "2d3e1a633f1ba26c5d7f0a3a037ab225";
-    private final GurumeNaviApi gurumeNaviApi = createGurumeNaviApi();
+    private final RestaurantSearchApi restaurantSearchApi = createGurumeNaviApi();
 
-    private static final GurumeNaviApiClientImpl ourInstance = new GurumeNaviApiClientImpl();
+    private static final RestaurantSearchApiClientImpl ourInstance = new RestaurantSearchApiClientImpl();
 
-    public static GurumeNaviApiClientImpl getInstance() {
+    public static RestaurantSearchApiClientImpl getInstance() {
         return ourInstance;
     }
 
-    private GurumeNaviApiClientImpl() {
+    private RestaurantSearchApiClientImpl() {
     }
 
     @Override
-    public void loadRestaurantDetail(RestaurantId restaurantId, Consumer<GurumeNavi> function) {
-        gurumeNaviApi.getGurumeNavi(token, restaurantId.getId())
-                .enqueue(new Callback<GurumeNavi>() {
+    public void loadRestaurantDetail(RestaurantId restaurantId, Consumer<RestaurantSearchResult> function) {
+        restaurantSearchApi.getRestaurantSearchResult(token, restaurantId.getId())
+                .enqueue(new Callback<RestaurantSearchResult>() {
                     @Override
-                    public void onResponse(@NonNull Call<GurumeNavi> call, @NonNull Response<GurumeNavi> response) {
+                    public void onResponse(@NonNull Call<RestaurantSearchResult> call, @NonNull Response<RestaurantSearchResult> response) {
                         if (response.isSuccessful())
                             function.accept(response.body());
                     }
 
                     @Override
-                    public void onFailure(@Nullable Call<GurumeNavi> call, @NonNull Throwable t) {
+                    public void onFailure(@Nullable Call<RestaurantSearchResult> call, @NonNull Throwable t) {
 
                     }
                 });
     }
 
     @Override
-    public void loadRestaurantList(Range range, LocationInformation locationInformation, Consumer<GurumeNavi> function) {
-        gurumeNaviApi.getGurumeNavi(
+    public void loadRestaurantList(Range range, LocationInformation locationInformation, Consumer<RestaurantSearchResult> function) {
+        restaurantSearchApi.getRestaurantSearchResult(
                 token,
                 range.getRadius(),
                 locationInformation.getLatitude().toString(),
                 locationInformation.getLongitude().toString()
-        ).enqueue(new Callback<GurumeNavi>() {
+        ).enqueue(new Callback<RestaurantSearchResult>() {
             @Override
-            public void onResponse(@NonNull Call<GurumeNavi> call, @NonNull Response<GurumeNavi> response) {
+            public void onResponse(@NonNull Call<RestaurantSearchResult> call, @NonNull Response<RestaurantSearchResult> response) {
                 if (response.isSuccessful())
                     function.accept(response.body());
             }
 
             @Override
-            public void onFailure(@Nullable Call<GurumeNavi> call, @NonNull Throwable t) {
+            public void onFailure(@Nullable Call<RestaurantSearchResult> call, @NonNull Throwable t) {
 
             }
         });
@@ -79,28 +79,28 @@ public class GurumeNaviApiClientImpl implements GurumeNaviApiClient {
             Range range,
             LocationInformation locationInformation,
             PageState pageState,
-            Consumer<GurumeNavi> function) {
+            Consumer<RestaurantSearchResult> function) {
 
-        gurumeNaviApi.getGurumeNavi(token,
+        restaurantSearchApi.getRestaurantSearchResult(token,
                 range.getRadius(),
                 locationInformation.getLatitude().toString(),
                 locationInformation.getLongitude().toString(),
                 pageState.getOffsetPage().toString()
-        ).enqueue(new Callback<GurumeNavi>() {
+        ).enqueue(new Callback<RestaurantSearchResult>() {
             @Override
-            public void onResponse(@NonNull Call<GurumeNavi> call, @NonNull Response<GurumeNavi> response) {
+            public void onResponse(@NonNull Call<RestaurantSearchResult> call, @NonNull Response<RestaurantSearchResult> response) {
                 if (response.isSuccessful())
                     function.accept(response.body());
             }
 
             @Override
-            public void onFailure(@NonNull Call<GurumeNavi> call, @Nullable Throwable t) {
+            public void onFailure(@NonNull Call<RestaurantSearchResult> call, @Nullable Throwable t) {
 
             }
         });
     }
 
-    private GurumeNaviApi createGurumeNaviApi() {
+    private RestaurantSearchApi createGurumeNaviApi() {
         final TypeAdapterFactory typeAdapterFactory =
                 TypeAdapters.newFactory(int.class, Integer.class, new IntegerTypeAdapter());
 
@@ -124,6 +124,6 @@ public class GurumeNaviApiClientImpl implements GurumeNaviApiClient {
                 .client(client)
                 .build();
 
-        return retrofit.create(GurumeNaviApi.class);
+        return retrofit.create(RestaurantSearchApi.class);
     }
 }

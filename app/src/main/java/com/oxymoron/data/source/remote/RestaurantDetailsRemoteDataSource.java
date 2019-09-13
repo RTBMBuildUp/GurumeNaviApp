@@ -2,7 +2,7 @@ package com.oxymoron.data.source.remote;
 
 import androidx.annotation.NonNull;
 
-import com.oxymoron.api.GurumeNaviApiClient;
+import com.oxymoron.api.search.RestaurantSearchApiClient;
 import com.oxymoron.data.RestaurantDetail;
 import com.oxymoron.data.room.RestaurantId;
 import com.oxymoron.data.source.RestaurantDetailsDataSource;
@@ -10,16 +10,16 @@ import com.oxymoron.data.source.RestaurantDetailsDataSource;
 public class RestaurantDetailsRemoteDataSource implements RestaurantDetailsDataSource {
     private static RestaurantDetailsRemoteDataSource INSTANCE;
 
-    private final GurumeNaviApiClient apiClient;
+    private final RestaurantSearchApiClient apiClient;
 
-    public static RestaurantDetailsRemoteDataSource getInstance(GurumeNaviApiClient apiClient) {
+    public static RestaurantDetailsRemoteDataSource getInstance(RestaurantSearchApiClient apiClient) {
         if (INSTANCE == null) {
             INSTANCE = new RestaurantDetailsRemoteDataSource(apiClient);
         }
         return INSTANCE;
     }
 
-    private RestaurantDetailsRemoteDataSource(GurumeNaviApiClient apiClient) {
+    private RestaurantDetailsRemoteDataSource(RestaurantSearchApiClient apiClient) {
         this.apiClient = apiClient;
     }
 
@@ -30,7 +30,7 @@ public class RestaurantDetailsRemoteDataSource implements RestaurantDetailsDataS
 
     @Override
     public void getRestaurantDetail(@NonNull RestaurantId id, @NonNull GetRestaurantDetailsCallback callback) {
-        this.apiClient.loadRestaurantDetail(new com.oxymoron.api.serializable.RestaurantId(id.getId()),
+        this.apiClient.loadRestaurantDetail(new com.oxymoron.api.search.serializable.RestaurantId(id.getId()),
                 gurumeNavi -> gurumeNavi.getRest().ifPresentOrElse(
                         restaurantList -> {
                             RestaurantDetail restaurantDetail =

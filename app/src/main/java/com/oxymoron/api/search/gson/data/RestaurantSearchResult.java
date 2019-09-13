@@ -1,5 +1,5 @@
 
-package com.oxymoron.api.gson.data;
+package com.oxymoron.api.search.gson.data;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -7,7 +7,7 @@ import com.oxymoron.util.Optional;
 
 import java.util.List;
 
-public class GurumeNavi {
+public class RestaurantSearchResult {
 
     @SerializedName("@attributes")
     @Expose

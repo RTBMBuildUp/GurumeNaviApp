@@ -20,8 +20,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.gurumenaviapp.R;
-import com.oxymoron.api.serializable.LocationInformation;
-import com.oxymoron.api.serializable.Range;
+import com.oxymoron.api.search.serializable.LocationInformation;
+import com.oxymoron.api.search.serializable.Range;
 import com.oxymoron.ui.list.RestaurantListActivity;
 import com.oxymoron.util.toaster.Toaster;
 

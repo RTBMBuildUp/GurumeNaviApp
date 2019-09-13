@@ -1,4 +1,4 @@
-package com.oxymoron.api;
+package com.oxymoron.api.search;
 
 public class PageState {
     private final Integer offsetPage;

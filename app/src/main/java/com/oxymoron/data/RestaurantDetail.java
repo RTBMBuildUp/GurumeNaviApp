@@ -6,8 +6,8 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import com.oxymoron.api.gson.data.Access;
-import com.oxymoron.api.gson.data.Rest;
+import com.oxymoron.api.search.gson.data.Access;
+import com.oxymoron.api.search.gson.data.Rest;
 import com.oxymoron.data.room.ImageUrl;
 import com.oxymoron.data.room.PhoneNumber;
 import com.oxymoron.data.room.RestaurantId;
