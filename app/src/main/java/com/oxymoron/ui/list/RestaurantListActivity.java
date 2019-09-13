@@ -122,6 +122,6 @@ public class RestaurantListActivity extends AppCompatActivity implements Restaur
     }
 
     private void findViews() {
-        this.recyclerView = findViewById(R.id.restaurant_list_recyclerview);
+        this.recyclerView = findViewById(R.id.restaurant_list_recycler_view);
     }
 }
