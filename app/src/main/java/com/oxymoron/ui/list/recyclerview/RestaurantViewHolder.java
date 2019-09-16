@@ -29,7 +29,7 @@ class RestaurantViewHolder extends RecyclerView.ViewHolder {
         this.name = view.findViewById(R.id.restaurant_item_name);
         this.access = view.findViewById(R.id.restaurant_item_access);
 
-        this.imageView = view.findViewById(R.id.restaurant_item_image);
+        this.imageView = view.findViewById(R.id.restaurant_item_thumbnail);
     }
 
     void setThumbnail(RestaurantThumbnail thumbnail) {

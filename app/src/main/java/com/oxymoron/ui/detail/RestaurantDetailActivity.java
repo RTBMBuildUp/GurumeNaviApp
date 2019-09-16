@@ -96,7 +96,7 @@ public class RestaurantDetailActivity extends AppCompatActivity implements Resta
         this.access = findViewById(R.id.restaurant_detail_access);
         this.openTime = findViewById(R.id.restaurant_detail_open_time);
 
-        this.imageView = findViewById(R.id.restaurant_item_image);
+        this.imageView = findViewById(R.id.restaurant_item_thumbnail);
     }
 
     private void setImageView(String imageUrl) {

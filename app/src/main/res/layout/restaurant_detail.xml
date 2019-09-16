@@ -12,7 +12,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/restaurant_item_image"
+            android:id="@+id/restaurant_item_thumbnail"
 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
 
             app:layout_constraintEnd_toEndOf="@id/restaurant_detail_whole_constraint"
             app:layout_constraintStart_toStartOf="@+id/restaurant_detail_whole_constraint"
-            app:layout_constraintTop_toBottomOf="@id/restaurant_item_image" />
+            app:layout_constraintTop_toBottomOf="@id/restaurant_item_thumbnail" />
 
         <TextView
             android:id="@+id/restaurant_detail_telephone_tag"
