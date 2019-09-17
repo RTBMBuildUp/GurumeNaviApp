@@ -20,7 +20,7 @@ class RestaurantViewHolder extends RecyclerView.ViewHolder {
     TextView name;
     TextView access;
 
-    ImageView imageView;
+    ImageView thumbnailImage;
 
     RestaurantViewHolder(View view) {
         super(view);
@@ -29,7 +29,7 @@ class RestaurantViewHolder extends RecyclerView.ViewHolder {
         this.name = view.findViewById(R.id.restaurant_item_name);
         this.access = view.findViewById(R.id.restaurant_item_access);
 
-        this.imageView = view.findViewById(R.id.restaurant_item_thumbnail);
+        this.thumbnailImage = view.findViewById(R.id.restaurant_item_thumbnail);
     }
 
     void setThumbnail(RestaurantThumbnail thumbnail) {
@@ -42,8 +42,8 @@ class RestaurantViewHolder extends RecyclerView.ViewHolder {
         this.setAccess(thumbnail.getAccess().map(Access::showUserAround).getOrElse(""));
 
         thumbnail.getImageUrl().ifPresentOrElse(
-                this::setImageView,
-                () -> this.imageView.setImageBitmap(notFoundImage)
+                this::setThumbnailImage,
+                () -> this.thumbnailImage.setImageBitmap(notFoundImage)
         );
     }
 
@@ -55,7 +55,7 @@ class RestaurantViewHolder extends RecyclerView.ViewHolder {
         this.access.setText(access);
     }
 
-    private void setImageView(String imageUrl) {
-        Glide.with(context).load(imageUrl).into(imageView);
+    private void setThumbnailImage(String imageUrl) {
+        Glide.with(context).load(imageUrl).into(thumbnailImage);
     }
 }
