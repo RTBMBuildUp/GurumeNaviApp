@@ -7,7 +7,7 @@ public class PhoneNumberConverter implements TypeConverter<PhoneNumber, String> 
     @androidx.room.TypeConverter
     @Override
     public String from(PhoneNumber wrapper) {
-        return wrapper.getPhoneNumber().get();
+        return wrapper.getPhoneNumber().getOrElse("");
     }
 
     @androidx.room.TypeConverter

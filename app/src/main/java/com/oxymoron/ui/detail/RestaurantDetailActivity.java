@@ -14,10 +14,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.gurumenaviapp.R;
-import com.oxymoron.api.RestaurantDetail;
 import com.oxymoron.api.search.RestaurantSearchApiClientImpl;
-import com.oxymoron.api.search.gson.data.Access;
 import com.oxymoron.api.search.serializable.RestaurantId;
+import com.oxymoron.data.RestaurantDetail;
 
 public class RestaurantDetailActivity extends AppCompatActivity implements RestaurantDetailContract.View {
     private final static String KEY_RESTAURANT_ID = "KEY_RESTAURANT_ID";
@@ -71,19 +70,25 @@ public class RestaurantDetailActivity extends AppCompatActivity implements Resta
     }
 
     @Override
-    public void showDetail(RestaurantDetail detail) {
+    public void showDetail(RestaurantDetail restaurantDetail) {
         final String notFound = getResources().getString(R.string.not_found);
         final Bitmap notFoundImage = BitmapFactory.decodeResource(getResources(), R.drawable.default_not_found);
 
-        this.name.setText(detail.getName());
-        this.tel.setText(detail.getTel().getOrElse(notFound));
-        this.address.setText(detail.getAddress());
+        this.name.setText(restaurantDetail.getName());
 
-        this.access.setText(detail.getAccess().map(Access::showUserAround).getOrElse(notFound));
+        if (restaurantDetail.getPhoneNumber() != null) {
+            this.tel.setText(restaurantDetail.getPhoneNumber().getPhoneNumber().getOrElse(notFound));
+        }
 
-        this.openTime.setText(detail.getOpenTime().getOrElse(notFound));
+        this.address.setText(restaurantDetail.getAddress());
 
-        detail.getImageUrl().ifPresentOrElse(
+        if (restaurantDetail.getAccess() != null) {
+            this.access.setText(restaurantDetail.getAccess().showUserAround());
+        }
+
+        this.openTime.setText(restaurantDetail.getOpenTime());
+
+        restaurantDetail.getImageUrl().getUrl().ifPresentOrElse(
                 this::setImageView,
                 () -> this.imageView.setImageBitmap(notFoundImage)
         );

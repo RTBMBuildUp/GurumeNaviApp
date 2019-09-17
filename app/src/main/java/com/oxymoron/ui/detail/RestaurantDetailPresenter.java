@@ -1,8 +1,8 @@
 package com.oxymoron.ui.detail;
 
-import com.oxymoron.api.RestaurantDetail;
 import com.oxymoron.api.search.RestaurantSearchApiClient;
 import com.oxymoron.api.search.serializable.RestaurantId;
+import com.oxymoron.data.RestaurantDetail;
 
 public class RestaurantDetailPresenter implements RestaurantDetailContract.Presenter {
     private final RestaurantDetailContract.View view;
@@ -31,7 +31,7 @@ public class RestaurantDetailPresenter implements RestaurantDetailContract.Prese
         showDetail(restaurantId);
     }
 
-    private void setDetail(RestaurantDetail detail) {
-        view.showDetail(detail);
+    private void setDetail(RestaurantDetail restaurantDetail) {
+        view.showDetail(restaurantDetail);
     }
 }

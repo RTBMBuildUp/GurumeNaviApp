@@ -6,7 +6,7 @@ public class ImageUrlConverter implements TypeConverter<ImageUrl, String> {
     @androidx.room.TypeConverter
     @Override
     public String from(ImageUrl wrapper) {
-        return wrapper.getUrl().get();
+        return wrapper.getUrl().getOrElse(null);
     }
 
     @androidx.room.TypeConverter

@@ -21,6 +21,10 @@ public class RestaurantDetail {
     @ColumnInfo(name = "id")
     private final RestaurantId id;
 
+    @NonNull
+    @ColumnInfo(name = "name")
+    private final String name;
+
     @Nullable
     @ColumnInfo(name = "phone_number")
     private final PhoneNumber phoneNumber;
@@ -42,6 +46,7 @@ public class RestaurantDetail {
     private final ImageUrl imageUrl;
 
     public RestaurantDetail(@NonNull RestaurantId id,
+                            @NonNull String name,
                             @Nullable PhoneNumber phoneNumber,
                             @Nullable String address,
                             @Nullable Access access,
@@ -49,6 +54,7 @@ public class RestaurantDetail {
                             @NonNull ImageUrl imageUrl
     ) {
         this.id = id;
+        this.name = name;
         this.phoneNumber = phoneNumber;
         this.address = address;
         this.access = access;
@@ -57,15 +63,20 @@ public class RestaurantDetail {
     }
 
     public RestaurantDetail(@NonNull Rest rest) {
-        this(new RestaurantId(rest.getId()), new PhoneNumber(rest.getTel()),
+        this(new RestaurantId(rest.getId()), rest.getName(), new PhoneNumber(rest.getTel()),
                 rest.getAddress(), rest.getAccess(), rest.getOpentime(),
-                new ImageUrl(rest.getImageUrl().getShopImage().get())
+                new ImageUrl(rest.getImageUrl().getShopImage().getOrElse(null))
         );
     }
 
     @NonNull
     public RestaurantId getId() {
         return id;
+    }
+
+    @NonNull
+    public String getName() {
+        return name;
     }
 
     @Nullable
