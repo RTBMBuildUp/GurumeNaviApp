@@ -8,7 +8,7 @@
         android:id="@+id/first_screen_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@id/first_screen_bottom_navigation_view"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -16,9 +16,10 @@
         app:navGraph="@navigation/navigation_mobile" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:background="@color/colorPrimaryDark"
         android:id="@+id/first_screen_bottom_navigation_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         app:labelVisibilityMode="unlabeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
