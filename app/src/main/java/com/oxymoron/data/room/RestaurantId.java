@@ -2,9 +2,10 @@ package com.oxymoron.data.room;
 
 import androidx.annotation.Nullable;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class RestaurantId {
+public class RestaurantId implements Serializable {
     private final String id;
 
     public RestaurantId(String id) {

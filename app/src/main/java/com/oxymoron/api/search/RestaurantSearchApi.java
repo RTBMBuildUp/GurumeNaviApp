@@ -8,7 +8,9 @@ import retrofit2.http.Query;
 
 public interface RestaurantSearchApi {
     @GET("RestSearchAPI/v3/")
-    Call<RestaurantSearchResult> getRestaurantSearchResult(@Query("keyid") String keyid, @Query("id") String id);
+    Call<RestaurantSearchResult> getRestaurantSearchResult(
+            @Query("keyid") String keyid,
+            @Query(value = "id", encoded = true) String id);
 
     @GET("RestSearchAPI/v3/")
     Call<RestaurantSearchResult> getRestaurantSearchResult(
@@ -24,5 +26,4 @@ public interface RestaurantSearchApi {
             @Query("latitude") String latitude,
             @Query("longitude") String longitude,
             @Query("offset_page") String offset_page);
-
 }

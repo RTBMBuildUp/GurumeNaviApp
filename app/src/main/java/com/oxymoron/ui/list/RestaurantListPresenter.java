@@ -6,9 +6,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.oxymoron.api.search.PageState;
 import com.oxymoron.api.search.RestaurantSearchApiClient;
-import com.oxymoron.api.search.gson.data.Rest;
 import com.oxymoron.api.search.serializable.LocationInformation;
 import com.oxymoron.api.search.serializable.Range;
+import com.oxymoron.data.RestaurantDetail;
+import com.oxymoron.data.room.RestaurantId;
+import com.oxymoron.data.source.RestaurantDetailsDataSource;
+import com.oxymoron.data.source.RestaurantDetailsRepository;
 import com.oxymoron.ui.list.data.RestaurantThumbnail;
 
 import java.util.ArrayList;
@@ -19,11 +22,18 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
     private final RestaurantListContract.View view;
     private final RestaurantSearchApiClient apiClient;
 
+    private final RestaurantDetailsRepository restaurantDetailsRepository;
+
     private PageState pageState;
 
-    RestaurantListPresenter(RestaurantListContract.View view, RestaurantSearchApiClient apiClient) {
+    RestaurantListPresenter(RestaurantListContract.View view,
+                            RestaurantSearchApiClient apiClient,
+                            RestaurantDetailsRepository restaurantDetailsRepository) {
+
         this.view = view;
         this.apiClient = apiClient;
+
+        this.restaurantDetailsRepository = restaurantDetailsRepository;
     }
 
     @Override
@@ -42,6 +52,20 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
             if (itemList != null) {
                 int index = itemList.indexOf(item);
                 if (-1 == index) {
+                    Log.d("log", "setItem: " + item.getName());
+                    this.restaurantDetailsRepository.getRestaurantDetail(item.getRestaurantId(),
+                            new RestaurantDetailsDataSource.GetRestaurantDetailsCallback() {
+                                @Override
+                                public void onRestaurantDetailLoaded(RestaurantDetail restaurantDetail) {
+                                    item.addToFavorities();
+                                    Log.d("log", "onRestaurantDetailLoaded: ");
+                                }
+
+                                @Override
+                                public void onDataNotAvailable() {
+                                    Log.d("log", "onDataNotAvailable: ");
+                                }
+                            });
                     itemList.add(item);
                 }
             }
@@ -86,12 +110,43 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
 
     }
 
+    @Override
+    public void saveRestaurantDetailWithRestaurantThumbnail(List<RestaurantThumbnail> restaurantThumbnailList) {
+        List<RestaurantId> favoriteRestaurantIdList = new ArrayList<>(12);
+        for (RestaurantThumbnail thumbnail : restaurantThumbnailList) {
+            if (thumbnail.isFavorite()) {
+                favoriteRestaurantIdList.add(thumbnail.getRestaurantId());
+            }
+        }
+
+        this.apiClient.loadRestaurantDetails(favoriteRestaurantIdList, restaurantDetailList -> {
+            for (RestaurantDetail restaurantDetail : restaurantDetailList) {
+                this.restaurantDetailsRepository.saveRestaurantDetail(restaurantDetail);
+            }
+        });
+
+//        for (RestaurantThumbnail restaurantThumbnail : restaurantThumbnailList) {
+//            if (restaurantThumbnail.isFavorite()) {
+//                this.apiClient.loadRestaurantDetail(
+//                        new RestaurantId(restaurantThumbnail.getRestaurantId()),
+//                        parsedObj -> parsedObj.getRest().ifPresent((restList) -> {
+//                            RestaurantDetail restaurantDetail = new RestaurantDetail(restList.get(0));
+//                            restaurantDetailsRepository.saveRestaurantDetail(restaurantDetail);
+//                        })
+//                );
+//            } else {
+//                this.restaurantDetailsRepository.deleteRestaurantDetail(restaurantThumbnail.getRestaurantId());
+//            }
+//        }
+    }
+
     private void showThumbnail(Range range, LocationInformation locationInformation) {
-        apiClient.loadRestaurantList(range, locationInformation, parsedObj -> {
+
+        this.apiClient.loadRestaurantList(range, locationInformation, parsedObj -> {
             pageState = new PageState(parsedObj.getPageOffset());
 
             parsedObj.getRest().ifPresent(list -> {
-                final List<RestaurantThumbnail> restaurantThumbnailList = createRestaurantThumbnailList(list);
+                final List<RestaurantThumbnail> restaurantThumbnailList = RestaurantThumbnail.createRestaurantThumbnailList(list);
 
                 Collections.reverse(restaurantThumbnailList);
                 for (RestaurantThumbnail restaurantThumbnail : restaurantThumbnailList) {
@@ -106,7 +161,7 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
             this.pageState = pageState;
 
             parsedObj.getRest().ifPresent(list -> {
-                final List<RestaurantThumbnail> restaurantThumbnailList = createRestaurantThumbnailList(list);
+                final List<RestaurantThumbnail> restaurantThumbnailList = RestaurantThumbnail.createRestaurantThumbnailList(list);
 
                 Collections.reverse(restaurantThumbnailList);
                 for (RestaurantThumbnail restaurantThumbnail : restaurantThumbnailList) {
@@ -114,16 +169,5 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
                 }
             });
         });
-    }
-
-    private List<RestaurantThumbnail> createRestaurantThumbnailList(List<Rest> restaurantList) {
-        final List<RestaurantThumbnail> restaurantThumbnailList = new ArrayList<>();
-
-        for (Rest restaurant : restaurantList) {
-            final RestaurantThumbnail restaurantThumbnail = new RestaurantThumbnail(restaurant);
-            restaurantThumbnailList.add(restaurantThumbnail);
-        }
-
-        return restaurantThumbnailList;
     }
 }

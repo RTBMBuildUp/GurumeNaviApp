@@ -1,37 +1,92 @@
 package com.oxymoron.ui.list.data;
 
-import com.oxymoron.api.search.gson.data.Access;
 import com.oxymoron.api.search.gson.data.Rest;
+import com.oxymoron.data.RestaurantDetail;
+import com.oxymoron.data.room.RestaurantId;
 import com.oxymoron.util.Optional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RestaurantThumbnail {
     private final String name;
-    private final Access access;
-    private final Optional<String> imageUrl;
+    private final String access;
+    private final String imageUrl;
 
-    private final String restaurantId;
+    private boolean favorite;
+    private final RestaurantId restaurantId;
+
+    public static RestaurantThumbnail createRestaurantThumbnail(RestaurantDetail restaurantDetail) {
+        return new RestaurantThumbnail(
+                restaurantDetail.getId(), restaurantDetail.getName(),
+                restaurantDetail.getAccess(), restaurantDetail.getImageUrl().getUrl().getOrElse(null),
+                restaurantDetail.isFavorite()
+        );
+    }
+
+    public RestaurantThumbnail(Rest restaurant, boolean favorite) {
+        this.name = restaurant.getName();
+        this.access = restaurant.getAccess().showUserAround();
+        this.imageUrl = restaurant.getImageUrl().getShopImage().getOrElse(null);
+
+        this.restaurantId = new RestaurantId(restaurant.getId());
+
+        this.favorite = favorite;
+    }
+
+    private RestaurantThumbnail(RestaurantId restaurantId,
+                                String name,
+                                String access,
+                                String imageUrl,
+                                boolean favorite) {
+
+        this.restaurantId = restaurantId;
+        this.name = name;
+        this.access = access;
+        this.imageUrl = imageUrl;
+        this.favorite = false;
+    }
 
     public RestaurantThumbnail(Rest restaurant) {
-        this.name = restaurant.getName();
-        this.access = restaurant.getAccess();
-        this.imageUrl = restaurant.getImageUrl().getShopImage();
+        this(restaurant, false);
+    }
 
-        this.restaurantId = restaurant.getId();
+    public void addToFavorities() {
+        this.favorite = true;
+    }
+
+    public void removeFromFavorities() {
+        this.favorite = false;
     }
 
     public String getName() {
         return name;
     }
 
-    public Optional<Access> getAccess() {
+    public Optional<String> getAccess() {
         return Optional.of(access);
     }
 
     public Optional<String> getImageUrl() {
-        return imageUrl;
+        return Optional.of(imageUrl);
     }
 
-    public String getRestaurantId() {
+    public RestaurantId getRestaurantId() {
         return restaurantId;
+    }
+
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public static List<RestaurantThumbnail> createRestaurantThumbnailList(List<Rest> restaurantList) {
+        final List<RestaurantThumbnail> restaurantThumbnailList = new ArrayList<>();
+
+        for (Rest restaurant : restaurantList) {
+            final RestaurantThumbnail restaurantThumbnail = new RestaurantThumbnail(restaurant);
+            restaurantThumbnailList.add(restaurantThumbnail);
+        }
+
+        return restaurantThumbnailList;
     }
 }

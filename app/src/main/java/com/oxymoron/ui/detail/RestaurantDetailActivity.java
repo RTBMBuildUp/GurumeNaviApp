@@ -14,9 +14,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.gurumenaviapp.R;
-import com.oxymoron.api.search.RestaurantSearchApiClientImpl;
-import com.oxymoron.api.search.serializable.RestaurantId;
 import com.oxymoron.data.RestaurantDetail;
+import com.oxymoron.data.room.RestaurantId;
+import com.oxymoron.injection.Injection;
 
 public class RestaurantDetailActivity extends AppCompatActivity implements RestaurantDetailContract.View {
     private final static String KEY_RESTAURANT_ID = "KEY_RESTAURANT_ID";
@@ -41,7 +41,7 @@ public class RestaurantDetailActivity extends AppCompatActivity implements Resta
 
         findViews();
 
-        presenter = new RestaurantDetailPresenter(this, RestaurantSearchApiClientImpl.getInstance());
+        presenter = new RestaurantDetailPresenter(this, Injection.provideRestaurantSearchApiClientImpl(this));
 
         final Intent intent = getIntent();
         final RestaurantId restaurantId = ((RestaurantId) intent.getSerializableExtra(KEY_RESTAURANT_ID));
@@ -83,7 +83,7 @@ public class RestaurantDetailActivity extends AppCompatActivity implements Resta
         this.address.setText(restaurantDetail.getAddress());
 
         if (restaurantDetail.getAccess() != null) {
-            this.access.setText(restaurantDetail.getAccess().showUserAround());
+            this.access.setText(restaurantDetail.getAccess());
         }
 
         this.openTime.setText(restaurantDetail.getOpenTime());

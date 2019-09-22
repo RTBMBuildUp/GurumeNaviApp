@@ -1,5 +1,7 @@
 package com.oxymoron.api.search;
 
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -12,8 +14,13 @@ import com.oxymoron.api.search.gson.data.RestaurantSearchResult;
 import com.oxymoron.api.search.gson.typeadapter.IntegerTypeAdapter;
 import com.oxymoron.api.search.serializable.LocationInformation;
 import com.oxymoron.api.search.serializable.Range;
-import com.oxymoron.api.search.serializable.RestaurantId;
+import com.oxymoron.data.RestaurantDetail;
+import com.oxymoron.data.room.RestaurantId;
 import com.oxymoron.util.Consumer;
+
+import java.util.AbstractList;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -24,33 +31,60 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RestaurantSearchApiClientImpl implements RestaurantSearchApiClient {
-    private final String token = "2d3e1a633f1ba26c5d7f0a3a037ab225";
+    private final String token;
     private final RestaurantSearchApi restaurantSearchApi = createGurumeNaviApi();
 
-    private static final RestaurantSearchApiClientImpl ourInstance = new RestaurantSearchApiClientImpl();
+    private static RestaurantSearchApiClientImpl INSTANCE;
 
-    public static RestaurantSearchApiClientImpl getInstance() {
-        return ourInstance;
+    public static RestaurantSearchApiClientImpl getInstance(String token) {
+        if (INSTANCE == null) {
+            INSTANCE = new RestaurantSearchApiClientImpl(token);
+        }
+
+        return INSTANCE;
     }
 
-    private RestaurantSearchApiClientImpl() {
+    private RestaurantSearchApiClientImpl(String token) {
+        this.token = token;
     }
 
     @Override
-    public void loadRestaurantDetail(RestaurantId restaurantId, Consumer<RestaurantSearchResult> function) {
-        restaurantSearchApi.getRestaurantSearchResult(token, restaurantId.getId())
-                .enqueue(new Callback<RestaurantSearchResult>() {
+    public void loadRestaurantDetail(RestaurantId restaurantId, Callback<RestaurantSearchResult> callback) {
+        restaurantSearchApi.getRestaurantSearchResult(token, restaurantId.getId()).enqueue(callback);
+    }
+
+    @Override
+    public void loadRestaurantDetails(List<RestaurantId> restaurantIdList, Consumer<List<RestaurantDetail>> function) {
+        List<String> restaurantIdsAsStringList = new ArrayList<>();
+        for (RestaurantId restaurantId : restaurantIdList) {
+            restaurantIdsAsStringList.add(restaurantId.getId());
+        }
+
+        loadRestaurantDetailsRepeatedly(restaurantIdsAsStringList, stringList ->
+                restaurantSearchApi.getRestaurantSearchResult(
+                        token,
+                        TextUtils.join(",", stringList)
+                ).enqueue(new Callback<RestaurantSearchResult>() {
                     @Override
                     public void onResponse(@NonNull Call<RestaurantSearchResult> call, @NonNull Response<RestaurantSearchResult> response) {
-                        if (response.isSuccessful())
-                            function.accept(response.body());
+                        if (response.isSuccessful()) {
+                            RestaurantSearchResult body = response.body();
+                            if (body != null) {
+                                body.getRest().ifPresent(restList -> {
+                                    List<RestaurantDetail> restaurantDetailList = RestaurantDetail.createRestaurantDetailList(restList);
+
+                                    function.accept(restaurantDetailList);
+                                });
+                            }
+                        }
                     }
 
                     @Override
                     public void onFailure(@Nullable Call<RestaurantSearchResult> call, @NonNull Throwable t) {
 
                     }
-                });
+                })
+        );
     }
 
     @Override
@@ -100,7 +134,7 @@ public class RestaurantSearchApiClientImpl implements RestaurantSearchApiClient 
         });
     }
 
-    private RestaurantSearchApi createGurumeNaviApi() {
+    private static RestaurantSearchApi createGurumeNaviApi() {
         final TypeAdapterFactory typeAdapterFactory =
                 TypeAdapters.newFactory(int.class, Integer.class, new IntegerTypeAdapter());
 
@@ -125,5 +159,40 @@ public class RestaurantSearchApiClientImpl implements RestaurantSearchApiClient 
                 .build();
 
         return retrofit.create(RestaurantSearchApi.class);
+    }
+
+    private void loadRestaurantDetailsRepeatedly(List<String> restaurantIdsAsStringList, Consumer<List<String>> consumer) {
+        final Partition<String> idList = new Partition<>(restaurantIdsAsStringList, 10);
+        for (List<String> ids : idList) {
+            consumer.accept(ids);
+        }
+    }
+
+    private class Partition<T> extends AbstractList<List<T>> {
+
+        private final List<T> list;
+        private final int chunkSize;
+
+        Partition(List<T> list, int chunkSize) {
+            this.list = new ArrayList<>(list);
+            this.chunkSize = chunkSize;
+        }
+
+        @Override
+        public List<T> get(int index) {
+            int start = index * chunkSize;
+            int end = Math.min(start + chunkSize, list.size());
+
+            if (start > end) {
+                throw new IndexOutOfBoundsException("Index " + index + " is out of the list range <0," + (size() - 1) + ">");
+            }
+
+            return new ArrayList<>(list.subList(start, end));
+        }
+
+        @Override
+        public int size() {
+            return (int) Math.ceil((double) list.size() / (double) chunkSize);
+        }
     }
 }

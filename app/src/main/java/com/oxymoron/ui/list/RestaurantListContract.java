@@ -19,6 +19,8 @@ public interface RestaurantListContract {
     }
 
     interface Presenter extends BasePresenter {
+        void saveRestaurantDetailWithRestaurantThumbnail(List<RestaurantThumbnail> restaurantThumbnailList);
+
         void setItem(List<RestaurantThumbnail> itemList, RestaurantThumbnail item);
 
         void removeItem(List<RestaurantThumbnail> itemList, int position);

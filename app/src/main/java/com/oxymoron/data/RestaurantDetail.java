@@ -6,19 +6,20 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import com.oxymoron.api.search.gson.data.Access;
 import com.oxymoron.api.search.gson.data.Rest;
 import com.oxymoron.data.room.ImageUrl;
 import com.oxymoron.data.room.PhoneNumber;
 import com.oxymoron.data.room.RestaurantId;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity(tableName = "restaurant_detail")
 public class RestaurantDetail {
     @PrimaryKey
     @NonNull
-    @ColumnInfo(name = "id")
+    @ColumnInfo(name = "restaurant_id")
     private final RestaurantId id;
 
     @NonNull
@@ -35,23 +36,27 @@ public class RestaurantDetail {
 
     @Nullable
     @ColumnInfo(name = "access")
-    private final Access access;
+    private final String access;
 
     @Nullable
     @ColumnInfo(name = "open_time")
     private final String openTime;
 
-    @NonNull
+    @Nullable
     @ColumnInfo(name = "image_url")
     private final ImageUrl imageUrl;
+
+    @ColumnInfo(name = "favorite")
+    private boolean favorite;
 
     public RestaurantDetail(@NonNull RestaurantId id,
                             @NonNull String name,
                             @Nullable PhoneNumber phoneNumber,
                             @Nullable String address,
-                            @Nullable Access access,
+                            @Nullable String access,
                             @Nullable String openTime,
-                            @NonNull ImageUrl imageUrl
+                            @NonNull ImageUrl imageUrl,
+                            boolean favorite
     ) {
         this.id = id;
         this.name = name;
@@ -60,13 +65,22 @@ public class RestaurantDetail {
         this.access = access;
         this.openTime = openTime;
         this.imageUrl = imageUrl;
+        this.favorite = favorite;
     }
 
     public RestaurantDetail(@NonNull Rest rest) {
         this(new RestaurantId(rest.getId()), rest.getName(), new PhoneNumber(rest.getTel()),
-                rest.getAddress(), rest.getAccess(), rest.getOpentime(),
-                new ImageUrl(rest.getImageUrl().getShopImage().getOrElse(null))
+                rest.getAddress(), rest.getAccess().showUserAround(), rest.getOpentime(),
+                new ImageUrl(rest.getImageUrl().getShopImage().getOrElse(null)), false
         );
+    }
+
+    public void addToFavorities() {
+        this.favorite = true;
+    }
+
+    public void removeFromFavorities() {
+        this.favorite = false;
     }
 
     @NonNull
@@ -90,7 +104,7 @@ public class RestaurantDetail {
     }
 
     @Nullable
-    public Access getAccess() {
+    public String getAccess() {
         return access;
     }
 
@@ -99,9 +113,13 @@ public class RestaurantDetail {
         return openTime;
     }
 
-    @NonNull
+    @Nullable
     public ImageUrl getImageUrl() {
         return imageUrl;
+    }
+
+    public boolean isFavorite() {
+        return favorite;
     }
 
     @Override
@@ -110,5 +128,17 @@ public class RestaurantDetail {
         if (obj == null || this.getClass() != obj.getClass()) return false;
         RestaurantDetail restaurantDetail = ((RestaurantDetail) obj);
         return Objects.equals(this.getId(), restaurantDetail.getId());
+    }
+
+    public static List<RestaurantDetail> createRestaurantDetailList(List<Rest> restList) {
+        final List<RestaurantDetail> restaurantDetailList = new ArrayList<>();
+
+        for (Rest rest : restList) {
+            final RestaurantDetail restaurantDetail = new RestaurantDetail(rest);
+
+            restaurantDetailList.add(restaurantDetail);
+        }
+
+        return restaurantDetailList;
     }
 }

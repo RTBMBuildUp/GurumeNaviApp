@@ -13,10 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gurumenaviapp.R;
 import com.oxymoron.api.search.PageState;
-import com.oxymoron.api.search.RestaurantSearchApiClientImpl;
 import com.oxymoron.api.search.serializable.LocationInformation;
 import com.oxymoron.api.search.serializable.Range;
-import com.oxymoron.api.search.serializable.RestaurantId;
+import com.oxymoron.data.room.RestaurantId;
+import com.oxymoron.injection.Injection;
 import com.oxymoron.ui.detail.RestaurantDetailActivity;
 import com.oxymoron.ui.list.data.RestaurantThumbnail;
 import com.oxymoron.ui.list.recyclerview.EndlessScrollListener;
@@ -55,7 +55,11 @@ public class RestaurantListActivity extends AppCompatActivity implements Restaur
 
         prepareRecyclerView();
 
-        presenter = new RestaurantListPresenter(this, RestaurantSearchApiClientImpl.getInstance());
+        presenter = new RestaurantListPresenter(
+                this,
+                Injection.provideRestaurantSearchApiClientImpl(this),
+                Injection.provideRestaurantDetailsRepository(this)
+        );
 
         presenter.search(range, locationInformation);
     }
@@ -70,8 +74,9 @@ public class RestaurantListActivity extends AppCompatActivity implements Restaur
     }
 
     @Override
-    public void setPresenter(RestaurantListContract.Presenter presenter) {
-        this.presenter = presenter;
+    protected void onStop() {
+        super.onStop();
+        presenter.saveRestaurantDetailWithRestaurantThumbnail(itemList);
     }
 
     @Override
@@ -84,6 +89,11 @@ public class RestaurantListActivity extends AppCompatActivity implements Restaur
     public void removeRecyclerViewItem(int position) {
         presenter.removeItem(itemList, position);
         adapter.notifyItemRemoved(position);
+    }
+
+    @Override
+    public void setPresenter(RestaurantListContract.Presenter presenter) {
+        this.presenter = presenter;
     }
 
     public static Intent createIntent(Context packageContext, Range range, LocationInformation locationInformation) {
@@ -100,7 +110,7 @@ public class RestaurantListActivity extends AppCompatActivity implements Restaur
 
         this.adapter = new RestaurantListAdapter(this.itemList);
         this.adapter.setOnClickListener(thumbnail -> {
-            final RestaurantId restaurantId = new RestaurantId(thumbnail.getRestaurantId());
+            final RestaurantId restaurantId = thumbnail.getRestaurantId();
             final Intent intent = RestaurantDetailActivity.createIntent(RestaurantListActivity.this, restaurantId);
 
             startActivity(intent);

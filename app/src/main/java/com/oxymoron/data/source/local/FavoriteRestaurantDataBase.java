@@ -8,13 +8,12 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
 import com.oxymoron.data.RestaurantDetail;
-import com.oxymoron.data.typeconverter.AccessConverter;
 import com.oxymoron.data.typeconverter.ImageUrlConverter;
 import com.oxymoron.data.typeconverter.PhoneNumberConverter;
 import com.oxymoron.data.typeconverter.RestaurantIdConverter;
 
 @Database(entities = {RestaurantDetail.class}, version = 1)
-@TypeConverters({RestaurantIdConverter.class, PhoneNumberConverter.class, AccessConverter.class, ImageUrlConverter.class})
+@TypeConverters({RestaurantIdConverter.class, PhoneNumberConverter.class, ImageUrlConverter.class})
 public abstract class FavoriteRestaurantDataBase extends RoomDatabase {
     private static FavoriteRestaurantDataBase ourInstance;
 

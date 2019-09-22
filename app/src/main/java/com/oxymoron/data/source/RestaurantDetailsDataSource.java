@@ -8,25 +8,25 @@ import com.oxymoron.data.room.RestaurantId;
 import java.util.List;
 
 public interface RestaurantDetailsDataSource {
-    public interface LoadRestaurantDetailsCallback {
-        public void onRestaurantDetailsLoaded(List<RestaurantDetail> restaurantDetailList);
+    interface LoadRestaurantDetailsCallback {
+        void onRestaurantDetailsLoaded(List<RestaurantDetail> restaurantDetailList);
 
-        public void onDataNotAvailable();
+        void onDataNotAvailable();
     }
 
-    public interface GetRestaurantDetailsCallback {
-        public void onRestaurantDetailLoaded(RestaurantDetail restaurantDetail);
+    interface GetRestaurantDetailsCallback {
+        void onRestaurantDetailLoaded(RestaurantDetail restaurantDetail);
 
-        public void onDataNotAvailable();
+        void onDataNotAvailable();
     }
 
-    public void getRestaurantDetails(@NonNull LoadRestaurantDetailsCallback callback);
+    void getRestaurantDetails(@NonNull LoadRestaurantDetailsCallback callback);
 
-    public void getRestaurantDetail(@NonNull RestaurantId id, @NonNull GetRestaurantDetailsCallback callback);
+    void getRestaurantDetail(@NonNull RestaurantId id, @NonNull GetRestaurantDetailsCallback callback);
 
-    public void saveRestaurantDetail(@NonNull RestaurantDetail restaurantDetail);
+    void saveRestaurantDetail(@NonNull RestaurantDetail restaurantDetail);
 
-    public void deleteRestaurantDetail(@NonNull RestaurantId id);
+    void deleteRestaurantDetail(@NonNull RestaurantId id);
 
-    public void deleteAllRestaurantDetail();
+    void deleteAllRestaurantDetail();
 }
