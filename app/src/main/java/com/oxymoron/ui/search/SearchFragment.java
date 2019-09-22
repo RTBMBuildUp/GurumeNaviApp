@@ -25,8 +25,8 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.gurumenaviapp.R;
-import com.oxymoron.api.search.serializable.LocationInformation;
-import com.oxymoron.api.search.serializable.Range;
+import com.oxymoron.data.source.remote.api.serializable.LocationInformation;
+import com.oxymoron.data.source.remote.api.serializable.Range;
 import com.oxymoron.ui.list.RestaurantListActivity;
 import com.oxymoron.util.toaster.Toaster;
 

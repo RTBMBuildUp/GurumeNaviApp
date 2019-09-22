@@ -1,6 +1,6 @@
-package com.oxymoron.api.search;
+package com.oxymoron.data.source.remote.api;
 
-import com.oxymoron.api.search.gson.data.RestaurantSearchResult;
+import com.oxymoron.data.source.remote.api.gson.data.RestaurantSearchResult;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

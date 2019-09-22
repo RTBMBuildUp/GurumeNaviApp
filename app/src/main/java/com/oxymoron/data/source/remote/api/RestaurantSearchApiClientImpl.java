@@ -1,4 +1,4 @@
-package com.oxymoron.api.search;
+package com.oxymoron.data.source.remote.api;
 
 import android.text.TextUtils;
 
@@ -10,12 +10,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.internal.bind.TypeAdapters;
-import com.oxymoron.api.search.gson.data.RestaurantSearchResult;
-import com.oxymoron.api.search.gson.typeadapter.IntegerTypeAdapter;
-import com.oxymoron.api.search.serializable.LocationInformation;
-import com.oxymoron.api.search.serializable.Range;
 import com.oxymoron.data.RestaurantDetail;
 import com.oxymoron.data.room.RestaurantId;
+import com.oxymoron.data.source.remote.api.gson.data.RestaurantSearchResult;
+import com.oxymoron.data.source.remote.api.gson.typeadapter.IntegerTypeAdapter;
+import com.oxymoron.data.source.remote.api.serializable.LocationInformation;
+import com.oxymoron.data.source.remote.api.serializable.Range;
 import com.oxymoron.util.Consumer;
 
 import java.util.AbstractList;

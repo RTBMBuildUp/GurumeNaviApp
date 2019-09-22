@@ -4,14 +4,14 @@ import android.util.Log;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.oxymoron.api.search.PageState;
-import com.oxymoron.api.search.RestaurantSearchApiClient;
-import com.oxymoron.api.search.serializable.LocationInformation;
-import com.oxymoron.api.search.serializable.Range;
 import com.oxymoron.data.RestaurantDetail;
 import com.oxymoron.data.room.RestaurantId;
 import com.oxymoron.data.source.RestaurantDetailsDataSource;
 import com.oxymoron.data.source.RestaurantDetailsRepository;
+import com.oxymoron.data.source.remote.api.PageState;
+import com.oxymoron.data.source.remote.api.RestaurantSearchApiClient;
+import com.oxymoron.data.source.remote.api.serializable.LocationInformation;
+import com.oxymoron.data.source.remote.api.serializable.Range;
 import com.oxymoron.ui.list.data.RestaurantThumbnail;
 
 import java.util.ArrayList;

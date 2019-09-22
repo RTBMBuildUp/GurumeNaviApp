@@ -1,4 +1,4 @@
-package com.oxymoron.api.search.serializable;
+package com.oxymoron.data.source.remote.api.serializable;
 
 import androidx.annotation.Nullable;
 

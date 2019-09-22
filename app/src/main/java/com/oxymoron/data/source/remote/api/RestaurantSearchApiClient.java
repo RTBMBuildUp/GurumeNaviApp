@@ -1,10 +1,10 @@
-package com.oxymoron.api.search;
+package com.oxymoron.data.source.remote.api;
 
-import com.oxymoron.api.search.gson.data.RestaurantSearchResult;
-import com.oxymoron.api.search.serializable.LocationInformation;
-import com.oxymoron.api.search.serializable.Range;
 import com.oxymoron.data.RestaurantDetail;
 import com.oxymoron.data.room.RestaurantId;
+import com.oxymoron.data.source.remote.api.gson.data.RestaurantSearchResult;
+import com.oxymoron.data.source.remote.api.serializable.LocationInformation;
+import com.oxymoron.data.source.remote.api.serializable.Range;
 import com.oxymoron.util.Consumer;
 
 import java.util.List;

@@ -4,9 +4,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.oxymoron.BasePresenter;
 import com.oxymoron.BaseView;
-import com.oxymoron.api.search.PageState;
-import com.oxymoron.api.search.serializable.LocationInformation;
-import com.oxymoron.api.search.serializable.Range;
+import com.oxymoron.data.source.remote.api.PageState;
+import com.oxymoron.data.source.remote.api.serializable.LocationInformation;
+import com.oxymoron.data.source.remote.api.serializable.Range;
 import com.oxymoron.ui.list.data.RestaurantThumbnail;
 
 import java.util.List;

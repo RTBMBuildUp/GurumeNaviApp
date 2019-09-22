@@ -2,10 +2,10 @@ package com.oxymoron.ui.detail;
 
 import androidx.annotation.NonNull;
 
-import com.oxymoron.api.search.RestaurantSearchApiClient;
-import com.oxymoron.api.search.gson.data.RestaurantSearchResult;
 import com.oxymoron.data.RestaurantDetail;
 import com.oxymoron.data.room.RestaurantId;
+import com.oxymoron.data.source.remote.api.RestaurantSearchApiClient;
+import com.oxymoron.data.source.remote.api.gson.data.RestaurantSearchResult;
 
 import java.util.List;
 

@@ -3,11 +3,11 @@ package com.oxymoron.injection;
 import android.content.Context;
 
 import com.example.gurumenaviapp.R;
-import com.oxymoron.api.search.RestaurantSearchApiClientImpl;
 import com.oxymoron.data.source.RestaurantDetailsRepository;
 import com.oxymoron.data.source.local.FavoriteRestaurantDataBase;
 import com.oxymoron.data.source.local.RestaurantDetailsLocalDataSource;
 import com.oxymoron.data.source.remote.RestaurantDetailsRemoteDataSource;
+import com.oxymoron.data.source.remote.api.RestaurantSearchApiClientImpl;
 import com.oxymoron.util.multi.AppExecutors;
 
 public class Injection {

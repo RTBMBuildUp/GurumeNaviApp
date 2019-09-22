@@ -1,5 +1,5 @@
 
-package com.oxymoron.api.search.gson.data;
+package com.oxymoron.data.source.remote.api.gson.data;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
