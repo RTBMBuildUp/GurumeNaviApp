@@ -2,15 +2,11 @@ package com.oxymoron.data.source.remote.api;
 
 import android.text.TextUtils;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.example.gurumenaviapp.BuildConfig;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.internal.bind.TypeAdapters;
-import com.oxymoron.data.RestaurantDetail;
 import com.oxymoron.data.room.RestaurantId;
 import com.oxymoron.data.source.remote.api.gson.data.RestaurantSearchResult;
 import com.oxymoron.data.source.remote.api.gson.typeadapter.IntegerTypeAdapter;
@@ -24,9 +20,7 @@ import java.util.List;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -54,84 +48,37 @@ public class RestaurantSearchApiClientImpl implements RestaurantSearchApiClient 
     }
 
     @Override
-    public void loadRestaurantDetails(List<RestaurantId> restaurantIdList, Consumer<List<RestaurantDetail>> function) {
-        List<String> restaurantIdsAsStringList = new ArrayList<>();
-        for (RestaurantId restaurantId : restaurantIdList) {
-            restaurantIdsAsStringList.add(restaurantId.getId());
-        }
-
-        loadRestaurantDetailsRepeatedly(restaurantIdsAsStringList, stringList ->
+    public void loadRestaurantDetails(List<RestaurantId> restaurantIdList, Callback<RestaurantSearchResult> callback) {
+        loadRestaurantDetailsRepeatedly(restaurantIdList, stringList ->
                 restaurantSearchApi.getRestaurantSearchResult(
                         token,
                         TextUtils.join(",", stringList)
-                ).enqueue(new Callback<RestaurantSearchResult>() {
-                    @Override
-                    public void onResponse(@NonNull Call<RestaurantSearchResult> call, @NonNull Response<RestaurantSearchResult> response) {
-                        if (response.isSuccessful()) {
-                            RestaurantSearchResult body = response.body();
-                            if (body != null) {
-                                body.getRest().ifPresent(restList -> {
-                                    List<RestaurantDetail> restaurantDetailList = RestaurantDetail.createRestaurantDetailList(restList);
-
-                                    function.accept(restaurantDetailList);
-                                });
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(@Nullable Call<RestaurantSearchResult> call, @NonNull Throwable t) {
-
-                    }
-                })
+                ).enqueue(callback)
         );
     }
 
     @Override
-    public void loadRestaurantList(Range range, LocationInformation locationInformation, Consumer<RestaurantSearchResult> function) {
-        restaurantSearchApi.getRestaurantSearchResult(
+    public void loadRestaurantDetails(Range range, LocationInformation locationInformation, Callback<RestaurantSearchResult> callback) {
+        this.restaurantSearchApi.getRestaurantSearchResult(
                 token,
                 range.getRadius(),
                 locationInformation.getLatitude().toString(),
                 locationInformation.getLongitude().toString()
-        ).enqueue(new Callback<RestaurantSearchResult>() {
-            @Override
-            public void onResponse(@NonNull Call<RestaurantSearchResult> call, @NonNull Response<RestaurantSearchResult> response) {
-                if (response.isSuccessful())
-                    function.accept(response.body());
-            }
-
-            @Override
-            public void onFailure(@Nullable Call<RestaurantSearchResult> call, @NonNull Throwable t) {
-
-            }
-        });
+        ).enqueue(callback);
     }
 
     @Override
-    public void loadRestaurantList(
-            Range range,
-            LocationInformation locationInformation,
-            PageState pageState,
-            Consumer<RestaurantSearchResult> function) {
+    public void loadRestaurantDetails(
+            Range range, LocationInformation locationInformation,
+            PageState pageState, Callback<RestaurantSearchResult> callback) {
 
-        restaurantSearchApi.getRestaurantSearchResult(token,
+        this.restaurantSearchApi.getRestaurantSearchResult(
+                token,
                 range.getRadius(),
                 locationInformation.getLatitude().toString(),
                 locationInformation.getLongitude().toString(),
                 pageState.getOffsetPage().toString()
-        ).enqueue(new Callback<RestaurantSearchResult>() {
-            @Override
-            public void onResponse(@NonNull Call<RestaurantSearchResult> call, @NonNull Response<RestaurantSearchResult> response) {
-                if (response.isSuccessful())
-                    function.accept(response.body());
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<RestaurantSearchResult> call, @Nullable Throwable t) {
-
-            }
-        });
+        ).enqueue(callback);
     }
 
     private static RestaurantSearchApi createGurumeNaviApi() {
@@ -161,10 +108,15 @@ public class RestaurantSearchApiClientImpl implements RestaurantSearchApiClient 
         return retrofit.create(RestaurantSearchApi.class);
     }
 
-    private void loadRestaurantDetailsRepeatedly(List<String> restaurantIdsAsStringList, Consumer<List<String>> consumer) {
-        final Partition<String> idList = new Partition<>(restaurantIdsAsStringList, 10);
-        for (List<String> ids : idList) {
-            consumer.accept(ids);
+    private void loadRestaurantDetailsRepeatedly(List<RestaurantId> restaurantIdList, Consumer<List<String>> consumer) {
+        final Partition<RestaurantId> idList = new Partition<>(restaurantIdList, 10);
+        for (List<RestaurantId> restaurantIds : idList) {
+            List<String> stringList = new ArrayList<>();
+            for (RestaurantId restaurantId : restaurantIds) {
+                stringList.add(restaurantId.getId());
+            }
+
+            consumer.accept(stringList);
         }
     }
 

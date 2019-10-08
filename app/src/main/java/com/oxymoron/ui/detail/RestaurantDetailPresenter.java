@@ -1,42 +1,28 @@
 package com.oxymoron.ui.detail;
 
-import androidx.annotation.NonNull;
-
 import com.oxymoron.data.RestaurantDetail;
 import com.oxymoron.data.room.RestaurantId;
-import com.oxymoron.data.source.remote.api.RestaurantSearchApiClient;
-import com.oxymoron.data.source.remote.api.gson.data.RestaurantSearchResult;
-
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import com.oxymoron.data.source.RestaurantDetailsDataSource;
+import com.oxymoron.data.source.RestaurantDetailsRepository;
 
 public class RestaurantDetailPresenter implements RestaurantDetailContract.Presenter {
     private final RestaurantDetailContract.View view;
-    private final RestaurantSearchApiClient apiClient;
+    private final RestaurantDetailsRepository restaurantDetailsRepository;
 
-    RestaurantDetailPresenter(RestaurantDetailContract.View view, RestaurantSearchApiClient apiClient) {
+    RestaurantDetailPresenter(RestaurantDetailContract.View view, RestaurantDetailsRepository restaurantDetailsRepository) {
         this.view = view;
-        this.apiClient = apiClient;
+        this.restaurantDetailsRepository = restaurantDetailsRepository;
     }
 
     private void showDetail(RestaurantId restaurantId) {
-        apiClient.loadRestaurantDetail(restaurantId, new Callback<RestaurantSearchResult>() {
+        this.restaurantDetailsRepository.getRestaurantDetail(restaurantId, new RestaurantDetailsDataSource.GetRestaurantDetailsCallback() {
             @Override
-            public void onResponse(@NonNull Call<RestaurantSearchResult> call, @NonNull Response<RestaurantSearchResult> response) {
-                RestaurantSearchResult body = response.body();
-                if (response.isSuccessful() && body != null) {
-                    body.getRest().ifPresent(restList -> {
-                        List<RestaurantDetail> restaurantDetailList = RestaurantDetail.createRestaurantDetailList(restList);
-                        setDetail(restaurantDetailList.get(0));
-                    });
-                }
+            public void onRestaurantDetailLoaded(RestaurantDetail restaurantDetail) {
+                setDetail(restaurantDetail);
             }
 
             @Override
-            public void onFailure(@NonNull Call<RestaurantSearchResult> call, @NonNull Throwable t) {
+            public void onDataNotAvailable() {
 
             }
         });

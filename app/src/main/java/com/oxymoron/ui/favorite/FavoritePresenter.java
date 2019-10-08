@@ -14,7 +14,7 @@ public class FavoritePresenter implements FavoriteContract.Presenter {
     private FavoriteContract.View view;
     private RestaurantDetailsRepository restaurantDetailsRepository;
 
-    public FavoritePresenter(FavoriteContract.View view, RestaurantDetailsRepository restaurantDetailsRepository) {
+    FavoritePresenter(FavoriteContract.View view, RestaurantDetailsRepository restaurantDetailsRepository) {
         this.view = view;
         this.restaurantDetailsRepository = restaurantDetailsRepository;
     }
@@ -26,13 +26,22 @@ public class FavoritePresenter implements FavoriteContract.Presenter {
                 int index = restaurantThumbnailList.indexOf(item);
 
                 if (index == -1) {
-                    item.addToFavorities();
                     restaurantThumbnailList.add(item);
                 }
             }
         } catch (IndexOutOfBoundsException e) {
             Log.d("FavoritePresenter", "setItem: " + e);
         }
+    }
+
+    @Override
+    public void clearItem(List<RestaurantThumbnail> restaurantThumbnailList) {
+        restaurantThumbnailList.clear();
+    }
+
+    @Override
+    public void clearThumbnail() {
+        view.clearRecyclerView();
     }
 
     @Override
@@ -48,7 +57,9 @@ public class FavoritePresenter implements FavoriteContract.Presenter {
                     RestaurantThumbnail restaurantThumbnail =
                             RestaurantThumbnail.createRestaurantThumbnail(restaurantDetail);
 
-                    function.accept(restaurantThumbnail);
+                    if (restaurantDetail.isFavorite()) {
+                        function.accept(restaurantThumbnail);
+                    }
                 }
             }
 

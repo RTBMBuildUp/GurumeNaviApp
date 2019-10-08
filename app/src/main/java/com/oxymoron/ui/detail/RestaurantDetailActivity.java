@@ -41,7 +41,7 @@ public class RestaurantDetailActivity extends AppCompatActivity implements Resta
 
         findViews();
 
-        presenter = new RestaurantDetailPresenter(this, Injection.provideRestaurantSearchApiClientImpl(this));
+        presenter = new RestaurantDetailPresenter(this, Injection.provideRestaurantDetailsRepository(this));
 
         final Intent intent = getIntent();
         final RestaurantId restaurantId = ((RestaurantId) intent.getSerializableExtra(KEY_RESTAURANT_ID));

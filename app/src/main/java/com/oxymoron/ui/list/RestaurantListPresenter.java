@@ -9,63 +9,65 @@ import com.oxymoron.data.room.RestaurantId;
 import com.oxymoron.data.source.RestaurantDetailsDataSource;
 import com.oxymoron.data.source.RestaurantDetailsRepository;
 import com.oxymoron.data.source.remote.api.PageState;
-import com.oxymoron.data.source.remote.api.RestaurantSearchApiClient;
+import com.oxymoron.data.source.remote.api.gson.data.RestaurantSearchResult;
 import com.oxymoron.data.source.remote.api.serializable.LocationInformation;
 import com.oxymoron.data.source.remote.api.serializable.Range;
 import com.oxymoron.ui.list.data.RestaurantThumbnail;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class RestaurantListPresenter implements RestaurantListContract.Presenter {
     private final RestaurantListContract.View view;
-    private final RestaurantSearchApiClient apiClient;
-
     private final RestaurantDetailsRepository restaurantDetailsRepository;
 
     private PageState pageState;
 
     RestaurantListPresenter(RestaurantListContract.View view,
-                            RestaurantSearchApiClient apiClient,
                             RestaurantDetailsRepository restaurantDetailsRepository) {
 
         this.view = view;
-        this.apiClient = apiClient;
 
         this.restaurantDetailsRepository = restaurantDetailsRepository;
     }
 
     @Override
+    public void refreshSavedItem(List<RestaurantThumbnail> itemList) {
+        this.saveRestaurantDetailByRestaurantThumbnail(itemList);
+        this.deleteRestaurantDetailByRestaurantThumbnail(itemList);
+    }
+
+    @Override
     public void search(Range range, LocationInformation locationInformation) {
-        showThumbnail(range, locationInformation);
+        this.showThumbnail(range, locationInformation);
     }
 
     @Override
     public void search(Range range, LocationInformation locationInformation, PageState pageState) {
-        showThumbnail(range, locationInformation, pageState);
+        this.showThumbnail(range, locationInformation, pageState);
     }
 
     @Override
     public void setItem(List<RestaurantThumbnail> itemList, RestaurantThumbnail item) {
         try {
             if (itemList != null) {
-                int index = itemList.indexOf(item);
-                if (-1 == index) {
-                    Log.d("log", "setItem: " + item.getName());
-                    this.restaurantDetailsRepository.getRestaurantDetail(item.getRestaurantId(),
-                            new RestaurantDetailsDataSource.GetRestaurantDetailsCallback() {
-                                @Override
-                                public void onRestaurantDetailLoaded(RestaurantDetail restaurantDetail) {
+                if (!itemList.contains(item)) {
+                    this.restaurantDetailsRepository.getRestaurantDetails(new RestaurantDetailsDataSource.LoadRestaurantDetailsCallback() {
+                        @Override
+                        public void onRestaurantDetailsLoaded(List<RestaurantDetail> restaurantDetailList) {
+                            for (RestaurantDetail restaurantDetail : restaurantDetailList) {
+                                if (item.getId().equals(restaurantDetail.getId()) && restaurantDetail.isFavorite()) {
                                     item.addToFavorities();
-                                    Log.d("log", "onRestaurantDetailLoaded: ");
                                 }
+                            }
+                        }
 
-                                @Override
-                                public void onDataNotAvailable() {
-                                    Log.d("log", "onDataNotAvailable: ");
-                                }
-                            });
+                        @Override
+                        public void onDataNotAvailable() {
+
+                        }
+                    });
+
                     itemList.add(item);
                 }
             }
@@ -97,7 +99,7 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
             final int bottom = 1;
             if (!recyclerView.canScrollVertically(bottom)) {
                 try {
-                    search(range, locationInformation, this.pageState.getNextPageState());
+                    this.search(range, locationInformation, this.pageState.getNextPageState());
                 } catch (ArithmeticException e) {
                     Log.d("RestaurantListPresenter", "onScrolled: " + e);
                 }
@@ -110,64 +112,81 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
 
     }
 
-    @Override
-    public void saveRestaurantDetailWithRestaurantThumbnail(List<RestaurantThumbnail> restaurantThumbnailList) {
-        List<RestaurantId> favoriteRestaurantIdList = new ArrayList<>(12);
-        for (RestaurantThumbnail thumbnail : restaurantThumbnailList) {
-            if (thumbnail.isFavorite()) {
-                favoriteRestaurantIdList.add(thumbnail.getRestaurantId());
-            }
-        }
-
-        this.apiClient.loadRestaurantDetails(favoriteRestaurantIdList, restaurantDetailList -> {
-            for (RestaurantDetail restaurantDetail : restaurantDetailList) {
-                this.restaurantDetailsRepository.saveRestaurantDetail(restaurantDetail);
-            }
-        });
-
-//        for (RestaurantThumbnail restaurantThumbnail : restaurantThumbnailList) {
-//            if (restaurantThumbnail.isFavorite()) {
-//                this.apiClient.loadRestaurantDetail(
-//                        new RestaurantId(restaurantThumbnail.getRestaurantId()),
-//                        parsedObj -> parsedObj.getRest().ifPresent((restList) -> {
-//                            RestaurantDetail restaurantDetail = new RestaurantDetail(restList.get(0));
-//                            restaurantDetailsRepository.saveRestaurantDetail(restaurantDetail);
-//                        })
-//                );
-//            } else {
-//                this.restaurantDetailsRepository.deleteRestaurantDetail(restaurantThumbnail.getRestaurantId());
-//            }
-//        }
-    }
-
     private void showThumbnail(Range range, LocationInformation locationInformation) {
+        this.restaurantDetailsRepository.getRestaurantDetails(
+                range, locationInformation,
+                new RestaurantDetailsDataSource.GetRestaurantSearchResultCallback() {
+                    @Override
+                    public void onRestaurantSearchResultLoaded(RestaurantSearchResult restaurantSearchResult) {
+                        RestaurantListPresenter.this.pageState = new PageState(restaurantSearchResult.getHitPerPage());
 
-        this.apiClient.loadRestaurantList(range, locationInformation, parsedObj -> {
-            pageState = new PageState(parsedObj.getPageOffset());
+                        restaurantSearchResult.getRest().ifPresent(restList -> {
+                            List<RestaurantThumbnail> restaurantThumbnailList = RestaurantThumbnail.createRestaurantThumbnailList(restList);
+                            for (RestaurantThumbnail thumbnail : restaurantThumbnailList) {
+                                view.addRecyclerViewItem(thumbnail);
+                            }
+                        });
+                    }
 
-            parsedObj.getRest().ifPresent(list -> {
-                final List<RestaurantThumbnail> restaurantThumbnailList = RestaurantThumbnail.createRestaurantThumbnailList(list);
+                    @Override
+                    public void onDataNotAvailable() {
 
-                Collections.reverse(restaurantThumbnailList);
-                for (RestaurantThumbnail restaurantThumbnail : restaurantThumbnailList) {
-                    view.addRecyclerViewItem(restaurantThumbnail);
-                }
-            });
-        });
+                    }
+                });
     }
 
     private void showThumbnail(Range range, LocationInformation locationInformation, PageState pageState) {
-        apiClient.loadRestaurantList(range, locationInformation, pageState, parsedObj -> {
-            this.pageState = pageState;
+        this.restaurantDetailsRepository.getRestaurantDetails(
+                range, locationInformation, pageState,
+                new RestaurantDetailsDataSource.GetRestaurantSearchResultCallback() {
+                    @Override
+                    public void onRestaurantSearchResultLoaded(RestaurantSearchResult restaurantSearchResult) {
+                        RestaurantListPresenter.this.pageState = pageState;
 
-            parsedObj.getRest().ifPresent(list -> {
-                final List<RestaurantThumbnail> restaurantThumbnailList = RestaurantThumbnail.createRestaurantThumbnailList(list);
+                        restaurantSearchResult.getRest().ifPresent(restList -> {
+                            List<RestaurantThumbnail> restaurantThumbnailList = RestaurantThumbnail.createRestaurantThumbnailList(restList);
+                            for (RestaurantThumbnail thumbnail : restaurantThumbnailList) {
+                                view.addRecyclerViewItem(thumbnail);
+                            }
+                        });
+                    }
 
-                Collections.reverse(restaurantThumbnailList);
-                for (RestaurantThumbnail restaurantThumbnail : restaurantThumbnailList) {
-                    view.addRecyclerViewItem(restaurantThumbnail);
+                    @Override
+                    public void onDataNotAvailable() {
+
+                    }
                 }
-            });
+        );
+    }
+
+    private void saveRestaurantDetailByRestaurantThumbnail(List<RestaurantThumbnail> restaurantThumbnailList) {
+        List<RestaurantId> favoriteRestaurantIdList = new ArrayList<>();
+        for (RestaurantThumbnail thumbnail : restaurantThumbnailList) {
+            if (thumbnail.isFavorite()) {
+                Log.d("log", "saveRestaurantDetailByRestaurantThumbnail: " + thumbnail.getName());
+                favoriteRestaurantIdList.add(thumbnail.getId());
+            }
+        }
+
+        this.restaurantDetailsRepository.getRestaurantDetails(favoriteRestaurantIdList, new RestaurantDetailsDataSource.LoadRestaurantDetailsCallback() {
+            @Override
+            public void onRestaurantDetailsLoaded(List<RestaurantDetail> favoritedRestaurantList) {
+                for (RestaurantDetail favoritedRestaurant : favoritedRestaurantList) {
+                    Log.d("log", "onRestaurantDetailsLoaded: " + favoritedRestaurant.getName());
+                    restaurantDetailsRepository.saveRestaurantDetail(favoritedRestaurant);
+                }
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                Log.d("log", "onDataNotAvailable: ");
+            }
         });
+
+        System.out.println("saveResDet: finished");
+    }
+
+    private void deleteRestaurantDetailByRestaurantThumbnail(List<RestaurantThumbnail> restaurantThumbnailList) {
+
     }
 }

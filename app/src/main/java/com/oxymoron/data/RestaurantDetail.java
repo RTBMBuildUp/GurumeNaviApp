@@ -69,7 +69,7 @@ public class RestaurantDetail {
     }
 
     public RestaurantDetail(@NonNull Rest rest) {
-        this(new RestaurantId(rest.getId()), rest.getName(), new PhoneNumber(rest.getTel()),
+        this(new RestaurantId(rest.getId()), rest.getName(), new PhoneNumber(rest.getTel().getOrElse("")),
                 rest.getAddress(), rest.getAccess().showUserAround(), rest.getOpentime(),
                 new ImageUrl(rest.getImageUrl().getShopImage().getOrElse(null)), false
         );
@@ -124,8 +124,7 @@ public class RestaurantDetail {
 
     @Override
     public boolean equals(@Nullable Object obj) {
-        if (this == obj) return true;
-        if (obj == null || this.getClass() != obj.getClass()) return false;
+        if (!(obj instanceof RestaurantDetail)) return false;
         RestaurantDetail restaurantDetail = ((RestaurantDetail) obj);
         return Objects.equals(this.getId(), restaurantDetail.getId());
     }

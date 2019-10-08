@@ -18,10 +18,16 @@ public class RestaurantId implements Serializable {
 
     @Override
     public boolean equals(@Nullable Object obj) {
-        if (this == obj) return true;
-        if (obj == null || this.getClass() != obj.getClass()) return false;
+        if (!(obj instanceof RestaurantId)) return false;
         RestaurantId restaurantId = ((RestaurantId) obj);
 
         return Objects.equals(restaurantId.getId(), this.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 69;
+
+        return 31 * result + this.getId().hashCode();
     }
 }

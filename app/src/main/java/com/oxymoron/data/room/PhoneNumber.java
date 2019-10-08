@@ -7,20 +7,19 @@ import com.oxymoron.util.Optional;
 import java.util.Objects;
 
 public class PhoneNumber {
-    private final Optional<String> phoneNumber;
+    private final String phoneNumber;
 
-    public PhoneNumber(Optional<String> phoneNumber) {
+    public PhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
     public Optional<String> getPhoneNumber() {
-        return this.phoneNumber;
+        return Optional.of(this.phoneNumber);
     }
 
     @Override
     public boolean equals(@Nullable Object obj) {
-        if (this == obj) return true;
-        if (obj == null || this.getClass() != obj.getClass()) return false;
+        if (!(obj instanceof PhoneNumber)) return false;
         PhoneNumber phoneNumber = (PhoneNumber) obj;
 
         return Objects.equals(this.getPhoneNumber(), phoneNumber.getPhoneNumber());

@@ -57,7 +57,6 @@ public class RestaurantListActivity extends AppCompatActivity implements Restaur
 
         presenter = new RestaurantListPresenter(
                 this,
-                Injection.provideRestaurantSearchApiClientImpl(this),
                 Injection.provideRestaurantDetailsRepository(this)
         );
 
@@ -76,7 +75,7 @@ public class RestaurantListActivity extends AppCompatActivity implements Restaur
     @Override
     protected void onStop() {
         super.onStop();
-        presenter.saveRestaurantDetailWithRestaurantThumbnail(itemList);
+        presenter.refreshSavedItem(itemList);
     }
 
     @Override
@@ -110,7 +109,7 @@ public class RestaurantListActivity extends AppCompatActivity implements Restaur
 
         this.adapter = new RestaurantListAdapter(this.itemList);
         this.adapter.setOnClickListener(thumbnail -> {
-            final RestaurantId restaurantId = thumbnail.getRestaurantId();
+            final RestaurantId restaurantId = thumbnail.getId();
             final Intent intent = RestaurantDetailActivity.createIntent(RestaurantListActivity.this, restaurantId);
 
             startActivity(intent);

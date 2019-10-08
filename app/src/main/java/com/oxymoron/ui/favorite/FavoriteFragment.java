@@ -56,6 +56,8 @@ public class FavoriteFragment extends Fragment implements FavoriteContract.View 
         super.onResume();
 
         if (this.isFirstVisit()) {
+            Log.d("log", "onResume: first visit");
+            this.presenter.clearThumbnail();
             this.presenter.showThumbnails();
         }
 
@@ -77,12 +79,18 @@ public class FavoriteFragment extends Fragment implements FavoriteContract.View 
         adapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void clearRecyclerView() {
+        presenter.clearItem(itemList);
+        adapter.notifyDataSetChanged();
+    }
+
     private void prepareRecyclerView() {
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getContext());
 
         this.adapter = new RestaurantListAdapter(this.itemList);
         this.adapter.setOnClickListener(thumbnail -> {
-            final RestaurantId restaurantId = thumbnail.getRestaurantId();
+            final RestaurantId restaurantId = thumbnail.getId();
             final Intent intent = RestaurantDetailActivity.createIntent(FavoriteFragment.this.getContext(), restaurantId);
 
             startActivity(intent);

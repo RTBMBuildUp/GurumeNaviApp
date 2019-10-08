@@ -23,8 +23,7 @@ public class LocationInformation implements Serializable {
 
     @Override
     public boolean equals(@Nullable Object obj) {
-        if (this == obj) return true;
-        if (obj == null || this.getClass() != obj.getClass()) return false;
+        if (!(obj instanceof LocationInformation)) return false;
         LocationInformation locationInformation = ((LocationInformation) obj);
 
         return locationInformation.getLatitude().equals(this.getLatitude()) &&

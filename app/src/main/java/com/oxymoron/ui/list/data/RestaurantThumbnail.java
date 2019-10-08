@@ -44,7 +44,7 @@ public class RestaurantThumbnail {
         this.name = name;
         this.access = access;
         this.imageUrl = imageUrl;
-        this.favorite = false;
+        this.favorite = favorite;
     }
 
     public RestaurantThumbnail(Rest restaurant) {
@@ -71,12 +71,12 @@ public class RestaurantThumbnail {
         return Optional.of(imageUrl);
     }
 
-    public RestaurantId getRestaurantId() {
+    public RestaurantId getId() {
         return restaurantId;
     }
 
     public boolean isFavorite() {
-        return favorite;
+        return this.favorite;
     }
 
     public static List<RestaurantThumbnail> createRestaurantThumbnailList(List<Rest> restaurantList) {

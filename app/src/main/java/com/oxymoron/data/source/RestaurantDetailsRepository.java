@@ -4,6 +4,10 @@ import androidx.annotation.NonNull;
 
 import com.oxymoron.data.RestaurantDetail;
 import com.oxymoron.data.room.RestaurantId;
+import com.oxymoron.data.source.remote.api.PageState;
+import com.oxymoron.data.source.remote.api.gson.data.RestaurantSearchResult;
+import com.oxymoron.data.source.remote.api.serializable.LocationInformation;
+import com.oxymoron.data.source.remote.api.serializable.Range;
 import com.oxymoron.util.Optional;
 
 import java.util.ArrayList;
@@ -44,6 +48,7 @@ public class RestaurantDetailsRepository implements RestaurantDetailsDataSource 
     public void getRestaurantDetails(@NonNull LoadRestaurantDetailsCallback callback) {
         if (this.cachedRestaurantDetailMap != null && !this.cacheIsDirty) {
             callback.onRestaurantDetailsLoaded(new ArrayList<>(this.cachedRestaurantDetailMap.values()));
+
             return;
         }
 
@@ -66,7 +71,92 @@ public class RestaurantDetailsRepository implements RestaurantDetailsDataSource 
     }
 
     @Override
+    public void getRestaurantDetails(@NonNull List<RestaurantId> restaurantIdList, @NonNull LoadRestaurantDetailsCallback callback) {
+        if (this.cachedRestaurantDetailMap != null && !this.cacheIsDirty) {
+            List<RestaurantDetail> restaurantDetailList = new ArrayList<>();
+
+            for (RestaurantId restaurantId : restaurantIdList) {
+                RestaurantDetail restaurantDetail = this.cachedRestaurantDetailMap.get(restaurantId);
+
+                if (restaurantDetail != null) {
+                    restaurantDetailList.add(restaurantDetail);
+                }
+            }
+
+            if (restaurantDetailList.size() == restaurantIdList.size()) {
+                callback.onRestaurantDetailsLoaded(restaurantDetailList);
+                return;
+            }
+        }
+
+        if (this.cacheIsDirty) {
+            this.getRestaurantDetailsFromRemote(restaurantIdList, callback);
+        } else {
+            this.restaurantDetailsLocalDataSource.getRestaurantDetails(restaurantIdList, new LoadRestaurantDetailsCallback() {
+                @Override
+                public void onRestaurantDetailsLoaded(List<RestaurantDetail> restaurantDetailList) {
+                    refreshCache(restaurantDetailList);
+                    callback.onRestaurantDetailsLoaded(restaurantDetailList);
+                }
+
+                @Override
+                public void onDataNotAvailable() {
+                    getRestaurantDetailsFromRemote(restaurantIdList, callback);
+                }
+            });
+        }
+    }
+
+    @Override
+    public void getRestaurantDetails(@NonNull Range range, @NonNull LocationInformation locationInformation,
+                                     @NonNull GetRestaurantSearchResultCallback callback) {
+
+        if (this.cacheIsDirty) {
+            this.restaurantDetailsRemoteDataSource.getRestaurantDetails(range, locationInformation, callback);
+        } else {
+            this.restaurantDetailsLocalDataSource.getRestaurantDetails(range, locationInformation, new GetRestaurantSearchResultCallback() {
+                @Override
+                public void onRestaurantSearchResultLoaded(RestaurantSearchResult restaurantSearchResult) {
+                    callback.onRestaurantSearchResultLoaded(restaurantSearchResult);
+                }
+
+                @Override
+                public void onDataNotAvailable() {
+                    restaurantDetailsRemoteDataSource.getRestaurantDetails(range, locationInformation, callback);
+                }
+            });
+        }
+    }
+
+    @Override
+    public void getRestaurantDetails(@NonNull Range range, @NonNull LocationInformation locationInformation,
+                                     @NonNull PageState pageState, @NonNull GetRestaurantSearchResultCallback callback) {
+
+        if (this.cacheIsDirty) {
+            this.restaurantDetailsRemoteDataSource.getRestaurantDetails(range, locationInformation, pageState, callback);
+        } else {
+            this.restaurantDetailsLocalDataSource.getRestaurantDetails(range, locationInformation, pageState, new GetRestaurantSearchResultCallback() {
+                @Override
+                public void onRestaurantSearchResultLoaded(RestaurantSearchResult restaurantSearchResult) {
+                    callback.onRestaurantSearchResultLoaded(restaurantSearchResult);
+                }
+
+                @Override
+                public void onDataNotAvailable() {
+                    restaurantDetailsRemoteDataSource.getRestaurantDetails(range, locationInformation, pageState, callback);
+                }
+            });
+        }
+    }
+
+    @Override
     public void getRestaurantDetail(@NonNull RestaurantId id, @NonNull GetRestaurantDetailsCallback callback) {
+        RestaurantDetail restaurantDetailCache = this.cachedRestaurantDetailMap.get(id);
+        if (restaurantDetailCache != null) {
+            callback.onRestaurantDetailLoaded(restaurantDetailCache);
+            return;
+        }
+
         this.getRestaurantDetailById(id).ifPresentOrElse(
                 callback::onRestaurantDetailLoaded,
                 () -> this.restaurantDetailsLocalDataSource.getRestaurantDetail(id, new GetRestaurantDetailsCallback() {
@@ -100,12 +190,12 @@ public class RestaurantDetailsRepository implements RestaurantDetailsDataSource 
                         });
                     }
                 }));
-
-
     }
 
     @Override
     public void saveRestaurantDetail(@NonNull RestaurantDetail restaurantDetail) {
+        restaurantDetail.addToFavorities();
+
         this.restaurantDetailsLocalDataSource.saveRestaurantDetail(restaurantDetail);
         this.restaurantDetailsRemoteDataSource.saveRestaurantDetail(restaurantDetail);
 
@@ -113,23 +203,6 @@ public class RestaurantDetailsRepository implements RestaurantDetailsDataSource 
             this.cachedRestaurantDetailMap = new LinkedHashMap<>();
         }
         this.cachedRestaurantDetailMap.put(restaurantDetail.getId(), restaurantDetail);
-    }
-
-    private void getRestaurantDetailsFromRemote(LoadRestaurantDetailsCallback callback) {
-        this.restaurantDetailsRemoteDataSource.getRestaurantDetails(
-                new LoadRestaurantDetailsCallback() {
-                    @Override
-                    public void onRestaurantDetailsLoaded(List<RestaurantDetail> restaurantDetailList) {
-                        callback.onRestaurantDetailsLoaded(restaurantDetailList);
-                        refreshLocalDataSource(restaurantDetailList);
-                        refreshCache(new ArrayList<>(cachedRestaurantDetailMap.values()));
-                    }
-
-                    @Override
-                    public void onDataNotAvailable() {
-                        callback.onDataNotAvailable();
-                    }
-                });
     }
 
     @Override
@@ -151,6 +224,42 @@ public class RestaurantDetailsRepository implements RestaurantDetailsDataSource 
             this.cachedRestaurantDetailMap = new LinkedHashMap<>();
         }
         this.cachedRestaurantDetailMap.clear();
+    }
+
+    private void getRestaurantDetailsFromRemote(LoadRestaurantDetailsCallback callback) {
+        this.restaurantDetailsRemoteDataSource.getRestaurantDetails(
+                new LoadRestaurantDetailsCallback() {
+                    @Override
+                    public void onRestaurantDetailsLoaded(List<RestaurantDetail> restaurantDetailList) {
+                        callback.onRestaurantDetailsLoaded(restaurantDetailList);
+                        refreshLocalDataSource(restaurantDetailList);
+                        refreshCache(restaurantDetailList);
+                    }
+
+                    @Override
+                    public void onDataNotAvailable() {
+                        callback.onDataNotAvailable();
+                    }
+                });
+    }
+
+    private void getRestaurantDetailsFromRemote(List<RestaurantId> restaurantIdList, LoadRestaurantDetailsCallback callback) {
+        this.restaurantDetailsRemoteDataSource.getRestaurantDetails(
+                restaurantIdList,
+                new LoadRestaurantDetailsCallback() {
+                    @Override
+                    public void onRestaurantDetailsLoaded(List<RestaurantDetail> restaurantDetailList) {
+                        callback.onRestaurantDetailsLoaded(restaurantDetailList);
+                        refreshLocalDataSource(restaurantDetailList);
+                        refreshCache(restaurantDetailList);
+                    }
+
+                    @Override
+                    public void onDataNotAvailable() {
+                        callback.onDataNotAvailable();
+                    }
+                }
+        );
     }
 
     private void refreshCache(List<RestaurantDetail> restaurantDetailList) {

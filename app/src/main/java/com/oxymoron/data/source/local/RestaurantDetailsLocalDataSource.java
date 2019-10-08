@@ -5,6 +5,9 @@ import androidx.annotation.NonNull;
 import com.oxymoron.data.RestaurantDetail;
 import com.oxymoron.data.room.RestaurantId;
 import com.oxymoron.data.source.RestaurantDetailsDataSource;
+import com.oxymoron.data.source.remote.api.PageState;
+import com.oxymoron.data.source.remote.api.serializable.LocationInformation;
+import com.oxymoron.data.source.remote.api.serializable.Range;
 import com.oxymoron.util.multi.AppExecutors;
 
 import java.util.List;
@@ -42,6 +45,26 @@ public class RestaurantDetailsLocalDataSource implements RestaurantDetailsDataSo
 
             this.appExecutors.mainThread().execute(() -> {
                 if (restaurantDetailList.isEmpty()) {
+                    System.out.println("is empty");
+                    callback.onDataNotAvailable();
+                } else {
+                    System.out.println("data loaded");
+                    callback.onRestaurantDetailsLoaded(restaurantDetailList);
+                }
+            });
+        };
+
+        this.appExecutors.diskIO().execute(runnable);
+    }
+
+    @Override
+    public void getRestaurantDetails(@NonNull List<RestaurantId> restaurantIdList, @NonNull LoadRestaurantDetailsCallback callback) {
+        Runnable runnable = () -> {
+            List<RestaurantDetail> restaurantDetailList =
+                    this.restaurantDetailsDao.getRestaurantDetails(restaurantIdList);
+
+            this.appExecutors.mainThread().execute(() -> {
+                if (restaurantDetailList == null || restaurantDetailList.size() != restaurantIdList.size()) {
                     callback.onDataNotAvailable();
                 } else {
                     callback.onRestaurantDetailsLoaded(restaurantDetailList);
@@ -50,6 +73,20 @@ public class RestaurantDetailsLocalDataSource implements RestaurantDetailsDataSo
         };
 
         this.appExecutors.diskIO().execute(runnable);
+    }
+
+    @Override
+    public void getRestaurantDetails(@NonNull Range range, @NonNull LocationInformation locationInformation,
+                                     @NonNull GetRestaurantSearchResultCallback callback) {
+
+        callback.onDataNotAvailable();
+    }
+
+    @Override
+    public void getRestaurantDetails(@NonNull Range range, @NonNull LocationInformation locationInformation,
+                                     @NonNull PageState pageState, @NonNull GetRestaurantSearchResultCallback callback) {
+
+        callback.onDataNotAvailable();
     }
 
     @Override
