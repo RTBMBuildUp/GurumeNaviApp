@@ -3,8 +3,8 @@ package com.oxymoron.data.source.local;
 import androidx.annotation.NonNull;
 
 import com.oxymoron.data.RestaurantDetail;
-import com.oxymoron.data.room.RestaurantId;
 import com.oxymoron.data.source.RestaurantDetailsDataSource;
+import com.oxymoron.data.source.local.data.RestaurantId;
 import com.oxymoron.data.source.remote.api.PageState;
 import com.oxymoron.data.source.remote.api.serializable.LocationInformation;
 import com.oxymoron.data.source.remote.api.serializable.Range;

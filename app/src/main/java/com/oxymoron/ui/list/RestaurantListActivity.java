@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gurumenaviapp.R;
-import com.oxymoron.data.room.RestaurantId;
+import com.oxymoron.data.source.local.data.RestaurantId;
 import com.oxymoron.data.source.remote.api.PageState;
 import com.oxymoron.data.source.remote.api.serializable.LocationInformation;
 import com.oxymoron.data.source.remote.api.serializable.Range;

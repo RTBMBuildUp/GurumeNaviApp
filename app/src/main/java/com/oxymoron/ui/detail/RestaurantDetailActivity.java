@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.example.gurumenaviapp.R;
 import com.oxymoron.data.RestaurantDetail;
-import com.oxymoron.data.room.RestaurantId;
+import com.oxymoron.data.source.local.data.RestaurantId;
 import com.oxymoron.injection.Injection;
 
 public class RestaurantDetailActivity extends AppCompatActivity implements RestaurantDetailContract.View {

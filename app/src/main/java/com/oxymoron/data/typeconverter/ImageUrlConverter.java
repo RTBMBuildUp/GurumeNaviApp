@@ -1,6 +1,6 @@
 package com.oxymoron.data.typeconverter;
 
-import com.oxymoron.data.room.ImageUrl;
+import com.oxymoron.data.source.local.data.ImageUrl;
 
 public class ImageUrlConverter implements TypeConverter<ImageUrl, String> {
     @androidx.room.TypeConverter

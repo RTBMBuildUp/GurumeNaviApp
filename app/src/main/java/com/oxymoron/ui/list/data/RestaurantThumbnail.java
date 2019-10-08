@@ -1,7 +1,7 @@
 package com.oxymoron.ui.list.data;
 
 import com.oxymoron.data.RestaurantDetail;
-import com.oxymoron.data.room.RestaurantId;
+import com.oxymoron.data.source.local.data.RestaurantId;
 import com.oxymoron.data.source.remote.api.gson.data.Rest;
 import com.oxymoron.util.Optional;
 

@@ -7,7 +7,7 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import com.oxymoron.data.RestaurantDetail;
-import com.oxymoron.data.room.RestaurantId;
+import com.oxymoron.data.source.local.data.RestaurantId;
 
 import java.util.List;
 

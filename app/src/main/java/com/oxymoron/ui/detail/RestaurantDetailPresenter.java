@@ -1,9 +1,9 @@
 package com.oxymoron.ui.detail;
 
 import com.oxymoron.data.RestaurantDetail;
-import com.oxymoron.data.room.RestaurantId;
 import com.oxymoron.data.source.RestaurantDetailsDataSource;
 import com.oxymoron.data.source.RestaurantDetailsRepository;
+import com.oxymoron.data.source.local.data.RestaurantId;
 
 public class RestaurantDetailPresenter implements RestaurantDetailContract.Presenter {
     private final RestaurantDetailContract.View view;

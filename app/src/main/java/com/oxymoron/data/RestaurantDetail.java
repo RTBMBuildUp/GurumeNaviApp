@@ -6,9 +6,9 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import com.oxymoron.data.room.ImageUrl;
-import com.oxymoron.data.room.PhoneNumber;
-import com.oxymoron.data.room.RestaurantId;
+import com.oxymoron.data.source.local.data.ImageUrl;
+import com.oxymoron.data.source.local.data.PhoneNumber;
+import com.oxymoron.data.source.local.data.RestaurantId;
 import com.oxymoron.data.source.remote.api.gson.data.Rest;
 
 import java.util.ArrayList;

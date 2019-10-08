@@ -5,9 +5,9 @@ import android.util.Log;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.oxymoron.data.RestaurantDetail;
-import com.oxymoron.data.room.RestaurantId;
 import com.oxymoron.data.source.RestaurantDetailsDataSource;
 import com.oxymoron.data.source.RestaurantDetailsRepository;
+import com.oxymoron.data.source.local.data.RestaurantId;
 import com.oxymoron.data.source.remote.api.PageState;
 import com.oxymoron.data.source.remote.api.gson.data.RestaurantSearchResult;
 import com.oxymoron.data.source.remote.api.serializable.LocationInformation;

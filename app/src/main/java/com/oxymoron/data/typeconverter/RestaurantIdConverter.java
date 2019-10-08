@@ -2,7 +2,7 @@ package com.oxymoron.data.typeconverter;
 
 import androidx.room.TypeConverter;
 
-import com.oxymoron.data.room.RestaurantId;
+import com.oxymoron.data.source.local.data.RestaurantId;
 
 public class RestaurantIdConverter implements com.oxymoron.data.typeconverter.TypeConverter<RestaurantId, String> {
     @TypeConverter

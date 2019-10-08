@@ -1,4 +1,4 @@
-package com.oxymoron.data.room;
+package com.oxymoron.data.source.local.data;
 
 import androidx.annotation.Nullable;
 
