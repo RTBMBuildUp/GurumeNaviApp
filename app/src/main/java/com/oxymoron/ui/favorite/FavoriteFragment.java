@@ -2,7 +2,6 @@ package com.oxymoron.ui.favorite;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,12 +55,8 @@ public class FavoriteFragment extends Fragment implements FavoriteContract.View 
         super.onResume();
 
         if (this.isFirstVisit()) {
-            Log.d("log", "onResume: first visit");
-            this.presenter.clearThumbnail();
-            this.presenter.showThumbnails();
+            refreshRecyclerView();
         }
-
-        Log.d("log", "onResume: favorite");
     }
 
     @Override
@@ -69,8 +64,6 @@ public class FavoriteFragment extends Fragment implements FavoriteContract.View 
         super.onPause();
 
         this.visited();
-
-        Log.d("log", "onPause: favorite");
     }
 
     @Override
@@ -83,6 +76,11 @@ public class FavoriteFragment extends Fragment implements FavoriteContract.View 
     public void clearRecyclerView() {
         presenter.clearItem(itemList);
         adapter.notifyDataSetChanged();
+    }
+
+    private void refreshRecyclerView() {
+        presenter.clearThumbnail();
+        presenter.showThumbnails();
     }
 
     private void prepareRecyclerView() {
