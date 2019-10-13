@@ -32,9 +32,9 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
     }
 
     @Override
-    public void refreshSavedItem(List<RestaurantThumbnail> itemList) {
-        this.saveRestaurantDetailByRestaurantThumbnail(itemList);
-        this.deleteRestaurantDetailByRestaurantThumbnail(itemList);
+    public void refreshSavedItem(List<RestaurantThumbnail> restaurantThumbnailList) {
+        this.saveRestaurantDetailByRestaurantThumbnail(restaurantThumbnailList);
+        this.deleteRestaurantDetailByRestaurantThumbnail(restaurantThumbnailList);
     }
 
     @Override
@@ -48,14 +48,14 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
     }
 
     @Override
-    public void setItem(List<RestaurantThumbnail> itemList, RestaurantThumbnail item) {
-        if (itemList != null && !itemList.contains(item)) {
+    public void setItem(List<RestaurantThumbnail> restaurantThumbnailList, RestaurantThumbnail restaurantThumbnail) {
+        if (restaurantThumbnailList != null && !restaurantThumbnailList.contains(restaurantThumbnail)) {
             this.restaurantDetailsRepository.getRestaurantDetails(new RestaurantDetailsDataSource.LoadRestaurantDetailsCallback() {
                 @Override
                 public void onRestaurantDetailsLoaded(List<RestaurantDetail> restaurantDetailList) {
                     for (RestaurantDetail restaurantDetail : restaurantDetailList) {
-                        if (item.getId().equals(restaurantDetail.getId()) && restaurantDetail.isFavorite()) {
-                            item.addToFavorities();
+                        if (restaurantThumbnail.getId().equals(restaurantDetail.getId()) && restaurantDetail.isFavorite()) {
+                            restaurantThumbnail.addToFavorities();
                         }
                     }
                 }
@@ -66,15 +66,15 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
                 }
             });
 
-            itemList.add(item);
+            restaurantThumbnailList.add(restaurantThumbnail);
         }
     }
 
     @Override
-    public void removeItem(List<RestaurantThumbnail> itemList, int position) {
+    public void removeItem(List<RestaurantThumbnail> restaurantThumbnailList, int position) {
         try {
-            if (itemList != null) {
-                itemList.remove(position);
+            if (restaurantThumbnailList != null) {
+                restaurantThumbnailList.remove(position);
             }
         } catch (IndexOutOfBoundsException e) {
             Log.d("RestaurantListPresenter", "removeItem: " + e);
@@ -82,8 +82,8 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
     }
 
     @Override
-    public void cleanItem(List<RestaurantThumbnail> itemList) {
-        while (itemList != null && itemList.size() != 0)
+    public void cleanItem(List<RestaurantThumbnail> restaurantThumbnailList) {
+        while (restaurantThumbnailList != null && restaurantThumbnailList.size() != 0)
             view.removeRecyclerViewItem(0);
     }
 

@@ -13,19 +13,19 @@ import java.util.List;
 
 public interface RestaurantListContract {
     interface View extends BaseView<Presenter> {
-        void addRecyclerViewItem(RestaurantThumbnail item);
+        void addRecyclerViewItem(RestaurantThumbnail restaurantThumbnail);
 
         void removeRecyclerViewItem(int position);
     }
 
     interface Presenter extends BasePresenter {
-        void refreshSavedItem(List<RestaurantThumbnail> itemList);
+        void refreshSavedItem(List<RestaurantThumbnail> restaurantThumbnailList);
 
-        void setItem(List<RestaurantThumbnail> itemList, RestaurantThumbnail item);
+        void setItem(List<RestaurantThumbnail> restaurantThumbnailList, RestaurantThumbnail restaurantThumbnail);
 
-        void removeItem(List<RestaurantThumbnail> itemList, int position);
+        void removeItem(List<RestaurantThumbnail> restaurantThumbnailList, int position);
 
-        void cleanItem(List<RestaurantThumbnail> itemList);
+        void cleanItem(List<RestaurantThumbnail> restaurantThumbnailList);
 
         void search(Range range, LocationInformation locationInformation);
 

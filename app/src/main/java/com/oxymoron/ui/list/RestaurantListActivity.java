@@ -33,7 +33,7 @@ public class RestaurantListActivity extends AppCompatActivity implements Restaur
 
     private RecyclerView recyclerView;
     private RestaurantListAdapter adapter;
-    private final List<RestaurantThumbnail> itemList = new ArrayList<>();
+    private final List<RestaurantThumbnail> restaurantThumbnailList = new ArrayList<>();
 
     private LocationInformation locationInformation;
     private Range range;
@@ -75,18 +75,18 @@ public class RestaurantListActivity extends AppCompatActivity implements Restaur
     @Override
     protected void onStop() {
         super.onStop();
-        presenter.refreshSavedItem(itemList);
+        presenter.refreshSavedItem(restaurantThumbnailList);
     }
 
     @Override
-    public void addRecyclerViewItem(RestaurantThumbnail item) {
-        presenter.setItem(itemList, item);
+    public void addRecyclerViewItem(RestaurantThumbnail restaurantThumbnail) {
+        presenter.setItem(restaurantThumbnailList, restaurantThumbnail);
         adapter.notifyDataSetChanged();
     }
 
     @Override
     public void removeRecyclerViewItem(int position) {
-        presenter.removeItem(itemList, position);
+        presenter.removeItem(restaurantThumbnailList, position);
         adapter.notifyItemRemoved(position);
     }
 
@@ -107,7 +107,7 @@ public class RestaurantListActivity extends AppCompatActivity implements Restaur
     private void prepareRecyclerView() {
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
 
-        this.adapter = new RestaurantListAdapter(this.itemList);
+        this.adapter = new RestaurantListAdapter(this.restaurantThumbnailList);
         this.adapter.setOnClickListener(thumbnail -> {
             final RestaurantId restaurantId = thumbnail.getId();
             final Intent intent = RestaurantDetailActivity.createIntent(RestaurantListActivity.this, restaurantId);
