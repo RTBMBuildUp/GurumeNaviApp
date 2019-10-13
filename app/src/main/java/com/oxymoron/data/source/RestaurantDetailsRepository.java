@@ -151,12 +151,6 @@ public class RestaurantDetailsRepository implements RestaurantDetailsDataSource 
 
     @Override
     public void getRestaurantDetail(@NonNull RestaurantId id, @NonNull GetRestaurantDetailsCallback callback) {
-        RestaurantDetail restaurantDetailCache = this.cachedRestaurantDetailMap.get(id);
-        if (restaurantDetailCache != null) {
-            callback.onRestaurantDetailLoaded(restaurantDetailCache);
-            return;
-        }
-
         this.getRestaurantDetailById(id).ifPresentOrElse(
                 callback::onRestaurantDetailLoaded,
                 () -> this.restaurantDetailsLocalDataSource.getRestaurantDetail(id, new GetRestaurantDetailsCallback() {
@@ -194,8 +188,6 @@ public class RestaurantDetailsRepository implements RestaurantDetailsDataSource 
 
     @Override
     public void saveRestaurantDetail(@NonNull RestaurantDetail restaurantDetail) {
-        restaurantDetail.addToFavorities();
-
         this.restaurantDetailsLocalDataSource.saveRestaurantDetail(restaurantDetail);
         this.restaurantDetailsRemoteDataSource.saveRestaurantDetail(restaurantDetail);
 

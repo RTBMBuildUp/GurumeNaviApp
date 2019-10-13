@@ -49,6 +49,27 @@ public class FavoritePresenter implements FavoriteContract.Presenter {
         loadRestaurantThumbnails(view::addRecyclerView);
     }
 
+    @Override
+    public void saveFavoriteRestaurants(List<RestaurantThumbnail> restaurantThumbnailList) {
+        for (RestaurantThumbnail restaurantThumbnail : restaurantThumbnailList) {
+            if (!restaurantThumbnail.isFavorite()) {
+                this.restaurantDetailsRepository.getRestaurantDetail(restaurantThumbnail.getId(), new RestaurantDetailsDataSource.GetRestaurantDetailsCallback() {
+                    @Override
+                    public void onRestaurantDetailLoaded(RestaurantDetail restaurantDetail) {
+                        Log.d("log", "onRestaurantDetailLoaded: saveFav");
+                        restaurantDetail.removeFromFavorities();
+                        restaurantDetailsRepository.saveRestaurantDetail(restaurantDetail);
+                    }
+
+                    @Override
+                    public void onDataNotAvailable() {
+
+                    }
+                });
+            }
+        }
+    }
+
     private void loadRestaurantThumbnails(Consumer<RestaurantThumbnail> function) {
         this.restaurantDetailsRepository.getRestaurantDetails(new RestaurantDetailsDataSource.LoadRestaurantDetailsCallback() {
             @Override

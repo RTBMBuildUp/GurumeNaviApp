@@ -19,5 +19,7 @@ public interface FavoriteContract {
         void clearThumbnail();
 
         void showThumbnails();
+
+        void saveFavoriteRestaurants(List<RestaurantThumbnail> restaurantThumbnailList);
     }
 }

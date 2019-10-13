@@ -173,6 +173,7 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
             public void onRestaurantDetailsLoaded(List<RestaurantDetail> favoritedRestaurantList) {
                 for (RestaurantDetail favoritedRestaurant : favoritedRestaurantList) {
                     Log.d("log", "onRestaurantDetailsLoaded: " + favoritedRestaurant.getName());
+                    favoritedRestaurant.addToFavorities();
                     restaurantDetailsRepository.saveRestaurantDetail(favoritedRestaurant);
                 }
             }

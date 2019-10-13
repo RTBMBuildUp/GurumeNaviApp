@@ -64,6 +64,7 @@ public class FavoriteFragment extends Fragment implements FavoriteContract.View 
         super.onPause();
 
         this.visited();
+        this.presenter.saveFavoriteRestaurants(this.itemList);
     }
 
     @Override
