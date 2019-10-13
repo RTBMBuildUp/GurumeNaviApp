@@ -49,30 +49,24 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
 
     @Override
     public void setItem(List<RestaurantThumbnail> itemList, RestaurantThumbnail item) {
-        try {
-            if (itemList != null) {
-                if (!itemList.contains(item)) {
-                    this.restaurantDetailsRepository.getRestaurantDetails(new RestaurantDetailsDataSource.LoadRestaurantDetailsCallback() {
-                        @Override
-                        public void onRestaurantDetailsLoaded(List<RestaurantDetail> restaurantDetailList) {
-                            for (RestaurantDetail restaurantDetail : restaurantDetailList) {
-                                if (item.getId().equals(restaurantDetail.getId()) && restaurantDetail.isFavorite()) {
-                                    item.addToFavorities();
-                                }
-                            }
+        if (itemList != null && !itemList.contains(item)) {
+            this.restaurantDetailsRepository.getRestaurantDetails(new RestaurantDetailsDataSource.LoadRestaurantDetailsCallback() {
+                @Override
+                public void onRestaurantDetailsLoaded(List<RestaurantDetail> restaurantDetailList) {
+                    for (RestaurantDetail restaurantDetail : restaurantDetailList) {
+                        if (item.getId().equals(restaurantDetail.getId()) && restaurantDetail.isFavorite()) {
+                            item.addToFavorities();
                         }
-
-                        @Override
-                        public void onDataNotAvailable() {
-
-                        }
-                    });
-
-                    itemList.add(item);
+                    }
                 }
-            }
-        } catch (IndexOutOfBoundsException e) {
-            Log.d("RestaurantListPresenter", "setItem: " + e);
+
+                @Override
+                public void onDataNotAvailable() {
+
+                }
+            });
+
+            itemList.add(item);
         }
     }
 
