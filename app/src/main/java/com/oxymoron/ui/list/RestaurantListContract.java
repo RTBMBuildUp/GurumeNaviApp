@@ -19,7 +19,7 @@ public interface RestaurantListContract {
     }
 
     interface Presenter extends BasePresenter {
-        void refreshSavedItem(List<RestaurantThumbnail> restaurantThumbnailList);
+        void saveRestaurantDetails(List<RestaurantThumbnail> restaurantThumbnailList);
 
         void setItem(List<RestaurantThumbnail> restaurantThumbnailList, RestaurantThumbnail restaurantThumbnail);
 

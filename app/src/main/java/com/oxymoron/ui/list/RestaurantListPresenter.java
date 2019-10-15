@@ -7,14 +7,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.oxymoron.data.RestaurantDetail;
 import com.oxymoron.data.source.RestaurantDetailsDataSource;
 import com.oxymoron.data.source.RestaurantDetailsRepository;
-import com.oxymoron.data.source.local.data.RestaurantId;
 import com.oxymoron.data.source.remote.api.PageState;
 import com.oxymoron.data.source.remote.api.gson.data.RestaurantSearchResult;
 import com.oxymoron.data.source.remote.api.serializable.LocationInformation;
 import com.oxymoron.data.source.remote.api.serializable.Range;
 import com.oxymoron.ui.list.data.RestaurantThumbnail;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RestaurantListPresenter implements RestaurantListContract.Presenter {
@@ -32,9 +30,26 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
     }
 
     @Override
-    public void refreshSavedItem(List<RestaurantThumbnail> restaurantThumbnailList) {
-        this.saveRestaurantDetailByRestaurantThumbnail(restaurantThumbnailList);
-        this.deleteRestaurantDetailByRestaurantThumbnail(restaurantThumbnailList);
+    public void saveRestaurantDetails(List<RestaurantThumbnail> restaurantThumbnailList) {
+        for (RestaurantThumbnail restaurantThumbnail : restaurantThumbnailList) {
+            this.restaurantDetailsRepository.getRestaurantDetail(restaurantThumbnail.getId(), new RestaurantDetailsDataSource.GetRestaurantDetailsCallback() {
+                @Override
+                public void onRestaurantDetailLoaded(RestaurantDetail restaurantDetail) {
+                    if (restaurantThumbnail.isFavorite()) {
+                        restaurantDetail.addToFavorities();
+                    } else {
+                        restaurantDetail.removeFromFavorities();
+                    }
+
+                    restaurantDetailsRepository.saveRestaurantDetail(restaurantDetail);
+                }
+
+                @Override
+                public void onDataNotAvailable() {
+
+                }
+            });
+        }
     }
 
     @Override
@@ -151,37 +166,5 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
                     }
                 }
         );
-    }
-
-    private void saveRestaurantDetailByRestaurantThumbnail(List<RestaurantThumbnail> restaurantThumbnailList) {
-        List<RestaurantId> favoriteRestaurantIdList = new ArrayList<>();
-        for (RestaurantThumbnail thumbnail : restaurantThumbnailList) {
-            if (thumbnail.isFavorite()) {
-                Log.d("log", "saveRestaurantDetailByRestaurantThumbnail: " + thumbnail.getName());
-                favoriteRestaurantIdList.add(thumbnail.getId());
-            }
-        }
-
-        this.restaurantDetailsRepository.getRestaurantDetails(favoriteRestaurantIdList, new RestaurantDetailsDataSource.LoadRestaurantDetailsCallback() {
-            @Override
-            public void onRestaurantDetailsLoaded(List<RestaurantDetail> favoritedRestaurantList) {
-                for (RestaurantDetail favoritedRestaurant : favoritedRestaurantList) {
-                    Log.d("log", "onRestaurantDetailsLoaded: " + favoritedRestaurant.getName());
-                    favoritedRestaurant.addToFavorities();
-                    restaurantDetailsRepository.saveRestaurantDetail(favoritedRestaurant);
-                }
-            }
-
-            @Override
-            public void onDataNotAvailable() {
-                Log.d("log", "onDataNotAvailable: ");
-            }
-        });
-
-        System.out.println("saveResDet: finished");
-    }
-
-    private void deleteRestaurantDetailByRestaurantThumbnail(List<RestaurantThumbnail> restaurantThumbnailList) {
-
     }
 }

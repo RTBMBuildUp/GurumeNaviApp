@@ -13,9 +13,9 @@
 
     <fragment
         android:id="@+id/navigation_search"
-        android:name="com.oxymoron.ui.search.SearchFragment"
+        android:name="com.oxymoron.ui.list.RestaurantListFragment"
         android:label="@string/search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/restaurant_list" />
 
     <fragment
         android:id="@+id/navigation_favorite"

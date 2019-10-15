@@ -20,7 +20,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.oxymoron.ui.list.RestaurantListActivity" />
         <activity android:name="com.oxymoron.ui.detail.RestaurantDetailActivity" />
 
     </application>
