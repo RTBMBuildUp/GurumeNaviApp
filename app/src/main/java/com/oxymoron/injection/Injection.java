@@ -2,7 +2,7 @@ package com.oxymoron.injection;
 
 import android.content.Context;
 
-import com.example.gurumenaviapp.R;
+import com.example.gurumenaviapp.BuildConfig;
 import com.oxymoron.data.source.RestaurantDetailsRepository;
 import com.oxymoron.data.source.local.FavoriteRestaurantDataBase;
 import com.oxymoron.data.source.local.RestaurantDetailsLocalDataSource;
@@ -15,7 +15,7 @@ public class Injection {
     public static RestaurantDetailsRepository provideRestaurantDetailsRepository(Context context) {
         FavoriteRestaurantDataBase dataBase = FavoriteRestaurantDataBase.getInstance(context);
 
-        final String token = context.getResources().getString(R.string.api_token);
+        final String token = BuildConfig.GURUME_NAVI_API_KEY;
 
         return RestaurantDetailsRepository.getInstance(
                 RestaurantDetailsLocalDataSource
@@ -27,7 +27,7 @@ public class Injection {
     }
 
     public static RestaurantSearchApiClientImpl provideRestaurantSearchApiClientImpl(Context context) {
-        final String token = context.getResources().getString(R.string.api_token);
+        final String token = BuildConfig.GURUME_NAVI_API_KEY;
 
         return RestaurantSearchApiClientImpl.getInstance(token);
     }
