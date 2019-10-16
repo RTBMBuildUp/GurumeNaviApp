@@ -1,10 +1,14 @@
 package com.oxymoron.ui.favorite;
 
 import android.util.Log;
+import android.view.animation.Animation;
+import android.widget.ImageView;
 
+import com.example.gurumenaviapp.R;
 import com.oxymoron.data.RestaurantDetail;
 import com.oxymoron.data.source.RestaurantDetailsDataSource;
 import com.oxymoron.data.source.RestaurantDetailsRepository;
+import com.oxymoron.data.source.local.data.RestaurantId;
 import com.oxymoron.ui.list.data.RestaurantThumbnail;
 import com.oxymoron.util.Consumer;
 
@@ -68,6 +72,35 @@ public class FavoritePresenter implements FavoriteContract.Presenter {
                 });
             }
         }
+    }
+
+    @Override
+    public void onClickItem(RestaurantThumbnail restaurantThumbnail) {
+        final RestaurantId restaurantId = restaurantThumbnail.getId();
+
+        view.startRestaurantDetailActivity(restaurantId);
+    }
+
+    @Override
+    public void onClickFavoriteIcon(ImageView favoriteIcon, RestaurantThumbnail restaurantThumbnail, Animation animation) {
+        final int favoriteBorder = R.drawable.ic_favorite_border_gray_24dp;
+        final int favorite = R.drawable.ic_favorite_pink_24dp;
+
+        if (restaurantThumbnail.isFavorite()) {
+            restaurantThumbnail.removeFromFavorities();
+
+            favoriteIcon.setImageResource(favoriteBorder);
+        } else {
+            restaurantThumbnail.addToFavorities();
+
+            favoriteIcon.setImageResource(favorite);
+            favoriteIcon.startAnimation(animation);
+        }
+    }
+
+    @Override
+    public void onLoadMore(int page, int totalItemsCount) {
+
     }
 
     private void loadRestaurantThumbnails(Consumer<RestaurantThumbnail> function) {

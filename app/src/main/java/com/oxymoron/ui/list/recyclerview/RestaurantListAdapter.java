@@ -3,6 +3,7 @@ package com.oxymoron.ui.list.recyclerview;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,14 +16,19 @@ import java.util.List;
 public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantViewHolder> {
     private final List<RestaurantThumbnail> restaurantThumbnailList;
 
-    private OnClickListener clickListener;
+    private OnClickItemListener clickItemListener;
+    private OnClickFavoriteIconListener clickFavoriteIconListener;
 
     public RestaurantListAdapter(List<RestaurantThumbnail> restaurantThumbnailList) {
         this.restaurantThumbnailList = restaurantThumbnailList;
     }
 
-    public void setOnClickListener(OnClickListener clickListener) {
-        this.clickListener = clickListener;
+    public void setOnClickItemListener(OnClickItemListener clickItemListener) {
+        this.clickItemListener = clickItemListener;
+    }
+
+    public void setOnClickFavoriteIconListener(OnClickFavoriteIconListener clickFavoriteIconListener) {
+        this.clickFavoriteIconListener = clickFavoriteIconListener;
     }
 
     @NonNull
@@ -37,10 +43,11 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantViewHo
 
     @Override
     public void onBindViewHolder(@NonNull RestaurantViewHolder restaurantViewHolder, int position) {
-        final RestaurantThumbnail thumbnail = restaurantThumbnailList.get(position);
+        final RestaurantThumbnail restaurantThumbnail = restaurantThumbnailList.get(position);
 
-        restaurantViewHolder.itemView.setOnClickListener(v -> clickListener.onClick(thumbnail));
-        restaurantViewHolder.setThumbnail(thumbnail);
+        restaurantViewHolder.setThumbnail(restaurantThumbnail);
+        restaurantViewHolder.itemView.setOnClickListener(v -> this.clickItemListener.onClick(restaurantThumbnail));
+        restaurantViewHolder.favoriteImage.setOnClickListener(v -> this.clickFavoriteIconListener.onClick((ImageView) v, restaurantThumbnail));
     }
 
     @Override

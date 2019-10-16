@@ -1,12 +1,16 @@
 package com.oxymoron.ui.list;
 
 import android.util.Log;
+import android.view.animation.Animation;
+import android.widget.ImageView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.gurumenaviapp.R;
 import com.oxymoron.data.RestaurantDetail;
 import com.oxymoron.data.source.RestaurantDetailsDataSource;
 import com.oxymoron.data.source.RestaurantDetailsRepository;
+import com.oxymoron.data.source.local.data.RestaurantId;
 import com.oxymoron.data.source.remote.api.PageState;
 import com.oxymoron.data.source.remote.api.gson.data.RestaurantSearchResult;
 import com.oxymoron.data.source.remote.api.serializable.LocationInformation;
@@ -113,6 +117,37 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
                     Log.d("RestaurantListPresenter", "onScrolled: " + e);
                 }
             }
+        }
+    }
+
+    @Override
+    public void onClickItem(RestaurantThumbnail restaurantThumbnail) {
+        final RestaurantId restaurantId = restaurantThumbnail.getId();
+
+        this.view.startRestaurantDetailActivity(restaurantId);
+    }
+
+    @Override
+    public void onClickFavoriteIcon(ImageView favoriteIcon, RestaurantThumbnail restaurantThumbnail, Animation animation) {
+        final int favoriteBorder = R.drawable.ic_favorite_border_gray_24dp;
+        final int favorite = R.drawable.ic_favorite_pink_24dp;
+
+        if (restaurantThumbnail.isFavorite()) {
+            restaurantThumbnail.removeFromFavorities();
+
+            favoriteIcon.setImageResource(favoriteBorder);
+        } else {
+            restaurantThumbnail.addToFavorities();
+
+            favoriteIcon.setImageResource(favorite);
+            favoriteIcon.startAnimation(animation);
+        }
+    }
+
+    @Override
+    public void onLoadMore(int page, int totalItemsCount, LocationInformation locationInformation) {
+        if (locationInformation != null) {
+            this.search(new Range(2), locationInformation, new PageState(page));
         }
     }
 

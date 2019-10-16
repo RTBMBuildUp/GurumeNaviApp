@@ -4,8 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,7 +15,6 @@ import com.oxymoron.ui.list.data.RestaurantThumbnail;
 
 class RestaurantViewHolder extends RecyclerView.ViewHolder {
     private Context context;
-    private final Animation animation;
 
     TextView name;
     TextView access;
@@ -34,8 +31,6 @@ class RestaurantViewHolder extends RecyclerView.ViewHolder {
 
         this.thumbnailImage = view.findViewById(R.id.restaurant_item_thumbnail);
         this.favoriteImage = view.findViewById(R.id.restaurant_item_favorite_image);
-
-        this.animation = AnimationUtils.loadAnimation(context, R.anim.favorite_animation);
     }
 
     void setThumbnail(RestaurantThumbnail thumbnail) {
@@ -53,11 +48,11 @@ class RestaurantViewHolder extends RecyclerView.ViewHolder {
         );
 
         this.favoriteImage.setImageResource(thumbnail.isFavorite() ? R.drawable.ic_favorite_pink_24dp : R.drawable.ic_favorite_border_gray_24dp);
-        this.favoriteImage.setOnClickListener(v -> {
-            ImageView favoriteImage = (ImageView) v;
-
-            switchImage(thumbnail, favoriteImage);
-        });
+//        this.favoriteImage.setOnClickListener(v -> {
+//            ImageView favoriteImage = (ImageView) v;
+//
+//            switchImage(thumbnail, favoriteImage);
+//        });
     }
 
     private void setName(String name) {
@@ -72,19 +67,19 @@ class RestaurantViewHolder extends RecyclerView.ViewHolder {
         Glide.with(context).load(imageUrl).into(thumbnailImage);
     }
 
-    private void switchImage(RestaurantThumbnail restaurantThumbnail, ImageView favoriteImage) {
-        final int favoriteBorder = R.drawable.ic_favorite_border_gray_24dp;
-        final int favorite = R.drawable.ic_favorite_pink_24dp;
-
-        if (restaurantThumbnail.isFavorite()) {
-            restaurantThumbnail.removeFromFavorities();
-
-            favoriteImage.setImageResource(favoriteBorder);
-        } else {
-            restaurantThumbnail.addToFavorities();
-
-            favoriteImage.setImageResource(favorite);
-            favoriteImage.startAnimation(animation);
-        }
-    }
+//    private void switchImage(RestaurantThumbnail restaurantThumbnail, ImageView favoriteImage) {
+//        final int favoriteBorder = R.drawable.ic_favorite_border_gray_24dp;
+//        final int favorite = R.drawable.ic_favorite_pink_24dp;
+//
+//        if (restaurantThumbnail.isFavorite()) {
+//            restaurantThumbnail.removeFromFavorities();
+//
+//            favoriteImage.setImageResource(favoriteBorder);
+//        } else {
+//            restaurantThumbnail.addToFavorities();
+//
+//            favoriteImage.setImageResource(favorite);
+//            favoriteImage.startAnimation(animation);
+//        }
+//    }
 }

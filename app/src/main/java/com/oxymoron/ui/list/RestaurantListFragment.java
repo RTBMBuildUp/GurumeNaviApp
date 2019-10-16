@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,7 +27,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gurumenaviapp.R;
 import com.oxymoron.data.source.local.data.RestaurantId;
-import com.oxymoron.data.source.remote.api.PageState;
 import com.oxymoron.data.source.remote.api.serializable.LocationInformation;
 import com.oxymoron.data.source.remote.api.serializable.Range;
 import com.oxymoron.injection.Injection;
@@ -47,6 +47,8 @@ public class RestaurantListFragment extends Fragment implements RestaurantListCo
 
     private Context context;
     private Activity activity;
+
+    private boolean isVisited = false;
 
     private LocationInformation locationInformation;
     private LocationListener locationListener;
@@ -84,7 +86,9 @@ public class RestaurantListFragment extends Fragment implements RestaurantListCo
     public void onResume() {
         super.onResume();
 
-        this.activateGps();
+        if (!this.isVisited) {
+            this.activateGps();
+        }
 
         Log.d("log", "onResume: restList");
     }
@@ -92,6 +96,8 @@ public class RestaurantListFragment extends Fragment implements RestaurantListCo
     @Override
     public void onPause() {
         super.onPause();
+
+        this.visited();
 
         this.inactivateGps();
         this.presenter.saveRestaurantDetails(this.restaurantThumbnailList);
@@ -109,6 +115,13 @@ public class RestaurantListFragment extends Fragment implements RestaurantListCo
     public void removeRecyclerViewItem(int position) {
         this.presenter.removeItem(this.restaurantThumbnailList, position);
         this.adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void startRestaurantDetailActivity(RestaurantId restaurantId) {
+        final Intent intent = RestaurantDetailActivity.createIntent(this.context, restaurantId);
+
+        startActivity(intent);
     }
 
     @Override
@@ -251,15 +264,15 @@ public class RestaurantListFragment extends Fragment implements RestaurantListCo
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.context);
 
         this.adapter = new RestaurantListAdapter(this.restaurantThumbnailList);
-        this.adapter.setOnClickListener(thumbnail -> {
-            final RestaurantId restaurantId = thumbnail.getId();
-            final Intent intent = RestaurantDetailActivity.createIntent(
-                    RestaurantListFragment.this.context,
-                    restaurantId
-            );
 
-            startActivity(intent);
-        });
+        this.adapter.setOnClickItemListener(this.presenter::onClickItem);
+        this.adapter.setOnClickFavoriteIconListener((favoriteIcon, restaurantThumbnail) ->
+                this.presenter.onClickFavoriteIcon(
+                        favoriteIcon,
+                        restaurantThumbnail,
+                        AnimationUtils.loadAnimation(this.context, R.anim.favorite_animation)
+                )
+        );
 
         this.recyclerView.setHasFixedSize(true);
         this.recyclerView.setLayoutManager(linearLayoutManager);
@@ -269,16 +282,19 @@ public class RestaurantListFragment extends Fragment implements RestaurantListCo
         this.recyclerView.addOnScrollListener(new EndlessScrollListener(linearLayoutManager) {
             @Override
             public boolean onLoadMore(int page, int totalItemsCount) {
-                if (locationInformation != null) {
-                    presenter.search(new Range(2), locationInformation, new PageState(page));
-                }
+                presenter.onLoadMore(page, totalItemsCount, locationInformation);
 
                 return true;
             }
         });
     }
 
+    private void visited() {
+        this.isVisited = true;
+    }
+
     private void findView() {
         this.recyclerView = this.activity.findViewById(R.id.restaurant_list_recycler_view);
     }
+
 }

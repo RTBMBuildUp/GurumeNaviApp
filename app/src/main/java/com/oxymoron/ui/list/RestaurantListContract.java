@@ -1,9 +1,13 @@
 package com.oxymoron.ui.list;
 
+import android.view.animation.Animation;
+import android.widget.ImageView;
+
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.oxymoron.BasePresenter;
 import com.oxymoron.BaseView;
+import com.oxymoron.data.source.local.data.RestaurantId;
 import com.oxymoron.data.source.remote.api.PageState;
 import com.oxymoron.data.source.remote.api.serializable.LocationInformation;
 import com.oxymoron.data.source.remote.api.serializable.Range;
@@ -16,6 +20,8 @@ public interface RestaurantListContract {
         void addRecyclerViewItem(RestaurantThumbnail restaurantThumbnail);
 
         void removeRecyclerViewItem(int position);
+
+        void startRestaurantDetailActivity(RestaurantId restaurantId);
     }
 
     interface Presenter extends BasePresenter {
@@ -32,5 +38,11 @@ public interface RestaurantListContract {
         void search(Range range, LocationInformation locationInformation, PageState pageState);
 
         void onScrolled(RecyclerView recyclerView, Range range, LocationInformation locationInformation, int itemCount);
+
+        void onClickItem(RestaurantThumbnail restaurantThumbnail);
+
+        void onClickFavoriteIcon(ImageView favoriteIcon, RestaurantThumbnail restaurantThumbnail, Animation animation);
+
+        void onLoadMore(int page, int totalItemsCount, LocationInformation locationInformation);
     }
 }
