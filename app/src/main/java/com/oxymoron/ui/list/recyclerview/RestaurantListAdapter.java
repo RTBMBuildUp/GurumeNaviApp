@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gurumenaviapp.R;
-import com.oxymoron.ui.list.data.RestaurantThumbnail;
+import com.oxymoron.data.RestaurantThumbnail;
 
 import java.util.List;
 

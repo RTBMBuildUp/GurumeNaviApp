@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gurumenaviapp.R;
 import com.oxymoron.data.RestaurantDetail;
+import com.oxymoron.data.RestaurantThumbnail;
 import com.oxymoron.data.source.RestaurantDetailsDataSource;
 import com.oxymoron.data.source.RestaurantDetailsRepository;
 import com.oxymoron.data.source.local.data.RestaurantId;
@@ -15,7 +16,6 @@ import com.oxymoron.data.source.remote.api.PageState;
 import com.oxymoron.data.source.remote.api.gson.data.RestaurantSearchResult;
 import com.oxymoron.data.source.remote.api.serializable.LocationInformation;
 import com.oxymoron.data.source.remote.api.serializable.Range;
-import com.oxymoron.ui.list.data.RestaurantThumbnail;
 
 import java.util.List;
 

@@ -16,10 +16,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gurumenaviapp.R;
+import com.oxymoron.data.RestaurantThumbnail;
 import com.oxymoron.data.source.local.data.RestaurantId;
 import com.oxymoron.injection.Injection;
 import com.oxymoron.ui.detail.RestaurantDetailActivity;
-import com.oxymoron.ui.list.data.RestaurantThumbnail;
 import com.oxymoron.ui.list.recyclerview.EndlessScrollListener;
 import com.oxymoron.ui.list.recyclerview.RestaurantListAdapter;
 

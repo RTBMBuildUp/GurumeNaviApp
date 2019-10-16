@@ -3,8 +3,8 @@ package com.oxymoron.ui.favorite;
 import android.view.animation.Animation;
 import android.widget.ImageView;
 
+import com.oxymoron.data.RestaurantThumbnail;
 import com.oxymoron.data.source.local.data.RestaurantId;
-import com.oxymoron.ui.list.data.RestaurantThumbnail;
 
 import java.util.List;
 
