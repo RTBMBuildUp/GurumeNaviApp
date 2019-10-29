@@ -1,10 +1,13 @@
 <resources>
     <string name="app_name">GuruNaviApp</string>
-    <string name="search">検索</string>
+    <string name="search">Search</string>
     <string name="address">住所</string>
     <string name="tel">電話番号</string>
     <string name="rest_name">店舗名</string>
     <string name="not_found">不明</string>
     <string name="access">アクセス</string>
     <string name="open_time">営業時間</string>
+    <string name="todo">TODO</string>
+    <string name="home">Home</string>
+    <string name="favorite">Favorite</string>
 </resources>
