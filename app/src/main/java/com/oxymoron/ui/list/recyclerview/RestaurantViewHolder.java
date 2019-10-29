@@ -47,12 +47,10 @@ class RestaurantViewHolder extends RecyclerView.ViewHolder {
                 () -> this.thumbnailImage.setImageBitmap(notFoundImage)
         );
 
-        this.favoriteImage.setImageResource(thumbnail.isFavorite() ? R.drawable.ic_favorite_pink_24dp : R.drawable.ic_favorite_border_gray_24dp);
-//        this.favoriteImage.setOnClickListener(v -> {
-//            ImageView favoriteImage = (ImageView) v;
-//
-//            switchImage(thumbnail, favoriteImage);
-//        });
+        this.favoriteImage.setImageResource(
+                thumbnail.isFavorite() ? R.drawable.ic_favorite_pink_24dp :
+                        R.drawable.ic_favorite_border_gray_24dp
+        );
     }
 
     private void setName(String name) {
@@ -66,20 +64,4 @@ class RestaurantViewHolder extends RecyclerView.ViewHolder {
     private void setThumbnailImage(String imageUrl) {
         Glide.with(context).load(imageUrl).into(thumbnailImage);
     }
-
-//    private void switchImage(RestaurantThumbnail restaurantThumbnail, ImageView favoriteImage) {
-//        final int favoriteBorder = R.drawable.ic_favorite_border_gray_24dp;
-//        final int favorite = R.drawable.ic_favorite_pink_24dp;
-//
-//        if (restaurantThumbnail.isFavorite()) {
-//            restaurantThumbnail.removeFromFavorities();
-//
-//            favoriteImage.setImageResource(favoriteBorder);
-//        } else {
-//            restaurantThumbnail.addToFavorities();
-//
-//            favoriteImage.setImageResource(favorite);
-//            favoriteImage.startAnimation(animation);
-//        }
-//    }
 }
