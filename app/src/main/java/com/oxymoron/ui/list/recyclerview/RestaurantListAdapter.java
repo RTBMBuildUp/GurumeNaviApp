@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gurumenaviapp.R;
 import com.oxymoron.data.RestaurantThumbnail;
+import com.oxymoron.ui.list.recyclerview.onclicklistener.OnClickFavoriteIconListener;
+import com.oxymoron.ui.list.recyclerview.onclicklistener.OnClickItemListener;
 
 import java.util.List;
 
