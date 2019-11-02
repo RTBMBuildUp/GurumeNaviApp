@@ -2,6 +2,7 @@ package com.oxymoron.data;
 
 import com.oxymoron.data.source.local.data.RestaurantId;
 import com.oxymoron.data.source.remote.api.gson.data.Rest;
+import com.oxymoron.util.Consumer;
 import com.oxymoron.util.Optional;
 
 import java.util.ArrayList;
@@ -12,18 +13,18 @@ public class RestaurantThumbnail {
     private final String access;
     private final String imageUrl;
 
-    private boolean favorite;
+    private final Favorite favorite;
     private final RestaurantId restaurantId;
 
     public static RestaurantThumbnail createRestaurantThumbnail(RestaurantDetail restaurantDetail) {
         return new RestaurantThumbnail(
                 restaurantDetail.getId(), restaurantDetail.getName(),
                 restaurantDetail.getAccess(), restaurantDetail.getImageUrl().getUrl().getOrElse(null),
-                restaurantDetail.isFavorite()
+                new Favorite(restaurantDetail.isFavorite())
         );
     }
 
-    public RestaurantThumbnail(Rest restaurant, boolean favorite) {
+    public RestaurantThumbnail(Rest restaurant, Favorite favorite) {
         this.name = restaurant.getName();
         this.access = restaurant.getAccess().showUserAround();
         this.imageUrl = restaurant.getImageUrl().getShopImage().getOrElse(null);
@@ -37,7 +38,7 @@ public class RestaurantThumbnail {
                                 String name,
                                 String access,
                                 String imageUrl,
-                                boolean favorite) {
+                                Favorite favorite) {
 
         this.restaurantId = restaurantId;
         this.name = name;
@@ -47,15 +48,19 @@ public class RestaurantThumbnail {
     }
 
     public RestaurantThumbnail(Rest restaurant) {
-        this(restaurant, false);
+        this(restaurant, new Favorite(false));
     }
 
-    public void addToFavorities() {
-        this.favorite = true;
+    public void addToFavorites() {
+        this.favorite.addToFavorites();
     }
 
-    public void removeFromFavorities() {
-        this.favorite = false;
+    public void removeFromFavorites() {
+        this.favorite.removeFromFavorites();
+    }
+
+    public void switchFavorites() {
+        this.favorite.switchFavorites();
     }
 
     public String getName() {
@@ -74,8 +79,12 @@ public class RestaurantThumbnail {
         return restaurantId;
     }
 
-    public boolean isFavorite() {
-        return this.favorite;
+    public Boolean isFavorite() {
+        return favorite.isFavorite();
+    }
+
+    public void setOnUpdateFavorites(Consumer<Boolean> onUpdateFavorites) {
+        this.favorite.setOnUpdate(onUpdateFavorites);
     }
 
     public static List<RestaurantThumbnail> createRestaurantThumbnailList(List<Rest> restaurantList) {

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,23 +16,29 @@ import com.example.gurumenaviapp.R;
 import com.oxymoron.data.RestaurantThumbnail;
 
 class RestaurantViewHolder extends RecyclerView.ViewHolder {
-    private Context context;
+    private final static int favoriteBorderId = R.drawable.ic_favorite_border_gray_24dp;
+    private final static int favoritePinkId = R.drawable.ic_favorite_pink_24dp;
+
+    private final Context context;
+    private final Animation animation;
 
     TextView name;
     TextView access;
 
     ImageView thumbnailImage;
-    ImageView favoriteImage;
+    ImageView imageView;
 
     RestaurantViewHolder(View view) {
         super(view);
+
         this.context = view.getContext();
+        this.animation = AnimationUtils.loadAnimation(this.context, R.anim.favorite_animation);
 
         this.name = view.findViewById(R.id.restaurant_item_name);
         this.access = view.findViewById(R.id.restaurant_item_access);
 
         this.thumbnailImage = view.findViewById(R.id.restaurant_item_thumbnail);
-        this.favoriteImage = view.findViewById(R.id.restaurant_item_favorite_image);
+        this.imageView = view.findViewById(R.id.restaurant_item_favorite_image);
     }
 
     void setThumbnail(RestaurantThumbnail thumbnail) {
@@ -47,10 +55,13 @@ class RestaurantViewHolder extends RecyclerView.ViewHolder {
                 () -> this.thumbnailImage.setImageBitmap(notFoundImage)
         );
 
-        this.favoriteImage.setImageResource(
-                thumbnail.isFavorite() ? R.drawable.ic_favorite_pink_24dp :
-                        R.drawable.ic_favorite_border_gray_24dp
-        );
+        this.setFavoriteIcon(thumbnail);
+        thumbnail.setOnUpdateFavorites(isFavorite -> {
+            if (isFavorite)
+                this.imageView.startAnimation(animation);
+
+            this.setFavoriteIcon(thumbnail);
+        });
     }
 
     private void setName(String name) {
@@ -64,4 +75,9 @@ class RestaurantViewHolder extends RecyclerView.ViewHolder {
     private void setThumbnailImage(String imageUrl) {
         Glide.with(context).load(imageUrl).into(thumbnailImage);
     }
+
+    private void setFavoriteIcon(RestaurantThumbnail restaurantThumbnail) {
+        this.imageView.setImageResource(restaurantThumbnail.isFavorite() ? favoritePinkId : favoriteBorderId);
+    }
+
 }

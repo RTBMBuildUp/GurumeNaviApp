@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,6 +21,7 @@ import com.oxymoron.injection.Injection;
 import com.oxymoron.ui.detail.RestaurantDetailActivity;
 import com.oxymoron.ui.list.recyclerview.EndlessScrollListener;
 import com.oxymoron.ui.list.recyclerview.RestaurantListAdapter;
+import com.oxymoron.ui.list.recyclerview.onclicklistener.OnClickSafelyListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +53,6 @@ public class FavoriteFragment extends Fragment implements FavoriteContract.View 
 
         findViews(view);
         prepareRecyclerView();
-        prepareRecyclerView();
     }
 
     @Override
@@ -70,7 +69,6 @@ public class FavoriteFragment extends Fragment implements FavoriteContract.View 
         super.onPause();
 
         this.visited();
-        this.presenter.saveFavoriteRestaurants(this.itemList);
     }
 
     @Override
@@ -103,13 +101,12 @@ public class FavoriteFragment extends Fragment implements FavoriteContract.View 
         this.adapter = new RestaurantListAdapter(this.itemList);
 
         this.adapter.setOnClickItemListener(this.presenter::onClickItem);
-        this.adapter.setOnClickFavoriteIconListener((favoriteIcon, restaurantThumbnail) ->
-                this.presenter.onClickFavoriteIcon(
-                        favoriteIcon,
-                        restaurantThumbnail,
-                        AnimationUtils.loadAnimation(this.context, R.anim.favorite_animation)
-                )
-        );
+        this.adapter.setOnClickSafelyListener(new OnClickSafelyListener() {
+            @Override
+            public void onClicked(RestaurantThumbnail restaurantThumbnail) {
+                presenter.onClickFavoriteIcon(restaurantThumbnail);
+            }
+        });
 
         this.recyclerView.setHasFixedSize(true);
         this.recyclerView.setLayoutManager(linearLayoutManager);

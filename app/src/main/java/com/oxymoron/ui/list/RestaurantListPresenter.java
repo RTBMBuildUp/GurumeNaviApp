@@ -1,12 +1,9 @@
 package com.oxymoron.ui.list;
 
 import android.util.Log;
-import android.view.animation.Animation;
-import android.widget.ImageView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.gurumenaviapp.R;
 import com.oxymoron.data.RestaurantDetail;
 import com.oxymoron.data.RestaurantThumbnail;
 import com.oxymoron.data.source.RestaurantDetailsDataSource;
@@ -34,29 +31,6 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
     }
 
     @Override
-    public void saveRestaurantDetails(List<RestaurantThumbnail> restaurantThumbnailList) {
-        for (RestaurantThumbnail restaurantThumbnail : restaurantThumbnailList) {
-            this.restaurantDetailsRepository.getRestaurantDetail(restaurantThumbnail.getId(), new RestaurantDetailsDataSource.GetRestaurantDetailsCallback() {
-                @Override
-                public void onRestaurantDetailLoaded(RestaurantDetail restaurantDetail) {
-                    if (restaurantThumbnail.isFavorite()) {
-                        restaurantDetail.addToFavorities();
-                    } else {
-                        restaurantDetail.removeFromFavorities();
-                    }
-
-                    restaurantDetailsRepository.saveRestaurantDetail(restaurantDetail);
-                }
-
-                @Override
-                public void onDataNotAvailable() {
-
-                }
-            });
-        }
-    }
-
-    @Override
     public void search(Range range, LocationInformation locationInformation) {
         this.showThumbnail(range, locationInformation);
     }
@@ -74,7 +48,7 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
                 public void onRestaurantDetailsLoaded(List<RestaurantDetail> restaurantDetailList) {
                     for (RestaurantDetail restaurantDetail : restaurantDetailList) {
                         if (restaurantThumbnail.getId().equals(restaurantDetail.getId()) && restaurantDetail.isFavorite()) {
-                            restaurantThumbnail.addToFavorities();
+                            restaurantThumbnail.addToFavorites();
                         }
                     }
                 }
@@ -128,20 +102,9 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
     }
 
     @Override
-    public void onClickFavoriteIcon(ImageView favoriteIcon, RestaurantThumbnail restaurantThumbnail, Animation animation) {
-        final int favoriteBorder = R.drawable.ic_favorite_border_gray_24dp;
-        final int favorite = R.drawable.ic_favorite_pink_24dp;
-
-        if (restaurantThumbnail.isFavorite()) {
-            restaurantThumbnail.removeFromFavorities();
-
-            favoriteIcon.setImageResource(favoriteBorder);
-        } else {
-            restaurantThumbnail.addToFavorities();
-
-            favoriteIcon.setImageResource(favorite);
-            favoriteIcon.startAnimation(animation);
-        }
+    public void onClickFavoriteIcon(RestaurantThumbnail restaurantThumbnail) {
+        restaurantThumbnail.switchFavorites();
+        this.saveRestaurantDetail(restaurantThumbnail);
     }
 
     @Override
@@ -201,5 +164,27 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
                     }
                 }
         );
+    }
+
+    private void saveRestaurantDetail(RestaurantThumbnail restaurantThumbnail) {
+        this.restaurantDetailsRepository.getRestaurantDetail(
+                restaurantThumbnail.getId(),
+                new RestaurantDetailsDataSource.GetRestaurantDetailsCallback() {
+                    @Override
+                    public void onRestaurantDetailLoaded(RestaurantDetail restaurantDetail) {
+                        if (restaurantThumbnail.isFavorite()) {
+                            restaurantDetail.addToFavorities();
+                        } else {
+                            restaurantDetail.removeFromFavorities();
+                        }
+
+                        restaurantDetailsRepository.saveRestaurantDetail(restaurantDetail);
+                    }
+
+                    @Override
+                    public void onDataNotAvailable() {
+
+                    }
+                });
     }
 }

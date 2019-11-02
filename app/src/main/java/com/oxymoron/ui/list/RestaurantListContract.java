@@ -1,8 +1,5 @@
 package com.oxymoron.ui.list;
 
-import android.view.animation.Animation;
-import android.widget.ImageView;
-
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.oxymoron.BasePresenter;
@@ -25,8 +22,6 @@ public interface RestaurantListContract {
     }
 
     interface Presenter extends BasePresenter {
-        void saveRestaurantDetails(List<RestaurantThumbnail> restaurantThumbnailList);
-
         void setItem(List<RestaurantThumbnail> restaurantThumbnailList, RestaurantThumbnail restaurantThumbnail);
 
         void removeItem(List<RestaurantThumbnail> restaurantThumbnailList, int position);
@@ -41,7 +36,7 @@ public interface RestaurantListContract {
 
         void onClickItem(RestaurantThumbnail restaurantThumbnail);
 
-        void onClickFavoriteIcon(ImageView favoriteIcon, RestaurantThumbnail restaurantThumbnail, Animation animation);
+        void onClickFavoriteIcon(RestaurantThumbnail restaurantThumbnail);
 
         void onLoadMore(int page, int totalItemsCount, LocationInformation locationInformation);
     }

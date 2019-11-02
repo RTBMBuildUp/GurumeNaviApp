@@ -1,10 +1,7 @@
 package com.oxymoron.ui.favorite;
 
 import android.util.Log;
-import android.view.animation.Animation;
-import android.widget.ImageView;
 
-import com.example.gurumenaviapp.R;
 import com.oxymoron.data.RestaurantDetail;
 import com.oxymoron.data.RestaurantThumbnail;
 import com.oxymoron.data.source.RestaurantDetailsDataSource;
@@ -54,27 +51,6 @@ public class FavoritePresenter implements FavoriteContract.Presenter {
     }
 
     @Override
-    public void saveFavoriteRestaurants(List<RestaurantThumbnail> restaurantThumbnailList) {
-        for (RestaurantThumbnail restaurantThumbnail : restaurantThumbnailList) {
-            if (!restaurantThumbnail.isFavorite()) {
-                this.restaurantDetailsRepository.getRestaurantDetail(restaurantThumbnail.getId(), new RestaurantDetailsDataSource.GetRestaurantDetailsCallback() {
-                    @Override
-                    public void onRestaurantDetailLoaded(RestaurantDetail restaurantDetail) {
-                        Log.d("log", "onRestaurantDetailLoaded: saveFav");
-                        restaurantDetail.removeFromFavorities();
-                        restaurantDetailsRepository.saveRestaurantDetail(restaurantDetail);
-                    }
-
-                    @Override
-                    public void onDataNotAvailable() {
-
-                    }
-                });
-            }
-        }
-    }
-
-    @Override
     public void onClickItem(RestaurantThumbnail restaurantThumbnail) {
         final RestaurantId restaurantId = restaurantThumbnail.getId();
 
@@ -82,20 +58,9 @@ public class FavoritePresenter implements FavoriteContract.Presenter {
     }
 
     @Override
-    public void onClickFavoriteIcon(ImageView favoriteIcon, RestaurantThumbnail restaurantThumbnail, Animation animation) {
-        final int favoriteBorder = R.drawable.ic_favorite_border_gray_24dp;
-        final int favorite = R.drawable.ic_favorite_pink_24dp;
-
-        if (restaurantThumbnail.isFavorite()) {
-            restaurantThumbnail.removeFromFavorities();
-
-            favoriteIcon.setImageResource(favoriteBorder);
-        } else {
-            restaurantThumbnail.addToFavorities();
-
-            favoriteIcon.setImageResource(favorite);
-            favoriteIcon.startAnimation(animation);
-        }
+    public void onClickFavoriteIcon(RestaurantThumbnail restaurantThumbnail) {
+        Log.d("log", "onClickFavoriteIcon: presenter");
+        restaurantThumbnail.switchFavorites();
     }
 
     @Override

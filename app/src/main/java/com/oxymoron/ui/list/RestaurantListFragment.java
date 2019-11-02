@@ -15,7 +15,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,6 +33,7 @@ import com.oxymoron.injection.Injection;
 import com.oxymoron.ui.detail.RestaurantDetailActivity;
 import com.oxymoron.ui.list.recyclerview.EndlessScrollListener;
 import com.oxymoron.ui.list.recyclerview.RestaurantListAdapter;
+import com.oxymoron.ui.list.recyclerview.onclicklistener.OnClickSafelyListener;
 import com.oxymoron.util.toaster.Toaster;
 
 import java.util.ArrayList;
@@ -100,9 +100,6 @@ public class RestaurantListFragment extends Fragment implements RestaurantListCo
         this.visited();
 
         this.inactivateGps();
-        this.presenter.saveRestaurantDetails(this.restaurantThumbnailList);
-
-        Log.d("log", "onPause: restList");
     }
 
     @Override
@@ -246,7 +243,6 @@ public class RestaurantListFragment extends Fragment implements RestaurantListCo
             }
         }
 
-
         @Override
         public void onProviderEnabled(String provider) {
             stringBuilder.append(provider).append("is enabled\n");
@@ -266,13 +262,12 @@ public class RestaurantListFragment extends Fragment implements RestaurantListCo
         this.adapter = new RestaurantListAdapter(this.restaurantThumbnailList);
 
         this.adapter.setOnClickItemListener(this.presenter::onClickItem);
-        this.adapter.setOnClickFavoriteIconListener((favoriteIcon, restaurantThumbnail) ->
-                this.presenter.onClickFavoriteIcon(
-                        favoriteIcon,
-                        restaurantThumbnail,
-                        AnimationUtils.loadAnimation(this.context, R.anim.favorite_animation)
-                )
-        );
+        this.adapter.setOnClickSafelyListener(new OnClickSafelyListener() {
+            @Override
+            public void onClicked(RestaurantThumbnail restaurantThumbnail) {
+                presenter.onClickFavoriteIcon(restaurantThumbnail);
+            }
+        });
 
         this.recyclerView.setHasFixedSize(true);
         this.recyclerView.setLayoutManager(linearLayoutManager);

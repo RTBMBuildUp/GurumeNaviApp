@@ -1,8 +1,5 @@
 package com.oxymoron.ui.favorite;
 
-import android.view.animation.Animation;
-import android.widget.ImageView;
-
 import com.oxymoron.data.RestaurantThumbnail;
 import com.oxymoron.data.source.local.data.RestaurantId;
 
@@ -26,11 +23,9 @@ public interface FavoriteContract {
 
         void showThumbnails();
 
-        void saveFavoriteRestaurants(List<RestaurantThumbnail> restaurantThumbnailList);
-
         void onClickItem(RestaurantThumbnail restaurantThumbnail);
 
-        void onClickFavoriteIcon(ImageView favoriteIcon, RestaurantThumbnail restaurantThumbnail, Animation animation);
+        void onClickFavoriteIcon(RestaurantThumbnail restaurantThumbnail);
 
         void onLoadMore(int page, int totalItemsCount);
     }
