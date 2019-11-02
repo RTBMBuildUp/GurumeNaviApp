@@ -173,9 +173,9 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
                     @Override
                     public void onRestaurantDetailLoaded(RestaurantDetail restaurantDetail) {
                         if (restaurantThumbnail.isFavorite()) {
-                            restaurantDetail.addToFavorities();
+                            restaurantDetail.addToFavorites();
                         } else {
-                            restaurantDetail.removeFromFavorities();
+                            restaurantDetail.removeFromFavorites();
                         }
 
                         restaurantDetailsRepository.saveRestaurantDetail(restaurantDetail);

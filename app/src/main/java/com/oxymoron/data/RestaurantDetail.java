@@ -75,11 +75,11 @@ public class RestaurantDetail {
         );
     }
 
-    public void addToFavorities() {
+    public void addToFavorites() {
         this.favorite = true;
     }
 
-    public void removeFromFavorities() {
+    public void removeFromFavorites() {
         this.favorite = false;
     }
 
@@ -125,7 +125,7 @@ public class RestaurantDetail {
     @Override
     public boolean equals(@Nullable Object obj) {
         if (!(obj instanceof RestaurantDetail)) return false;
-        RestaurantDetail restaurantDetail = ((RestaurantDetail) obj);
+        final RestaurantDetail restaurantDetail = ((RestaurantDetail) obj);
         return Objects.equals(this.getId(), restaurantDetail.getId());
     }
 
