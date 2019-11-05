@@ -22,7 +22,6 @@ import com.oxymoron.injection.Injection;
 import com.oxymoron.ui.detail.RestaurantDetailActivity;
 import com.oxymoron.ui.list.recyclerview.EndlessScrollListener;
 import com.oxymoron.ui.list.recyclerview.RestaurantListAdapter;
-import com.oxymoron.ui.list.recyclerview.onclicklistener.OnClickSafelyListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,12 +101,7 @@ public class FavoriteFragment extends Fragment implements FavoriteContract.View 
         this.adapter = new RestaurantListAdapter(this.itemList);
 
         this.adapter.setOnClickItemListener(this.presenter::onClickItem);
-        this.adapter.setOnClickSafelyListener(new OnClickSafelyListener() {
-            @Override
-            public void onClicked(RestaurantThumbnail restaurantThumbnail) {
-                presenter.onClickFavoriteIcon(restaurantThumbnail);
-            }
-        });
+        this.adapter.setOnClickFavoritesListener(this.presenter::onClickFavoriteIcon);
         this.adapter.setOnUpdateFavorites((restaurantThumbnail, favoriteIcon) ->
                 this.presenter.onUpdateFavorites(
                         restaurantThumbnail,

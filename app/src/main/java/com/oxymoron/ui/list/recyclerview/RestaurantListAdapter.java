@@ -10,31 +10,32 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.gurumenaviapp.R;
 import com.oxymoron.data.RestaurantThumbnail;
 import com.oxymoron.ui.list.recyclerview.onclicklistener.OnClickItemListener;
-import com.oxymoron.ui.list.recyclerview.onclicklistener.OnClickSafelyListener;
+import com.oxymoron.ui.list.recyclerview.onclicklistener.OnClickedListener;
+import com.oxymoron.ui.list.recyclerview.onclicklistener.OnClickedSafelyListener;
 
 import java.util.List;
 
 public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantViewHolder> {
     private final List<RestaurantThumbnail> restaurantThumbnailList;
 
-    private OnClickItemListener clickItemListener;
-    private OnClickSafelyListener clickSafelyListener;
-    private OnUpdateFavorites updateFavorites;
+    private OnClickItemListener onClickItemListener;
+    private OnUpdateFavorites onUpdateFavorites;
+    private OnClickedListener<RestaurantThumbnail> onClickFavoritesListener;
 
     public RestaurantListAdapter(List<RestaurantThumbnail> restaurantThumbnailList) {
         this.restaurantThumbnailList = restaurantThumbnailList;
     }
 
     public void setOnClickItemListener(OnClickItemListener clickItemListener) {
-        this.clickItemListener = clickItemListener;
+        this.onClickItemListener = clickItemListener;
     }
 
-    public void setOnClickSafelyListener(OnClickSafelyListener clickSafelyListener) {
-        this.clickSafelyListener = clickSafelyListener;
+    public void setOnClickFavoritesListener(OnClickedListener<RestaurantThumbnail> onClickFavoritesListener) {
+        this.onClickFavoritesListener = onClickFavoritesListener;
     }
 
     public void setOnUpdateFavorites(OnUpdateFavorites updateFavorites) {
-        this.updateFavorites = updateFavorites;
+        this.onUpdateFavorites = updateFavorites;
     }
 
     @NonNull
@@ -50,13 +51,26 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantViewHo
     @Override
     public void onBindViewHolder(@NonNull RestaurantViewHolder restaurantViewHolder, int position) {
         final RestaurantThumbnail restaurantThumbnail = restaurantThumbnailList.get(position);
+        final OnClickedSafelyListener<RestaurantThumbnail> onClickedSafelyListener =
+                new OnClickedSafelyListener<RestaurantThumbnail>() {
+                    @Override
+                    public void onClicked(RestaurantThumbnail restaurantThumbnail) {
+                        onClickFavoritesListener.onClicked(restaurantThumbnail);
+                    }
+                };
 
         restaurantViewHolder.setThumbnail(restaurantThumbnail);
 
-        restaurantViewHolder.itemView.setOnClickListener(v -> this.clickItemListener.onClick(restaurantThumbnail));
+        restaurantViewHolder.itemView.setOnClickListener(v ->
+                this.onClickItemListener.onClick(restaurantThumbnail));
+
         restaurantViewHolder.favoriteIcon.setOnClickListener(v -> {
-            this.clickSafelyListener.onClick(restaurantThumbnail);
-            this.updateFavorites.onUpdateFavorites(restaurantThumbnail, restaurantViewHolder.favoriteIcon);
+            onClickedSafelyListener.onClick(restaurantThumbnail);
+
+            this.onUpdateFavorites.onUpdateFavorites(
+                    restaurantThumbnail,
+                    restaurantViewHolder.favoriteIcon
+            );
         });
     }
 
