@@ -4,37 +4,45 @@ import androidx.annotation.Nullable;
 
 import com.oxymoron.util.Consumer;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.subjects.PublishSubject;
+
 public class Favorite {
     private boolean favorite;
-    private Consumer<Boolean> onUpdate;
+    private final PublishSubject<Boolean> publishSubject;
+    private final Observable<Boolean> booleanObservable;
 
-    public Favorite(Boolean favorite) {
+    Favorite(Boolean favorite) {
         this.favorite = favorite;
+        this.publishSubject = PublishSubject.create();
+        this.booleanObservable = this.publishSubject.observeOn(AndroidSchedulers.mainThread());
     }
 
-    public void addToFavorites() {
+    void addToFavorites() {
         this.setFavorite(true);
     }
 
-    public void removeFromFavorites() {
+    void removeFromFavorites() {
         this.setFavorite(false);
     }
 
-    public void switchFavorites() {
+    void switchFavorites() {
         this.setFavorite(!this.favorite);
     }
 
-    public Boolean isFavorite() {
+    Boolean isFavorite() {
         return this.favorite;
     }
 
-    public void setOnUpdate(Consumer<Boolean> onUpdate) {
-        this.onUpdate = onUpdate;
+    void setOnUpdate(Consumer<Boolean> onUpdate) {
+        final Disposable subscribe = this.booleanObservable.subscribe(onUpdate::accept);
     }
 
     private void setFavorite(Boolean favorite) {
         this.favorite = favorite;
-        if (this.onUpdate != null) this.onUpdate.accept(this.favorite);
+        this.publishSubject.onNext(this.favorite);
     }
 
     @Override
