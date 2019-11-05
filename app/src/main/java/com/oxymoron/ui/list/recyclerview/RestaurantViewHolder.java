@@ -26,7 +26,7 @@ class RestaurantViewHolder extends RecyclerView.ViewHolder {
     TextView access;
 
     ImageView thumbnailImage;
-    ImageView imageView;
+    ImageView favoriteIcon;
 
     RestaurantViewHolder(View view) {
         super(view);
@@ -38,7 +38,7 @@ class RestaurantViewHolder extends RecyclerView.ViewHolder {
         this.access = view.findViewById(R.id.restaurant_item_access);
 
         this.thumbnailImage = view.findViewById(R.id.restaurant_item_thumbnail);
-        this.imageView = view.findViewById(R.id.restaurant_item_favorite_image);
+        this.favoriteIcon = view.findViewById(R.id.restaurant_item_favorite_image);
     }
 
     void setThumbnail(RestaurantThumbnail thumbnail) {
@@ -56,12 +56,6 @@ class RestaurantViewHolder extends RecyclerView.ViewHolder {
         );
 
         this.setFavoriteIcon(thumbnail);
-        thumbnail.setOnUpdateFavorites(isFavorite -> {
-            if (isFavorite)
-                this.imageView.startAnimation(animation);
-
-            this.setFavoriteIcon(thumbnail);
-        });
     }
 
     private void setName(String name) {
@@ -77,7 +71,7 @@ class RestaurantViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void setFavoriteIcon(RestaurantThumbnail restaurantThumbnail) {
-        this.imageView.setImageResource(restaurantThumbnail.isFavorite() ? favoritePinkId : favoriteBorderId);
+        this.favoriteIcon.setImageResource(restaurantThumbnail.isFavorite() ? favoritePinkId : favoriteBorderId);
     }
 
 }

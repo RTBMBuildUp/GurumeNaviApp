@@ -1,9 +1,12 @@
 package com.oxymoron.ui.list;
 
 import android.util.Log;
+import android.view.animation.Animation;
+import android.widget.ImageView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.gurumenaviapp.R;
 import com.oxymoron.data.RestaurantDetail;
 import com.oxymoron.data.RestaurantThumbnail;
 import com.oxymoron.data.source.RestaurantDetailsDataSource;
@@ -105,6 +108,16 @@ public class RestaurantListPresenter implements RestaurantListContract.Presenter
     public void onClickFavoriteIcon(RestaurantThumbnail restaurantThumbnail) {
         restaurantThumbnail.switchFavorites();
         this.saveRestaurantDetail(restaurantThumbnail);
+    }
+
+    @Override
+    public void onUpdateFavorites(RestaurantThumbnail restaurantThumbnail, ImageView favoriteIcon, Animation animation) {
+        restaurantThumbnail.setOnUpdateFavorites(isFavorite -> {
+            if (isFavorite)
+                favoriteIcon.startAnimation(animation);
+
+            favoriteIcon.setImageResource(isFavorite ? R.drawable.ic_favorite_pink_24dp : R.drawable.ic_favorite_border_gray_24dp);
+        });
     }
 
     @Override

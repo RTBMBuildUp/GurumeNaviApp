@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -107,6 +108,13 @@ public class FavoriteFragment extends Fragment implements FavoriteContract.View 
                 presenter.onClickFavoriteIcon(restaurantThumbnail);
             }
         });
+        this.adapter.setOnUpdateFavorites((restaurantThumbnail, favoriteIcon) ->
+                this.presenter.onUpdateFavorites(
+                        restaurantThumbnail,
+                        favoriteIcon,
+                        AnimationUtils.loadAnimation(this.context, R.anim.favorite_animation)
+                )
+        );
 
         this.recyclerView.setHasFixedSize(true);
         this.recyclerView.setLayoutManager(linearLayoutManager);

@@ -19,6 +19,7 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantViewHo
 
     private OnClickItemListener clickItemListener;
     private OnClickSafelyListener clickSafelyListener;
+    private OnUpdateFavorites updateFavorites;
 
     public RestaurantListAdapter(List<RestaurantThumbnail> restaurantThumbnailList) {
         this.restaurantThumbnailList = restaurantThumbnailList;
@@ -30,6 +31,10 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantViewHo
 
     public void setOnClickSafelyListener(OnClickSafelyListener clickSafelyListener) {
         this.clickSafelyListener = clickSafelyListener;
+    }
+
+    public void setOnUpdateFavorites(OnUpdateFavorites updateFavorites) {
+        this.updateFavorites = updateFavorites;
     }
 
     @NonNull
@@ -49,7 +54,10 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantViewHo
         restaurantViewHolder.setThumbnail(restaurantThumbnail);
 
         restaurantViewHolder.itemView.setOnClickListener(v -> this.clickItemListener.onClick(restaurantThumbnail));
-        restaurantViewHolder.imageView.setOnClickListener(v -> this.clickSafelyListener.onClick(restaurantThumbnail));
+        restaurantViewHolder.favoriteIcon.setOnClickListener(v -> {
+            this.clickSafelyListener.onClick(restaurantThumbnail);
+            this.updateFavorites.onUpdateFavorites(restaurantThumbnail, restaurantViewHolder.favoriteIcon);
+        });
     }
 
 
